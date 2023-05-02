@@ -11,7 +11,7 @@ import { addDate, addHours, subtractDate } from '../../utils/utils';
 import Button from '@mui/material/Button';
 import { LoginButton, MainSignButton } from '../../style/style';
 import styled from '@emotion/styled';
-
+import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
 
 
 
@@ -21,6 +21,7 @@ const WrapButton = styled.div`
    justify-content: flex-end;
    margin-right: 40px;
 `
+
 const today = new TZDate();
 // const viewModeOptions = [
 //   {
@@ -262,14 +263,17 @@ export function CalendarApp({ view }: { view: ViewType }) {
           >
             Today
           </button>
+
+         
           <button
             type="button"
             className="btn btn-default btn-sm move-day"
             data-action="move-prev"
             onClick={onClickNavi}
-          >
-            Prev
-          </button>
+          >Prev</button>
+          
+        
+         
           <button
             type="button"
             className="btn btn-default btn-sm move-day"
@@ -283,6 +287,7 @@ export function CalendarApp({ view }: { view: ViewType }) {
       
         {/* <LoginButton>login</LoginButton> */}
       </div>
+      
       <Calendar
         height="900px"
         calendars={initialCalendars}
@@ -293,7 +298,7 @@ export function CalendarApp({ view }: { view: ViewType }) {
             return `<span style="color: #fff; background-color: ${event.backgroundColor};">${event.title}</span>`;
           },
           allday(event) {
-            return `[All day] ${event.title}`;
+            return `[당직] ${event.title}`;
           },
         }}
         theme={theme}
@@ -331,6 +336,7 @@ export function CalendarApp({ view }: { view: ViewType }) {
         onBeforeUpdateEvent={onBeforeUpdateEvent}
         onBeforeCreateEvent={onBeforeCreateEvent}
       />
+      
     </div>
   );
 }
