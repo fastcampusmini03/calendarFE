@@ -2,16 +2,17 @@
 import './Calendar.css';
 import type { EventObject, ExternalEventTypes, Options } from '@toast-ui/calendar';
 import { TZDate } from '@toast-ui/calendar';
-import type { ChangeEvent, MouseEvent } from 'react';
+// import type { ChangeEvent, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Calendar from '@toast-ui/react-calendar';
 import { theme } from '../../utils/theme';
 import { addDate, addHours, subtractDate } from '../../utils/utils';
 import Button from '@mui/material/Button';
-import { LoginButton, MainSignButton } from '../../style/style';
+import { MainSignButton } from '../../style/style';
 import styled from '@emotion/styled';
-import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
+
 
 
 
@@ -167,9 +168,9 @@ export function CalendarApp({ view }: { view: ViewType }) {
     getCalInstance().deleteEvent(id, calendarId);
   };
 
-  const onChangeSelect = (ev: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedView(ev.target.value as ViewType);
-  };
+  // const onChangeSelect = (ev: ChangeEvent<HTMLSelectElement>) => {
+  //   setSelectedView(ev.target.value as ViewType);
+  // };
 
   const onClickDayName: ExternalEventTypes['clickDayName'] = (res) => {
     console.group('onClickDayName');
