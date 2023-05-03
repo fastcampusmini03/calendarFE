@@ -1,14 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
-<<<<<<< HEAD
-// import './index.css'
-=======
-import './index.css'
-import { worker } from './mocks/worker'
+import { worker } from './mocks/worker.ts'
 import { QueryClient, QueryClientProvider } from 'react-query'
->>>>>>> develop
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from './style/style';
+import '@toast-ui/calendar/toastui-calendar.css';
+import 'tui-date-picker/dist/tui-date-picker.min.css';
+import 'tui-time-picker/dist/tui-time-picker.min.css';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start()
@@ -20,10 +19,10 @@ const queryClient = new QueryClient({
 })
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
+   <ThemeProvider theme={theme}>
       <React.StrictMode>
         <App />
       </React.StrictMode>
-    </BrowserRouter>
-  </QueryClientProvider>,
+    </ThemeProvider>
+  </QueryClientProvider>
 )

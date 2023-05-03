@@ -6,12 +6,13 @@ import { TZDate } from '@toast-ui/calendar';
 import type { MouseEvent } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import Calendar from '@toast-ui/react-calendar';
-import { theme } from '../../utils/theme';
+import Calendar from '@toast-ui/react-calendar'
 import { addDate, addHours, subtractDate } from '../../utils/utils';
 import Button from '@mui/material/Button';
 import { MainSignButton } from '../../style/style';
 import styled from '@emotion/styled';
+import { theme } from '../../utils/theme';
+// import { Helmet } from 'react-helmet'
 
 
 
@@ -241,6 +242,9 @@ export function CalendarApp({ view }: { view: ViewType }) {
 
   return (
     <div>
+    {/* <Helmet>
+       <title>메인페이지</title>
+    </Helmet> */}
       {/* <h1>🍞📅 TOAST UI Calendar + React.js</h1> */}
       <div>
       <WrapButton>
