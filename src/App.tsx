@@ -1,14 +1,8 @@
-
-import './App.css'
-import Calendar from './components/Calendar'
+import Router from "./routes/router";
 
 function App() {
-
-
   return (
-    <>
-    <Calendar/>
-    </>
+    <Router />
   )
 }
 
