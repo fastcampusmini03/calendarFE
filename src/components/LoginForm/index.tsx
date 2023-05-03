@@ -85,7 +85,7 @@ const LoginForm = () => {
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="/register" variant="body2">
+                <Link href="/signup" variant="body2">
                   {'아직 계정이 없으시나요? 회원 가입'}
                 </Link>
               </Grid>
