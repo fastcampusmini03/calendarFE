@@ -1,12 +1,7 @@
-import LoginPage from './pages/LoginPage'
-import Router from './routes/Router'
+import Router from './routes/router'
 
 function App() {
-  return (
-    <>
-      <Router />
-    </>
-  )
+    return <Router />
 }
 
 export default App
