@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Main from '../pages/main'
-import SignupPage from '../pages/signupPage'
+import SignupPage from '../pages/SignupPage'
 import LoginPage from '../pages/LoginPage'
 import MyPage from '../pages/MyPage'
 import AdminPage from '../pages/AdminPage'
 import UserListPage from '../pages/UserListPage'
-import LoginForm from '../components/Calendar/Login'
+import LoginForm from '../components/calendar/Login'
 
 function Router() {
   return (

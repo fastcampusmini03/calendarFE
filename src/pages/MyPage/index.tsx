@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import PersistentDrawerRight from '../../components/header'
+import PersistentDrawerRight from '../../components/Header'
 import { StyledTextField } from './style'
 
 import {
