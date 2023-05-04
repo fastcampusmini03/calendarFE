@@ -214,16 +214,6 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
 
   return (
     <div>
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="center"
-        gap="10px"
-      >
-        <Button>연차/당직</Button>
-        <Button href="/admin/user">사용자 관리</Button>
-      </Box>
       <Typography variant="h2" color="initial" align="center">
         아듀 캘린더
       </Typography>
@@ -236,7 +226,7 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
             </option>
           ))}
         </select> */}
-        <Chip icon={<FaceIcon />} label="Administor" variant="outlined" />
+        <Chip icon={<FaceIcon />} label="userName" variant="outlined" />
         <span>
           {/* <button
             type="button"
