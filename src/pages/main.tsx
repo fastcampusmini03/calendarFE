@@ -1,14 +1,19 @@
-import { CalendarApp } from "../components/calendar"
-import PersistentDrawerRight from "../components/header"
+import { useQuery } from 'react-query'
+import CalendarUI from '../components/CalendarUI'
 
+import PersistentDrawerRight from '../components/header'
+import { DatesPayload } from '../types/dates'
+import { getDates } from '../apis/axios'
 
 function Main() {
+  const { data: dates, isLoading } = useQuery<DatesPayload[]>('dates', getDates)
+  if (isLoading || dates === undefined) {
+    return <div>로딩중...</div>
+  }
   return (
-    
     <PersistentDrawerRight>
-         <CalendarApp view="month"/>
+      <CalendarUI view="month" dates={dates} />
     </PersistentDrawerRight>
-    
   )
 }
 
