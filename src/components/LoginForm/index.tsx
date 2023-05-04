@@ -83,13 +83,9 @@ const LoginForm = () => {
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               로그인
             </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  {'아직 계정이 없으시나요? 회원 가입'}
-                </Link>
-              </Grid>
-            </Grid>
+            <Link href="/signup" variant="body2">
+              {'아직 계정이 없으시나요? 회원 가입'}
+            </Link>
           </Box>
         </Box>
       </Container>
