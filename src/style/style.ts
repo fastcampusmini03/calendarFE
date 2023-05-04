@@ -1,5 +1,6 @@
-import { Button, createTheme } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Button, Paper, createTheme } from '@mui/material'
+import InputBase from '@mui/material/InputBase'
+import { styled, alpha } from '@mui/material/styles'
 
 export const theme = createTheme({
   components: {
@@ -22,9 +23,11 @@ export const theme = createTheme({
          */
         outlined: {
           backgroundColor: '#c8c8c8',
+          border: 'none',
           color: '#5c940d',
           '&:hover': {
-            backgroundColor: '#9E5FFF',
+            border: 'none',
+            backgroundColor: 'red',
             color: '#fff',
           },
         },
@@ -66,3 +69,59 @@ export const MainSignButton = styled(Button)`
   background-color: #fff;
   color: #0f9bf7;
 `
+
+export const ListPaper = styled(Paper)`
+  background-color: '#fff';
+  padding: theme.spacing(1);
+  text-align: center;
+  color: gray;
+  transition: background-color 0.5s ease;
+
+  &:hover {
+    background-color: #1a2027;
+    color: #fff;
+  }
+`
+export const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}))
+
+export const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha('#234234', 0.8),
+  transition: 'all 2s ease',
+  color: '#fff',
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    color: alpha('#234234', 0.8),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  marginBottom: theme.spacing(2),
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: '40%',
+  },
+}))
+
+export const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '40ch',
+    },
+  },
+}))

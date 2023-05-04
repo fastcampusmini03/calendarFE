@@ -6,13 +6,18 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import '@toast-ui/calendar/dist/toastui-calendar.min.css'
 import Calendar from '@toast-ui/react-calendar'
 import { theme } from '../../utils/theme'
+import './style.css'
+import FaceIcon from '@mui/icons-material/Face'
 import { addDate, addHours, subtractDate } from '../../utils/utils'
 import { DatesPayload } from '../../types/dates'
+import Typography from '@mui/material/Typography'
+import Chip from '@mui/material/Chip'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 
 type ViewType = 'month' | 'week' | 'day'
 
 const today = new TZDate()
-console.log(today)
 const viewModeOptions = [
   {
     title: 'Monthly',
@@ -34,9 +39,9 @@ interface CalendarUIProps {
 
 export default function CalendarUI({ view, dates }: CalendarUIProps) {
   const calendarRef = useRef<typeof Calendar>(null)
-
   const [selectedDateRangeText, setSelectedDateRangeText] = useState('')
   const [selectedView, setSelectedView] = useState(view)
+
   const initialCalendars: Options['calendars'] = [
     {
       id: '0',
@@ -209,24 +214,38 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
 
   return (
     <div>
-      <h1>🍞📅 TOAST UI Calendar + React.js</h1>
+      <Box
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="center"
+        gap="10px"
+      >
+        <Button>연차/당직</Button>
+        <Button href="/admin/user">사용자 관리</Button>
+      </Box>
+      <Typography variant="h2" color="initial" align="center">
+        아듀 캘린더
+      </Typography>
+
       <div>
-        <select onChange={onChangeSelect} value={selectedView}>
+        {/* <select onChange={onChangeSelect} value={selectedView}>
           {viewModeOptions.map((option, index) => (
             <option value={option.value} key={index}>
               {option.title}
             </option>
           ))}
-        </select>
+        </select> */}
+        <Chip icon={<FaceIcon />} label="Administor" variant="outlined" />
         <span>
-          <button
+          {/* <button
             type="button"
             className="btn btn-default btn-sm move-today"
             data-action="move-today"
             onClick={onClickNavi}
           >
             Today
-          </button>
+          </button> */}
           <button
             type="button"
             className="btn btn-default btn-sm move-day"
