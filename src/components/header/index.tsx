@@ -18,10 +18,18 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-
+import { Button } from '@mui/material';
+import { MainSignButton } from '../../style/style';
+import Styled from '@emotion/styled';
 
 const drawerWidth = 240;
 
+const WrapButton = Styled.div`
+   display: flex;
+   justify-content: flex-end;
+   margin-right: 40px;
+
+`
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
@@ -72,6 +80,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function PersistentDrawerRight({ children }: any) {
+  
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -104,6 +113,10 @@ export default function PersistentDrawerRight({ children }: any) {
       </AppBar>
       <Main open={open}>
         <DrawerHeader />
+        <WrapButton>
+          <Button>login</Button>
+          <MainSignButton>signup</MainSignButton>
+        </WrapButton>
         {children}
        
       </Main>
