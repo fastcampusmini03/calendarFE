@@ -1,5 +1,5 @@
-import { CalendarApp } from "../components/calendar"
-import PersistentDrawerRight from "../components/header"
+import { CalendarApp } from "../components/Calendar"
+import PersistentDrawerRight from "../components/Header"
 
 
 function Main() {

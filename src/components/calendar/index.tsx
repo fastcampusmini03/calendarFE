@@ -1,16 +1,13 @@
 /* eslint-disable no-console */
-import './Calendar.css';
+// import './Calendar.css';
 import type { EventObject, ExternalEventTypes, Options } from '@toast-ui/calendar';
 import { TZDate } from '@toast-ui/calendar';
 // import type { ChangeEvent, MouseEvent } from 'react';
 import type { MouseEvent } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-
 import Calendar from '@toast-ui/react-calendar'
 import { addDate, addHours, subtractDate } from '../../utils/utils';
-import Button from '@mui/material/Button';
-import { MainSignButton } from '../../style/style';
-import styled from '@emotion/styled';
+// import styled from '@emotion/styled';
 import { theme } from '../../utils/theme';
 // import { Helmet } from 'react-helmet'
 
@@ -18,11 +15,7 @@ import { theme } from '../../utils/theme';
 
 
 type ViewType = 'month' | 'week' | 'day';
-const WrapButton = styled.div`
-   display: flex;
-   justify-content: flex-end;
-   margin-right: 40px;
-`
+
 
 const today = new TZDate();
 // const viewModeOptions = [
@@ -247,10 +240,10 @@ export function CalendarApp({ view }: { view: ViewType }) {
     </Helmet> */}
       {/* <h1>🍞📅 TOAST UI Calendar + React.js</h1> */}
       <div>
-      <WrapButton>
+      {/* <WrapButton>
         <Button>login</Button>
         <MainSignButton>signup</MainSignButton>
-        </WrapButton>
+        </WrapButton> */}
         {/* <select onChange={onChangeSelect} value={selectedView}>
           {viewModeOptions.map((option, index) => (
             <option value={option.value} key={index}>
