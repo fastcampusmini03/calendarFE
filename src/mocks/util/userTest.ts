@@ -6,6 +6,7 @@ export const mockUserList = [
     email: "test1@gmail.com",
     password: "12345678",
     username: "testUser1",
+    role: "admin",
     profile: "https://picsum.photos/200/300",
     createdAt: "2023-04-20T09:03:09.566Z",
     updatedAt: "2023-04-20T09:03:09.566Z",
@@ -15,6 +16,7 @@ export const mockUserList = [
     email: "test2@gmail.com",
     password: "12345678",
     username: "testUser2",
+    role: "admin",
     profile: "https://picsum.photos/200/300",
     createdAt: "2023-04-20T09:03:09.566Z",
     updatedAt: "2023-04-20T09:03:09.566Z",
@@ -25,6 +27,7 @@ export function createMockUser({
   email = "testDefault@gmail.com",
   password = "testPassword",
   username = "testDefaultUser",
+  role = "admin",
  
 }) {
   const id = mockUserList.length + 1;
@@ -36,6 +39,7 @@ export function createMockUser({
     email,
     password,
     username,
+    role,
     profile: "https://picsum.photos/200/300",
     createdAt: date.toISOString(),
     updatedAt: date.toISOString(),

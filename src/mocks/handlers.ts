@@ -72,6 +72,7 @@ export const authHandler = [
             email: user.email,
             username: user.username,
             profile: user.profile,
+            role: user.role,
           },
         },
       })
