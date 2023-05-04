@@ -1,7 +1,6 @@
+import PersistentDrawerRight from "../components/Header"
 import { useQuery } from 'react-query'
 import CalendarUI from '../components/CalendarUI'
-
-import PersistentDrawerRight from '../components/header'
 import { DatesPayload } from '../types/dates'
 import { getDates } from '../apis/axios'
 
