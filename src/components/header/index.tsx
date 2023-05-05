@@ -18,18 +18,68 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { Button } from '@mui/material';
+import { Avatar, Badge, Button } from '@mui/material';
 import { MainSignButton } from '../../style/style';
 import Styled from '@emotion/styled';
-
+import { getCookie, removeCookie } from '../../utils/cookies';
+import { ACCESSTOKEN_KEY } from '../../apis/instance';
+import { useQuery, useQueryClient } from 'react-query';
+import { verify } from '../../apis/axios';
+import { useNavigate } from 'react-router-dom';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 const drawerWidth = 240;
 
 const WrapButton = Styled.div`
-   display: flex;
-   justify-content: flex-end;
-   margin-right: 40px;
 
+display: flex;
+   justify-content: flex-end;
+   margin-right: 20px;
 `
+const Wrap = Styled.div`
+   /* border: 1px solid #c8c8c8; */
+   background-color: #F2F2F2;
+   border-radius: 10px;
+   padding: 10px 20px;
+   margin: 5px;
+   display: flex;
+  
+`
+const UserName = Styled.span`
+   font-size: 14px;
+   margin-left: 10px;
+`
+const WrapUserName = Styled.div`
+    display: flex;
+    flex-direction: column;
+`
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    backgroundColor: '#44b700',
+    color: '#44b700',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: 'ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0,
+    },
+  },
+}));
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
@@ -80,7 +130,22 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function PersistentDrawerRight({ children }: any) {
-  
+  const accessToken = getCookie(ACCESSTOKEN_KEY);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate()
+  const { data: verifyPayload, status } = useQuery(
+    ["verify", accessToken],
+    verify,
+    {
+      retry: false,
+    }
+  );
+  const handleLogout = () => {
+    removeCookie(ACCESSTOKEN_KEY);
+    queryClient.invalidateQueries(["auth", "verify"]);
+    navigate('/')
+  };
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -98,7 +163,7 @@ export default function PersistentDrawerRight({ children }: any) {
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
-            당직/연차 Calendar
+            Adu Calendar
           </Typography>
           <IconButton
             color="inherit"
@@ -113,10 +178,36 @@ export default function PersistentDrawerRight({ children }: any) {
       </AppBar>
       <Main open={open}>
         <DrawerHeader />
-        <WrapButton>
+        {verifyPayload && status !== "error" ? ( // 로그인 상태인 경우에만 보이는 버튼들
+        
+            <WrapButton>
+              <Wrap>
+                 <StyledBadge
+            overlap="circular"
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            variant="dot"
+            >
+            <Avatar><AccountCircleOutlinedIcon fontSize='large'/></Avatar>
+          </StyledBadge>
+              {/* <Button onClick={handleLogout}>
+                logout
+              </Button> */}
+              <WrapUserName>
+              <UserName>Whansoo</UserName>
+              
+              <UserName>whansi@gmail.com</UserName>
+              </WrapUserName>
+            </Wrap>
+            </WrapButton>
+             
+          ) : (
+            // 로그인 상태가 아닌 경우에만 보이는 버튼들
+            <WrapButton>
           <Button>login</Button>
           <MainSignButton>signup</MainSignButton>
         </WrapButton>
+          )}
+       
         {children}
        
       </Main>
@@ -151,10 +242,11 @@ export default function PersistentDrawerRight({ children }: any) {
           ))}
         </List>
         <Divider />
+        {verifyPayload && status !== "error" ? (
         <List>
           {['로그아웃'].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={handleLogout}>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
@@ -163,6 +255,7 @@ export default function PersistentDrawerRight({ children }: any) {
             </ListItem>
           ))}
         </List>
+        ) : null }
       </Drawer>
     </Box>
   );
