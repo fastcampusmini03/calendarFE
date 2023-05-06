@@ -1,28 +1,29 @@
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import CssBaseline from '@mui/material/CssBaseline';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { Button } from '@mui/material';
-import { MainSignButton } from '../../style/style';
-import Styled from '@emotion/styled';
+import * as React from 'react'
+import { styled, useTheme } from '@mui/material/styles'
+import Box from '@mui/material/Box'
+import Drawer from '@mui/material/Drawer'
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import CssBaseline from '@mui/material/CssBaseline'
+import List from '@mui/material/List'
+import Typography from '@mui/material/Typography'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import MenuIcon from '@mui/icons-material/Menu'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
+import MailIcon from '@mui/icons-material/Mail'
+import { Button } from '@mui/material'
+import { MainSignButton } from '../../style/style'
+import Styled from '@emotion/styled'
+import { useAuth } from '../../hooks/useAuth'
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 const WrapButton = Styled.div`
    display: flex;
@@ -31,7 +32,7 @@ const WrapButton = Styled.div`
 
 `
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
-  open?: boolean;
+  open?: boolean
 }>(({ theme, open }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
@@ -47,10 +48,10 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     }),
     marginRight: 0,
   }),
-}));
+}))
 
 interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
+  open?: boolean
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -68,7 +69,7 @@ const AppBar = styled(MuiAppBar, {
     }),
     marginRight: drawerWidth,
   }),
-}));
+}))
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -77,20 +78,21 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: 'flex-start',
-}));
+}))
 
 export default function PersistentDrawerRight({ children }: any) {
-  
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const { logoutUser } = useAuth()
+
+  const theme = useTheme()
+  const [open, setOpen] = React.useState(false)
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -118,7 +120,6 @@ export default function PersistentDrawerRight({ children }: any) {
           <MainSignButton>signup</MainSignButton>
         </WrapButton>
         {children}
-       
       </Main>
       <Drawer
         sx={{
@@ -142,9 +143,7 @@ export default function PersistentDrawerRight({ children }: any) {
           {['홈', 'Profile', '당직', '연차'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
@@ -154,10 +153,8 @@ export default function PersistentDrawerRight({ children }: any) {
         <List>
           {['로그아웃'].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
+              <ListItemButton onClick={logoutUser}>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
@@ -165,5 +162,5 @@ export default function PersistentDrawerRight({ children }: any) {
         </List>
       </Drawer>
     </Box>
-  );
+  )
 }
