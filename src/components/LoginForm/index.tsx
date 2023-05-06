@@ -11,7 +11,7 @@ interface UserInput {
 }
 
 const LoginForm = () => {
-  const { loginUser, isOpened } = useAuth()
+  const { loginUser, isOpened, isError } = useAuth()
   const [userInput, setUserInput] = useState<UserInput>({ email: '', password: '' })
 
   const navigate = useNavigate()
@@ -28,8 +28,6 @@ const LoginForm = () => {
       ...userInput,
       [name]: value,
     })
-
-    console.log(userInput)
   }
 
   return (
@@ -69,6 +67,9 @@ const LoginForm = () => {
               type="password"
               id="password"
             />
+            <Box sx={{ height: '10px' }} mb={2}>
+              {isError && <div>아이디와 비밀번호를 확인해주세요</div>}
+            </Box>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               로그인
             </Button>
