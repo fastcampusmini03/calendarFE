@@ -18,7 +18,7 @@ export const useAuth = () => {
     setIsOpened((prev) => !prev)
   }
 
-  const { mutate: loginUser } = useMutation(login, {
+  const { mutate: loginUser, isError } = useMutation(login, {
     onSuccess: (data: LoginResponse) => {
       if (!data) return
       console.log({ data })
@@ -39,5 +39,5 @@ export const useAuth = () => {
     navigate('/login')
   }
 
-  return { loginUser, signupUser, logoutUser, isOpened }
+  return { loginUser, signupUser, logoutUser, isOpened, isError }
 }
