@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PersistentDrawerRight from '../../components/Header'
 
-import { useVerify } from '../../hooks/useVerifyUser'
+import { useVerify } from '../../hooks/useVerify'
 import MyprofileInfo from "../../components/'MyProfileInfo"
 
 import { Container } from '@mui/material'
