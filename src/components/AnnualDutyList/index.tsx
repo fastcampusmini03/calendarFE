@@ -5,7 +5,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
 import { Box, Button } from '@mui/material'
-import { textAlign } from 'styled-system'
+import { flexDirection, textAlign } from 'styled-system'
 
 interface AdminPageProps {
   dates: DatesPayload[]
@@ -33,7 +33,7 @@ function AnnualDutyList({ dates }: AdminPageProps) {
 
       <List>
         {dates.map((result: DatesPayload) => (
-          <ListItem>
+          <ListItem sx={{ border: '1px solid black', marginBottom: '2px' }}>
             <ListItemText
               primary={result.username + ' ' + result.role + ' ' + result.title}
               secondary={
@@ -42,8 +42,10 @@ function AnnualDutyList({ dates }: AdminPageProps) {
                 formatter.format(new Date(result.end))
               }
             />
-            <Button>승인</Button>
-            <Button variant="outlined">거부</Button>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+              <Button>승인</Button>
+              <Button variant="outlined">거부</Button>
+            </Box>
           </ListItem>
         ))}
       </List>

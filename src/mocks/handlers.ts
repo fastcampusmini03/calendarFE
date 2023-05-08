@@ -1,8 +1,7 @@
 import { rest } from 'msw'
-import { getBearerToken } from '../utils/bearerToken';
-import { createMockUser, mockUserList } from './util/userTest';
-import { getJwtExpireTimeStamp } from './util/jwt';
-
+import { getBearerToken } from '../utils/bearerToken'
+import { createMockUser, mockUserList } from './util/userTest'
+import { getJwtExpireTimeStamp } from './util/jwt'
 
 const result = [
   {
@@ -50,18 +49,22 @@ const result = [
     role: 'normal',
   },
 ]
-export const AUTHORIZATION_KEY = "Authorization";
-export const ACCESSTOKEN_KEY = "accessToken";
+export const AUTHORIZATION_KEY = 'Authorization'
+export const ACCESSTOKEN_KEY = 'accessToken'
 const TEST_ACCESSTOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiLquYDspIDtg5wiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjgxOTU1NDcyLCJleHAiOjE2ODE5NTkwNzJ9.nAZVh5TXoeZ_BORMzlCYDiCWvqe6DijguEZYlfFrPsc";
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiLquYDspIDtg5wiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjgxOTU1NDcyLCJleHAiOjE2ODE5NTkwNzJ9.nAZVh5TXoeZ_BORMzlCYDiCWvqe6DijguEZYlfFrPsc'
 
 export const authHandler = [
-  rest.get("/auth/verify", async (req, res, ctx) => {
-    const token = getBearerToken(req.headers.get(AUTHORIZATION_KEY));
+  rest.get('/auth/verify', async (req, res, ctx) => {
+    const token = getBearerToken(req.headers.get(AUTHORIZATION_KEY))
 
-    if(!token) return res(ctx.status(401), ctx.json({ok:false, error: {message: '인증되지 않은 사용자입니다'}}))
+    if (!token)
+      return res(
+        ctx.status(401),
+        ctx.json({ ok: false, error: { message: '인증되지 않은 사용자입니다' } }),
+      )
 
-    const user = mockUserList[0];
+    const user = mockUserList[0]
 
     return res(
       ctx.status(200),
@@ -76,17 +79,17 @@ export const authHandler = [
             role: user.role,
           },
         },
-      })
-    );
+      }),
+    )
   }),
-  rest.post("/auth/login", async (req, res, ctx) => {
-    const { email, password } = await req.json();
+  rest.post('/auth/login', async (req, res, ctx) => {
+    const { email, password } = await req.json()
 
-    if(email === "test@text12.com" && password === 'Aa123456') {
-      const now = Date.now();
+    if (email === 'test@text12.com' && password === 'Aa123456') {
+      const now = Date.now()
 
-      const user = mockUserList[0];
-  
+      const user = mockUserList[0]
+
       return res(
         ctx.status(200),
         ctx.json({
@@ -99,24 +102,26 @@ export const authHandler = [
             },
             accessToken: TEST_ACCESSTOKEN,
           },
-        })
-      );
+        }),
+      )
     }
 
-    return res(ctx.status(404), ctx.json({ok: false, error: {message: '존재하지 않는 사용자 입니다.'}}))
+    return res(
+      ctx.status(404),
+      ctx.json({ ok: false, error: { message: '존재하지 않는 사용자 입니다.' } }),
+    )
   }),
-  rest.post("/auth/signup", async (req, res, ctx) => {
-    const { email, password, username } =
-      await req.json();
+  rest.post('/auth/signup', async (req, res, ctx) => {
+    const { email, password, username } = await req.json()
 
-    const now = Date.now();
+    const now = Date.now()
 
     const newUser = createMockUser({
       email,
       password,
       username,
       // profile: profile?.name,
-    });
+    })
 
     return res(
       ctx.status(201),
@@ -132,15 +137,14 @@ export const authHandler = [
           },
           accessToken: TEST_ACCESSTOKEN,
         },
-      })
-    );
+      }),
+    )
   }),
-];
+]
 
 export const handlers = [
   rest.get('/annualDuty', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(result))
-  }),  ...authHandler
+  }),
+  ...authHandler,
 ]
-
-

@@ -3,8 +3,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { DatesPayload } from '../../types/dates'
 import Stack from '@mui/material/Stack'
-import { styled } from '@mui/material/styles'
-import Paper from '@mui/material/Paper'
+
 import SearchIcon from '@mui/icons-material/Search'
 import { ListPaper, Search, SearchIconWrapper, StyledInputBase } from '../../style/style'
 
@@ -26,7 +25,7 @@ export default function UserList({ dates }: UserPageProps) {
         <Button>사용자 관리</Button>
       </Box>
       <Typography variant="h2" color="initial" align="center">
-        아듀 캘린더
+        사용자 관리
       </Typography>
       <Search>
         <SearchIconWrapper>
@@ -37,14 +36,17 @@ export default function UserList({ dates }: UserPageProps) {
           inputProps={{ 'aria-label': 'search' }}
         />
       </Search>
+
       <Box sx={{ width: '40%', justifyItems: 'center' }}>
         <Stack spacing={2}>
           {dates.map((date) => (
-            <ListPaper>
-              <Typography variant="h5">
-                {date.username} ({date.email})
-              </Typography>
-            </ListPaper>
+            <>
+              <ListPaper>
+                <Typography variant="h5">
+                  {date.username} ({date.email})
+                </Typography>
+              </ListPaper>
+            </>
           ))}
         </Stack>
       </Box>

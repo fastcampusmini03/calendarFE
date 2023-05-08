@@ -11,42 +11,44 @@ export const getDates = async () => {
 
 export const login = async (user: LoginRequest) => {
   try {
-    const { data } = await instance.post<LoginResponse>("/auth/login", user);
-    return data;
+    const { data } = await instance.post<LoginResponse>('/auth/login', user)
+    return data
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 
-export const signup = async ({ email, password, username }: SignupRequest) => {
+export const signup = async (user: SignupRequest) => {
+  console.log({ user })
   try {
     const { data } = await instance.post<SignupResponse>(
-      "/auth/signup",
-      {
-        email,
-        password,
-        username,
-      },
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
-    return data;
+      '/auth/signup',
+      user,
+      // {
+      //   headers: { 'Content-Type': 'multipart/form-data' },
+      // }
+    )
+    return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
+}
 
 export const verify = async () => {
   try {
+<<<<<<< HEAD
     const { data } = await instance.get("/auth/verify");
     return data;
+=======
+    const { data } = await instance.get<VerifyPayload>('/auth/verify')
+    return data
+>>>>>>> develop
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
+}
 
 export const refresh = async () => {
-  const { data } = await instance.get<SignupResponse>("/auth/refresh");
-  return data;
-};
+  const { data } = await instance.get<SignupResponse>('/auth/refresh')
+  return data
+}

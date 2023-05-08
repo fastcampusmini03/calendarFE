@@ -96,7 +96,7 @@ export const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha('#234234', 0.8),
-  transition: 'all 2s ease',
+  transition: 'all 0.5s ease',
   color: '#fff',
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),

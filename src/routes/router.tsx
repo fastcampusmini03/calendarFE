@@ -1,11 +1,16 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+<<<<<<< HEAD
 import MainPage from '../pages/MainPage'
 import SignupPage from '../pages/signupPage'
+=======
+import Main from '../pages/main'
+import SignupPage from '../pages/SignupPage'
+>>>>>>> develop
 import LoginPage from '../pages/LoginPage'
 import MyPage from '../pages/MyPage'
 import AdminPage from '../pages/AdminPage'
 import UserListPage from '../pages/UserListPage'
-import LoginForm from '../components/Calendar/Login'
+import LoginForm from '../components/calendar/Login'
 
 function Router() {
   return (

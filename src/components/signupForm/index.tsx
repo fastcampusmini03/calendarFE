@@ -11,17 +11,16 @@ import {
   TextField,
   CssBaseline,
   Button,
-  Avatar,
-  Snackbar,
 } from '@mui/material'
 import * as S from './style'
+import { useAuth } from '../../hooks/useAuth'
+import Toast from '../Common/Toast'
+import { useNavigate } from 'react-router-dom'
 
 const SignupForm = () => {
-  const [isOpened, setIsOpened] = useState(false)
+  const { signupUser, isOpened } = useAuth()
 
-  const handleClose = () => {
-    setIsOpened(false)
-  }
+  const navigate = useNavigate()
 
   const {
     register,
@@ -31,9 +30,8 @@ const SignupForm = () => {
   } = useForm()
 
   const handleSubmitRegister = (data: FieldValues) => {
-    console.log(data)
-
-    setIsOpened(true)
+    const { email, password, username } = data
+    signupUser({ email, password, username })
   }
 
   return (
@@ -48,7 +46,7 @@ const SignupForm = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} />
+          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} /> */}
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
@@ -140,11 +138,7 @@ const SignupForm = () => {
           </Box>
         </Box>
       </Container>
-      <Snackbar open={isOpened} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          로그인 성공!
-        </Alert>
-      </Snackbar>
+      <Toast isOpened={isOpened} handleClose={() => navigate('/')} message={`님 환영합니다!`} />
     </>
   )
 }
