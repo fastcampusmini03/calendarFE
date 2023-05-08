@@ -9,12 +9,10 @@ import { Container } from '@mui/material'
 const MyPage = () => {
   const { userInfo, isAuthenticated } = useVerify()
 
-  console.log(userInfo)
-
   return (
     <>
       <PersistentDrawerRight>
-        <Container maxWidth="xl">
+        <Container maxWidth="md">
           <MyprofileInfo userInfo={userInfo} />
         </Container>
       </PersistentDrawerRight>
