@@ -3,7 +3,7 @@ import { getBearerToken } from '../utils/bearerToken'
 import { createMockUser, mockUserList } from './util/userTest'
 import { getJwtExpireTimeStamp } from './util/jwt'
 
-const result = [
+const allresult = [
   {
     id: 0,
     calendarId: 0,
@@ -14,6 +14,11 @@ const result = [
     end: new Date(),
     isAllday: true,
     role: 'normal',
+    prevDate: {
+      start: new Date(),
+      end: new Date(),
+      title: '히히헤헤오',
+    },
   },
   {
     id: 1,
@@ -27,7 +32,7 @@ const result = [
     role: 'normal',
   },
   {
-    id: 1,
+    id: 2,
     calendarId: 0,
     username: '만두',
     email: 'test3@test.com',
@@ -38,7 +43,7 @@ const result = [
     role: 'normal',
   },
   {
-    id: 1,
+    id: 3,
     calendarId: 0,
     username: '녹차',
     email: 'test3@test.com',
@@ -47,6 +52,125 @@ const result = [
     end: new Date(),
     isAllday: true,
     role: 'normal',
+  },
+  {
+    id: 4,
+    calendarId: 0,
+    username: 'jyc',
+    email: 'test@test.com',
+    title: '수정 후',
+    start: new Date(),
+    end: new Date(),
+    isAllday: true,
+    role: 'normal',
+    prevDate: {
+      start: new Date(),
+      end: new Date(),
+      title: '수정 전',
+    },
+  },
+  {
+    id: 5,
+    calendarId: 0,
+    username: 'jyc',
+    email: 'test@test.com',
+    title: '삭제를 요청하는 일정입니다.',
+    start: new Date(),
+    end: new Date(),
+    isAllday: true,
+    role: 'normal',
+    prevDate: {
+      start: new Date(),
+      end: new Date(),
+      title: '수정 전',
+    },
+  },
+]
+const approveresult = [
+  {
+    id: 0,
+    calendarId: 0,
+    username: 'jyc',
+    email: 'test@test.com',
+    title: '히히히히',
+    start: new Date(),
+    end: new Date(),
+    isAllday: true,
+    role: 'normal',
+    prevDate: {
+      start: new Date(),
+      end: new Date(),
+      title: '히히헤헤오',
+    },
+  },
+  {
+    id: 1,
+    calendarId: 0,
+    username: '만두',
+    email: 'test2@test.com',
+    title: '김치만두',
+    start: new Date(),
+    end: new Date(),
+    isAllday: true,
+    role: 'normal',
+  },
+  {
+    id: 2,
+    calendarId: 0,
+    username: '만두',
+    email: 'test3@test.com',
+    title: '고기만두',
+    start: new Date(),
+    end: new Date(),
+    isAllday: true,
+    role: 'normal',
+  },
+  {
+    id: 3,
+    calendarId: 0,
+    username: '녹차',
+    email: 'test3@test.com',
+    title: '따뜻한 녹차',
+    start: new Date(),
+    end: new Date(),
+    isAllday: true,
+    role: 'normal',
+  },
+]
+const editresult = [
+  {
+    id: 4,
+    calendarId: 0,
+    username: 'jyc',
+    email: 'test@test.com',
+    title: '수정 후',
+    start: new Date(),
+    end: new Date(),
+    isAllday: true,
+    role: 'normal',
+    prevDate: {
+      start: new Date(),
+      end: new Date(),
+      title: '수정 전',
+    },
+  },
+]
+const deleteresult = [
+  {
+    id: 5,
+    calendarId: 0,
+    username: 'jyc',
+    email: 'test@test.com',
+    title: '삭제를 요청하는 일정입니다.',
+    start: new Date(),
+    end: new Date(),
+    isAllday: true,
+    role: 'normal',
+    prevDate: {
+      start: new Date(),
+      end: new Date(),
+      title: '수정 전',
+    },
   },
 ]
 export const AUTHORIZATION_KEY = 'Authorization'
@@ -143,8 +267,20 @@ export const authHandler = [
 ]
 
 export const handlers = [
-  rest.get('/annualDuty', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(result))
+  rest.get('/s/user', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(mockUserList))
+  }),
+  rest.get('/s/admin/all', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(allresult))
+  }),
+  rest.get('/s/admin/save', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(approveresult))
+  }),
+  rest.get('/s/admin/update', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(editresult))
+  }),
+  rest.get('/s/admin/delete', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(deleteresult))
   }),
   ...authHandler,
 ]
