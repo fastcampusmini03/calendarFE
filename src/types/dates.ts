@@ -8,6 +8,14 @@ export interface DatesPayload {
   end: Date
   isAllday: boolean
   role: string
+  prevDate?: DatesPayload
+}
+
+export interface UsersPayload {
+  id: number
+  username: string
+  email: string
+  role: string
 }
 
 export interface AdminPageProps {
