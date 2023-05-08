@@ -1,19 +1,19 @@
 import { useQuery, useQueryClient } from 'react-query'
-import { getDates } from '../../apis/axios'
+import { getUsers } from '../../apis/axios'
 import UserList from '../../components/UserList'
 import { DatesPayload } from '../../types/dates'
 
 function UserListPage() {
-  const cachedDates = useQueryClient().getQueryData<DatesPayload[]>('dates')
-  const { data: dates, isLoading } = useQuery<DatesPayload[]>('dates', getDates, {
+  const cachedDates = useQueryClient().getQueryData<DatesPayload[]>('users')
+  const { data: users, isLoading } = useQuery<DatesPayload[]>('users', getUsers, {
     staleTime: 5 * 60 * 1000,
     initialData: cachedDates,
   })
 
-  if (isLoading || dates === undefined) {
+  if (isLoading || users === undefined) {
     return <div>로딩중...</div>
   }
-  return <UserList dates={dates} />
+  return <UserList users={users} />
 }
 
 export default UserListPage
