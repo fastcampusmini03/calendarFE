@@ -1,17 +1,9 @@
 import React, { useState } from 'react'
 
-import {
-  Alert,
-  Container,
-  Typography,
-  Box,
-  Link,
-  TextField,
-  CssBaseline,
-  Button,
-  Avatar,
-  Snackbar,
-} from '@mui/material'
+import { Container, Typography, Box, Link, TextField, CssBaseline, Button } from '@mui/material'
+import { useAuth } from '../../hooks/useAuth'
+import Toast from '../Common/Toast'
+import { useNavigate } from 'react-router-dom'
 
 interface UserInput {
   email: string
@@ -19,13 +11,15 @@ interface UserInput {
 }
 
 const LoginForm = () => {
+  const { loginUser, isOpened, isError } = useAuth()
   const [userInput, setUserInput] = useState<UserInput>({ email: '', password: '' })
-  const [isOpened, setIsOpened] = useState(false)
+
+  const navigate = useNavigate()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    setIsOpened(true)
+    loginUser(userInput)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,12 +28,6 @@ const LoginForm = () => {
       ...userInput,
       [name]: value,
     })
-
-    console.log(userInput)
-  }
-
-  const handleClose = () => {
-    setIsOpened(false)
   }
 
   return (
@@ -54,7 +42,7 @@ const LoginForm = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
+          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar> */}
           <Typography component="h1" variant="h5">
             Login In
           </Typography>
@@ -79,6 +67,9 @@ const LoginForm = () => {
               type="password"
               id="password"
             />
+            <Box sx={{ height: '10px' }} mb={2}>
+              {isError && <div>아이디와 비밀번호를 확인해주세요</div>}
+            </Box>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               로그인
             </Button>
@@ -88,11 +79,7 @@ const LoginForm = () => {
           </Box>
         </Box>
       </Container>
-      <Snackbar open={isOpened} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          로그인 성공!
-        </Alert>
-      </Snackbar>
+      <Toast isOpened={isOpened} handleClose={() => navigate('/')} message={`님 환영합니다!`} />
     </>
   )
 }
