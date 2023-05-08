@@ -39,7 +39,7 @@ export const signup = async ({ email, password, username }: SignupRequest) => {
 
 export const verify = async () => {
   try {
-    const { data } = await instance.get<VerifyPayload>("/auth/verify");
+    const { data } = await instance.get("/auth/verify");
     return data;
   } catch (error) {
     console.log(error);

@@ -8,7 +8,7 @@ import { worker } from './mocks/worker'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './style/style';
-
+import './App.css'
 
 if (process.env.NODE_ENV === 'development') {
   worker.start()

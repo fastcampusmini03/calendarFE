@@ -35,6 +35,10 @@ display: flex;
    justify-content: flex-end;
    margin-right: 20px;
 `
+const WrapTypography = Styled.div`
+   text-align: center; 
+
+`
 const Wrap = Styled.div`
    /* border: 1px solid #c8c8c8; */
    background-color: #F2F2F2;
@@ -140,6 +144,10 @@ export default function PersistentDrawerRight({ children }: any) {
       retry: false,
     }
   );
+  // payload타입을 고려하기 아니면 server쪽 응답을 어떻게 보내주는가에 따라 타입이 바뀔 수 있다.axios에서 verify타입 확인
+  console.log(verifyPayload?.payload.user.email)
+  console.log(verifyPayload?.payload.user.username)
+
   const handleLogout = () => {
     removeCookie(ACCESSTOKEN_KEY);
     queryClient.invalidateQueries(["auth", "verify"]);
@@ -160,11 +168,13 @@ export default function PersistentDrawerRight({ children }: any) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} color='transparent'>
+           <WrapTypography>
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
             Adu Calendar
           </Typography>
+          
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -175,6 +185,7 @@ export default function PersistentDrawerRight({ children }: any) {
             <MenuIcon />
           </IconButton>
         </Toolbar>
+        </WrapTypography>
       </AppBar>
       <Main open={open}>
         <DrawerHeader />
@@ -193,9 +204,9 @@ export default function PersistentDrawerRight({ children }: any) {
                 logout
               </Button> */}
               <WrapUserName>
-              <UserName>Whansoo</UserName>
+              <UserName>{verifyPayload?.payload.user.username}</UserName>
               
-              <UserName>whansi@gmail.com</UserName>
+              <UserName>{verifyPayload?.payload.user.email}</UserName>
               </WrapUserName>
             </Wrap>
             </WrapButton>

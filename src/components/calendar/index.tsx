@@ -9,13 +9,32 @@ import Calendar from '@toast-ui/react-calendar'
 import { addDate, addHours, subtractDate } from '../../utils/utils';
 // import styled from '@emotion/styled';
 import { theme } from '../../utils/theme';
+import styled from '@emotion/styled';
+import { useQuery } from 'react-query';
+import { getCookie } from '../../utils/cookies';
+import { ACCESSTOKEN_KEY } from '../../apis/instance';
+import { verify } from '../../apis/axios';
+import { useNavigate } from 'react-router-dom';
+import { CalendarUIProps, DatesPayload } from '../../types/dates';
 // import { Helmet } from 'react-helmet'
 
 
 
-
+interface PropsType {
+ 
+    view: ViewType
+    dates: DatesPayload[]
+    setCreated: Function;
+    setUpdated: Function;
+    setDeleted: Function;
+ 
+  
+}
 type ViewType = 'month' | 'week' | 'day';
+const WrapTypography = styled.div`
+   text-align: center; 
 
+`
 
 const today = new TZDate();
 // const viewModeOptions = [
@@ -33,7 +52,39 @@ const today = new TZDate();
 //   },
 // ];
 
-export function CalendarApp({ view }: { view: ViewType }) {
+export function CalendarApp({ view, dates, setCreated, setUpdated, setDeleted }: PropsType) {
+ 
+  const [ user, setUser ] = useState<string>();
+  const accessToken = getCookie(ACCESSTOKEN_KEY);
+  // const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { data: verifyPayload, status } = useQuery(
+    ["verify", accessToken],
+    verify,
+    {
+      retry: false,
+    }
+  );
+ 
+  function popup() {
+    if(verifyPayload && status !== "error") {
+        return true;
+      } 
+     return false;
+  }
+  // function  ClickedHandler() {
+  //   navigate('/login')
+  //   return true;
+  // }
+  // const divClickedHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+  //   alert('글을 작성 하려면 로그인이 필요 합니다')
+  //     const div = event.currentTarget;
+  //     console.log(true)
+
+     
+    
+  // };
+
   const calendarRef = useRef<typeof Calendar>(null);
   const [selectedDateRangeText, setSelectedDateRangeText] = useState('');
   const [selectedView, setSelectedView] = useState(view);
@@ -53,42 +104,53 @@ export function CalendarApp({ view }: { view: ViewType }) {
       dragBackgroundColor: '#00a9ff',
     },
   ];
-  const initialEvents: Partial<EventObject>[] = [
-    {
-      id: '1',
-      calendarId: '0',
-      title: 'TOAST UI Calendar Study',
-      category: 'time',
-      start: today,
-      end: addHours(today, 3),
-    },
-    {
-      id: '2',
-      calendarId: '0',
-      title: 'Practice',
-      category: 'milestone',
-      start: addDate(today, 1),
-      end: addDate(today, 1),
-      isReadOnly: true,
-    },
-    {
-      id: '3',
-      calendarId: '0',
-      title: 'FE Workshop',
-      category: 'allday',
-      start: subtractDate(today, 2),
-      end: subtractDate(today, 1),
-      isReadOnly: true,
-    },
-    {
-      id: '4',
-      calendarId: '0',
-      title: 'Report',
-      category: 'time',
-      start: today,
-      end: addHours(today, 1),
-    },
-  ];
+  // const initialEvents: Partial<EventObject>[] = [
+  //   {
+  //     id: '1',
+  //     calendarId: '0',
+  //     title: 'TOAST UI Calendar Study',
+  //     category: 'time',
+  //     start: today,
+  //     end: addHours(today, 3),
+  //   },
+  //   {
+  //     id: '2',
+  //     calendarId: '0',
+  //     title: 'Practice',
+  //     category: 'milestone',
+  //     start: addDate(today, 1),
+  //     end: addDate(today, 1),
+  //     isReadOnly: true,
+  //   },
+  //   {
+  //     id: '3',
+  //     calendarId: '0',
+  //     title: 'FE Workshop',
+  //     category: 'allday',
+  //     start: subtractDate(today, 2),
+  //     end: subtractDate(today, 1),
+  //     isReadOnly: true,
+  //   },
+  //   {
+  //     id: '4',
+  //     calendarId: '0',
+  //     title: 'Report',
+  //     category: 'time',
+  //     start: today,
+  //     end: addHours(today, 1),
+  //   },
+  // ];
+ /** api로부터 받아온 일정 데이터 */
+ const initialEvents: Partial<EventObject>[] = dates.map((date) => ({
+  id: date.id.toString(),
+  calendarId: date.calendarId.toString(),
+  title: date.title,
+  start: new Date(date.start),
+  end: new Date(date.end),
+  email: date.email,
+  role: date.role,
+  attendees: [date.username],
+}))
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -145,23 +207,29 @@ export function CalendarApp({ view }: { view: ViewType }) {
   }, [selectedView, updateRenderRangeText]);
 
   const onAfterRenderEvent: ExternalEventTypes['afterRenderEvent'] = (res) => {
-    console.group('onAfterRenderEvent');
-    res.attendees.push('환수');
-    console.group('onAfterRenderEvent');
-    console.log('Event Info : ', res.title);
-    console.groupEnd();
+      console.group('onAfterRenderEvent');
+      // res.attendees.push('환수');
+      console.group('onAfterRenderEvent');
+      console.log('Event Info : ', res.title);
+      console.groupEnd();
   };
 
   const onBeforeDeleteEvent: ExternalEventTypes['beforeDeleteEvent'] = (res) => {
-    console.group('onBeforeDeleteEvent');
-    console.log('Event Info : ', res.title);
-    console.groupEnd();
-
-    const { id, calendarId } = res;
-
-    getCalInstance().deleteEvent(id, calendarId);
+    if(verifyPayload && status !== "error") {
+      console.group('onBeforeDeleteEvent');
+      console.log('Event Info : ', res.title);
+      console.groupEnd();
+  
+      const { id, calendarId } = res;
+      setDeleted(res)
+      getCalInstance().deleteEvent(id, calendarId);
+    } else {
+      alert('로그인 먼저 하십시오')
+      navigate('/login')
+    }
+   
   };
-
+  
   // const onChangeSelect = (ev: ChangeEvent<HTMLSelectElement>) => {
   //   setSelectedView(ev.target.value as ViewType);
   // };
@@ -171,6 +239,12 @@ export function CalendarApp({ view }: { view: ViewType }) {
     console.log('Date : ', res.date);
     console.groupEnd();
   };
+
+  // const onClickMoreEventsBtn: ExternalEventTypes['onClickMoreEventsBtn'] = (res) => {
+  //   console.group('onClickMoreEventsBtn');
+  //   console.log(res);
+  //   console.groupEnd();
+  // };
 
   const onClickNavi = (ev: MouseEvent<HTMLButtonElement>) => {
     if ((ev.target as HTMLButtonElement).tagName === 'BUTTON') {
@@ -182,13 +256,17 @@ export function CalendarApp({ view }: { view: ViewType }) {
   };
 
   const onClickEvent: ExternalEventTypes['clickEvent'] = (res) => {
-    console.group('onClickEvent');
-    console.log('MouseEvent : ', res.nativeEvent);
-    console.log('Event Info : ', res.event);
-    res.event.raw = 'user';
-    console.groupEnd();
+   
+      console.group('onClickEvent');
+      console.log('MouseEvent : ', res.nativeEvent);
+      console.log('Event Info : ', res.event);
+      setUser(res.event.attendees[0]);
+      res.event.raw = 'user';
+      console.groupEnd();
+    
+     
   };
-
+console.log(user)
   const onClickTimezonesCollapseBtn: ExternalEventTypes['clickTimezonesCollapseBtn'] = (
     timezoneCollapsed
   ) => {
@@ -203,38 +281,56 @@ export function CalendarApp({ view }: { view: ViewType }) {
 
     getCalInstance().setTheme(newTheme);
   };
-
+// console.log(typeof verifyPayload.payload.user.username)
   const onBeforeUpdateEvent: ExternalEventTypes['beforeUpdateEvent'] = (updateData) => {
-    console.group('onBeforeUpdateEvent');
-    console.log(updateData);
-    console.groupEnd();
-
-    const targetEvent = updateData.event;
-    const changes = { ...updateData.changes };
-
-    getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes);
+    if(verifyPayload) {
+       if(verifyPayload.payload.user.username === 'testUser1') {
+        console.group('onBeforeUpdateEvent');
+        console.log(updateData);
+        console.log(updateData.event.attendees[0]);
+        console.groupEnd();
+       
+        const targetEvent = updateData.event;
+        const changes = { ...updateData.changes };
+        setUpdated(updateData)
+        getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes);
+       } else if(verifyPayload.payload.user.username !== 'testUser1') {
+        alert('같은 user가 아닙니다')
+       }
+      
+    } else {
+       
+      alert('로그인이 안되어있습니다')
+    
+      // navigate('/login')
+    } 
+    
   };
 
   const onBeforeCreateEvent: ExternalEventTypes['beforeCreateEvent'] = (eventData) => {
-    const event = {
-      calendarId: eventData.calendarId || '',
-      id: String(Math.random()),
-      title: eventData.title,
-      isAllday: eventData.isAllday,
-      start: eventData.start,
-      end: eventData.end,
-      category: eventData.isAllday ? 'allday' : 'time',
-      dueDateClass: '',
-      location: eventData.location,
-      state: eventData.state,
-      isPrivate: eventData.isPrivate,
-    };
-
-    getCalInstance().createEvents([event]);
+    
+      const event = {
+        // calendarId: eventData.calendarId || '',
+        id: String(Math.random()),
+        title: eventData.title,
+        isAllday: eventData.isAllday,
+        start: eventData.start,
+        end: eventData.end,
+        category: eventData.isAllday ? 'allday' : 'time',
+        dueDateClass: '',
+        location: eventData.location,
+        state: eventData.state,
+        isPrivate: eventData.isPrivate,
+      };
+      setCreated(event)
+      getCalInstance().createEvents([event]);
+     
+    
   };
 
   return (
     <div>
+     
     {/* <Helmet>
        <title>메인페이지</title>
     </Helmet> */}
@@ -252,7 +348,7 @@ export function CalendarApp({ view }: { view: ViewType }) {
           ))}
         </select> */}
         <span>
-    
+        
           <button
             type="button"
             className="btn btn-default btn-sm move-today"
@@ -280,13 +376,16 @@ export function CalendarApp({ view }: { view: ViewType }) {
           >
             Next
           </button>
+          
         </span>
         <span className="render-range">{selectedDateRangeText}</span>
       
         {/* <LoginButton>login</LoginButton> */}
       </div>
-      
+     
+      {/* <div onClick={divClickedHandler}> */}
       <Calendar
+     
         height="900px"
         calendars={initialCalendars}
         month={{ startDayOfWeek: 1 }}
@@ -298,7 +397,14 @@ export function CalendarApp({ view }: { view: ViewType }) {
           allday(event) {
             return `[당직] ${event.title}`;
           },
+          popupEdit(){
+           return '수정';
+          },
+          popupDelete() {
+            return '삭제';
+          },
         }}
+        
         theme={theme}
         timezone={{
           zones: [
@@ -314,8 +420,9 @@ export function CalendarApp({ view }: { view: ViewType }) {
             },
           ],
         }}
+        // useDetailPopup={true}
+        useFormPopup={popup()} 
         useDetailPopup={true}
-        useFormPopup={true}
         view={selectedView}
         week={{
           showTimezoneCollapseButton: true,
@@ -333,8 +440,9 @@ export function CalendarApp({ view }: { view: ViewType }) {
         onClickTimezonesCollapseBtn={onClickTimezonesCollapseBtn}
         onBeforeUpdateEvent={onBeforeUpdateEvent}
         onBeforeCreateEvent={onBeforeCreateEvent}
-      />
       
-    </div>
+      />
+      </div>
+    // </div>
   );
 }
