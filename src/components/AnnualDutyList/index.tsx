@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import { Box, Button } from '@mui/material'
+import Grid from '@mui/material/Grid'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import Container from '@mui/material/Container'
@@ -92,60 +93,112 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                         <Tab label="수정 전" />
                         <Tab label="수정 후" />
                       </Tabs>
+
                       <ListItem
                         sx={{
                           border: '1px solid black',
                           marginBottom: '2px',
                           display: 'flex',
-                          flexDirection: 'column',
+                          flexDirection: 'row',
                           textAlign: 'center',
                         }}
                       >
-                        <Container
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-around',
-                          }}
-                        >
-                          <Box>
-                            <ListItemText
-                              primary={data.username + ' ' + data.role + ' ' + data.prevDate.title}
-                            />
-                            <ListItemText
-                              secondary={
-                                <>
-                                  <div>{formatter.format(new Date(data.prevDate.start))}</div>
-                                  <div>{' - '}</div>
-                                  <div>{formatter.format(new Date(data.prevDate.end))}</div>
-                                </>
-                              }
-                              sx={{ marginTop: '10px' }}
-                            />
+                        <Grid xs={1}>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              height: '120px',
+                              borderRadius: '20px',
+                              background: data.isAllday ? '#5c940d' : '#08D8C1',
+                            }}
+                          >
+                            <Typography variant="h6" align="center" color="#FFF">
+                              {data.isAllday ? '당직' : '연차'}
+                            </Typography>
                           </Box>
-                          <Box>
-                            <ListItemText
-                              primary={data.username + ' ' + data.role + ' ' + data.title}
-                            />
-                            <ListItemText
-                              secondary={
-                                <>
-                                  <div>{formatter.format(new Date(data.start))}</div>
-                                  <div>{' - '}</div>
-                                  <div>{formatter.format(new Date(data.end))}</div>
-                                </>
-                              }
-                              sx={{ marginTop: '10px' }}
-                            />
-                          </Box>
-                        </Container>
+                        </Grid>
+                        <Grid xs={11}>
+                          <Container
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                              }}
+                            >
+                              <Box>
+                                <ListItemText
+                                  primary={
+                                    data.username +
+                                    ' ' +
+                                    data.role +
+                                    ' ' +
+                                    (data.prevDate.title.length > 10
+                                      ? `${data.prevDate.title.substring(0, 10)}...`
+                                      : data.prevDate.title)
+                                  }
+                                />
 
-                        <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                          <Button onClick={toggleDialog}>승인</Button>
-                          <Button variant="outlined" onClick={toggleRefuseDialog}>
-                            거부
-                          </Button>
-                        </Box>
+                                <ListItemText
+                                  secondary={
+                                    <>
+                                      <div>{formatter.format(new Date(data.prevDate.start))}</div>
+                                      <div>{' - '}</div>
+                                      <div>{formatter.format(new Date(data.prevDate.end))}</div>
+                                    </>
+                                  }
+                                  sx={{ marginTop: '10px' }}
+                                />
+                              </Box>
+                              <Box sx={{ marginRight: '20px' }}>
+                                <ListItemText
+                                  primary={
+                                    data.username +
+                                    ' ' +
+                                    data.role +
+                                    ' ' +
+                                    (data.title.length > 10
+                                      ? `${data.title.substring(0, 10)}...`
+                                      : data.title)
+                                  }
+                                />
+                                <ListItemText
+                                  secondary={
+                                    <>
+                                      <div>{formatter.format(new Date(data.start))}</div>
+                                      <div>{' - '}</div>
+                                      <div>{formatter.format(new Date(data.end))}</div>
+                                    </>
+                                  }
+                                  sx={{ marginTop: '10px' }}
+                                />
+                              </Box>
+                            </Box>
+
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '10px',
+                                justifyContent: 'center',
+                                marginRight: '20px',
+                              }}
+                            >
+                              <Button onClick={toggleDialog}>승인</Button>
+                              <Button variant="outlined" onClick={toggleRefuseDialog}>
+                                거부
+                              </Button>
+                            </Box>
+                          </Container>
+                        </Grid>
+
                         <Dialog open={dialogOpen}>
                           <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
                           <DialogContent>
@@ -187,40 +240,82 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                       border: '1px solid black',
                       marginBottom: '2px',
                       display: 'flex',
-                      flexDirection: 'column',
+                      flexDirection: 'row',
                       textAlign: 'center',
                     }}
                   >
-                    <Container
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                      }}
-                    >
-                      <Box>
-                        <ListItemText
-                          primary={data.username + ' ' + data.role + ' ' + data.title}
-                        />
-                        <ListItemText
-                          secondary={
-                            <>
-                              <div>{formatter.format(new Date(data.start))}</div>
-                              <div>{' - '}</div>
-                              <div>{formatter.format(new Date(data.end))}</div>
-                            </>
-                          }
-                          sx={{ marginTop: '10px' }}
-                        />
+                    <Grid xs={1}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: '120px',
+                          borderRadius: '20px',
+                          background: data.isAllday ? '#5c940d' : '#08D8C1',
+                        }}
+                      >
+                        <Typography variant="h6" align="center" color="#FFF">
+                          {data.isAllday ? '당직' : '연차'}
+                        </Typography>
                       </Box>
-                    </Container>
+                    </Grid>
+                    <Grid xs={11}>
+                      <Container
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Box sx={{ marginRight: '20px' }}>
+                            <ListItemText
+                              primary={
+                                data.username +
+                                ' ' +
+                                data.role +
+                                ' ' +
+                                (data.title.length > 10
+                                  ? `${data.title.substring(0, 10)}...`
+                                  : data.title)
+                              }
+                            />
+                            <ListItemText
+                              secondary={
+                                <>
+                                  <div>{formatter.format(new Date(data.start))}</div>
+                                  <div>{' - '}</div>
+                                  <div>{formatter.format(new Date(data.end))}</div>
+                                </>
+                              }
+                              sx={{ marginTop: '10px' }}
+                            />
+                          </Box>
+                        </Box>
 
-                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                      <Button onClick={toggleDialog}>승인</Button>
-                      <Button variant="outlined" onClick={toggleRefuseDialog}>
-                        거부
-                      </Button>
-                    </Box>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '10px',
+                            justifyContent: 'center',
+                            marginRight: '20px',
+                          }}
+                        >
+                          <Button onClick={toggleDialog}>승인</Button>
+                          <Button variant="outlined" onClick={toggleRefuseDialog}>
+                            거부
+                          </Button>
+                        </Box>
+                      </Container>
+                    </Grid>
+
                     <Dialog open={dialogOpen}>
                       <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
                       <DialogContent>
@@ -260,40 +355,82 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                       border: '1px solid black',
                       marginBottom: '2px',
                       display: 'flex',
-                      flexDirection: 'column',
+                      flexDirection: 'row',
                       textAlign: 'center',
                     }}
                   >
-                    <Container
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-around',
-                      }}
-                    >
-                      <Box>
-                        <ListItemText
-                          primary={data.username + ' ' + data.role + ' ' + data.title}
-                        />
-                        <ListItemText
-                          secondary={
-                            <>
-                              <div>{formatter.format(new Date(data.start))}</div>
-                              <div>{' - '}</div>
-                              <div>{formatter.format(new Date(data.end))}</div>
-                            </>
-                          }
-                          sx={{ marginTop: '10px' }}
-                        />
+                    <Grid xs={1}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: '120px',
+                          borderRadius: '20px',
+                          background: data.isAllday ? '#5c940d' : '#08D8C1',
+                        }}
+                      >
+                        <Typography variant="h6" align="center" color="#FFF">
+                          {data.isAllday ? '당직' : '연차'}
+                        </Typography>
                       </Box>
-                    </Container>
+                    </Grid>
+                    <Grid xs={11}>
+                      <Container
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Box sx={{ marginRight: '20px' }}>
+                            <ListItemText
+                              primary={
+                                data.username +
+                                ' ' +
+                                data.role +
+                                ' ' +
+                                (data.title.length > 10
+                                  ? `${data.title.substring(0, 10)}...`
+                                  : data.title)
+                              }
+                            />
+                            <ListItemText
+                              secondary={
+                                <>
+                                  <div>{formatter.format(new Date(data.start))}</div>
+                                  <div>{' - '}</div>
+                                  <div>{formatter.format(new Date(data.end))}</div>
+                                </>
+                              }
+                              sx={{ marginTop: '10px' }}
+                            />
+                          </Box>
+                        </Box>
 
-                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                      <Button onClick={toggleDialog}>승인</Button>
-                      <Button variant="outlined" onClick={toggleRefuseDialog}>
-                        거부
-                      </Button>
-                    </Box>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '10px',
+                            justifyContent: 'center',
+                            marginRight: '20px',
+                          }}
+                        >
+                          <Button onClick={toggleDialog}>승인</Button>
+                          <Button variant="outlined" onClick={toggleRefuseDialog}>
+                            거부
+                          </Button>
+                        </Box>
+                      </Container>
+                    </Grid>
+
                     <Dialog open={dialogOpen}>
                       <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
                       <DialogContent>
