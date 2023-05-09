@@ -306,7 +306,7 @@ console.log(user)
   const onBeforeCreateEvent: ExternalEventTypes['beforeCreateEvent'] = (eventData) => {
     
       const event = {
-        // calendarId: eventData.calendarId || '',
+        calendarId: eventData.calendarId || '',
         id: String(Math.random()),
         title: eventData.title,
         isAllday: eventData.isAllday,
