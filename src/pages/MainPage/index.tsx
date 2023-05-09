@@ -3,8 +3,8 @@ import { useQuery } from 'react-query'
 // import CalendarUI from '../../components/CalendarUI'
 import { DatesPayload } from '../../types/dates'
 import { getAllDates } from '../../apis/axios'
-import { CalendarApp } from "../../components/Test_Calendar"
 import { useEffect, useState } from "react"
+import CalendarUI from "../../components/CalendarUI"
 
 
 function MainPage() {
@@ -29,9 +29,7 @@ function MainPage() {
   }
   return (
     <PersistentDrawerRight>
-      {/* <CalendarUI view="month" dates={dates} /> */}
-      <CalendarApp view="month" dates={dates} setCreated={setCreated} setUpdated={setUpdated} setDeleted={setDeleted} />
-    
+      <CalendarUI view="month" dates={dates} setCreated={setCreated} setUpdated={setUpdated} setDeleted={setDeleted}/>
     </PersistentDrawerRight>
   )
 }
