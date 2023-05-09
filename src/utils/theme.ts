@@ -3,7 +3,7 @@ import type { Options } from '@toast-ui/calendar'
 export const theme: Options['theme'] = {
     common: {
         border: '1px solid #ddd',
-        backgroundColor: 'white',
+        backgroundColor: '#FAF1E6',
         holiday: { color: '#f54f3d' },
         saturday: { color: '#135de6' },
         dayName: { color: '#333' },
@@ -16,7 +16,7 @@ export const theme: Options['theme'] = {
     month: {
         dayName: {
             borderLeft: 'none',
-            backgroundColor: 'inherit',
+            backgroundColor: '#40BFB7',
         },
         holidayExceptThisMonth: { color: '#f3acac' },
         dayExceptThisMonth: { color: '#bbb' },

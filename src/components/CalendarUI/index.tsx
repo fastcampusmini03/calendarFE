@@ -8,12 +8,12 @@ import Calendar from '@toast-ui/react-calendar'
 import { theme } from '../../utils/theme'
 import './style.css'
 import FaceIcon from '@mui/icons-material/Face'
-import { addDate, addHours, subtractDate } from '../../utils/utils'
+// import { addDate, addHours, subtractDate } from '../../utils/utils'
 import { DatesPayload } from '../../types/dates'
-import Typography from '@mui/material/Typography'
+// import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
+// import Button from '@mui/material/Button'
 
 type ViewType = 'month' | 'week' | 'day'
 
@@ -214,9 +214,9 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
 
   return (
     <div>
-      <Typography variant="h2" color="initial" align="center">
+      {/* <Typography variant="h2" color="initial" align="center">
         아듀 캘린더
-      </Typography>
+      </Typography> */}
 
       <div>
         {/* <select onChange={onChangeSelect} value={selectedView}>

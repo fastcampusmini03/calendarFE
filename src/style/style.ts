@@ -52,6 +52,13 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          fontSize: '20px',
+        },
+      },
+    },
   },
 })
 
@@ -60,7 +67,7 @@ export const LoginButton = styled(Button)`
   width: 200px;
 `
 
-export const LogoutButton = styled(Button)`
+export const MainLogoutButton = styled(Button)`
   background-color: #c8c8c8;
   width: 200px;
 `

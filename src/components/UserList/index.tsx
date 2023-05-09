@@ -1,17 +1,82 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import { DatesPayload } from '../../types/dates'
+import { DatesPayload, UsersPayload } from '../../types/dates'
 import Stack from '@mui/material/Stack'
 
 import SearchIcon from '@mui/icons-material/Search'
 import { ListPaper, Search, SearchIconWrapper, StyledInputBase } from '../../style/style'
+import Popover from '@mui/material/Popover'
+import RadioGroup from '@mui/material/RadioGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Radio from '@mui/material/Radio'
+import { useState } from 'react'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogActions from '@mui/material/DialogActions'
 
 interface UserPageProps {
-  dates: DatesPayload[]
+  users: UsersPayload[]
 }
 
-export default function UserList({ dates }: UserPageProps) {
+export default function UserList({ users }: UserPageProps) {
+  const [searchResult, setSearchResult] = useState<UsersPayload[]>(users)
+  /** input에 입력된 값에 따라  해당 유저의 이름과 일치하는 유저 리스트 데이터를 설정*/
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value
+    if (input === '') {
+      setSearchResult(users)
+    } else {
+      setSearchResult(users.filter((data) => data.username === input))
+    }
+  }
+  /** popper 생성 위치 기준점 state */
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  /** api수정 메소드 요청에 필요한 요청 데이터 state */
+  const [selectedUser, setSelectedUser] = useState<UsersPayload | null>(null) // 각 항목에 대한 선택된 유저 정보 상태
+  const [dialogOpen, setDialogOpen] = useState(false)
+  /**클릭시 팝업위치와 선택된 유저 정보를 바탕으로 정보수정을 요청하는 메소드*/
+  const editRole = () => {
+    setDialogOpen((prev) => !prev)
+    //TODO 여기에 수정을 요청하는 메소드를 집어넣을것
+    console.log(selectedUser)
+  }
+  /**클릭시 팝업위치를 변경해서 popper를 나타나게 하는 메소드*/
+  const popupToggle = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  /** 사용자가 radioGroup 중 하나를 선택해서  selectedUser가 있을때만 토글하는 메소드*/
+  const dialogToggle = () => {
+    if (!selectedUser) {
+      alert('please select role')
+      return
+    } else {
+      setDialogOpen((prev) => !prev)
+    }
+  }
+  /** radioGroup 선택시 null일 경우 date 전체를, 아니라면 유저의 role 정보만 수정하여 저장하는 메소드 */
+  const editUserRole = (event: React.ChangeEvent<HTMLInputElement>, user: UsersPayload) => {
+    setSelectedUser(user)
+    setSelectedUser((prevUser) => {
+      if (prevUser) {
+        return {
+          ...prevUser,
+          role: event.target.value,
+        }
+      }
+      return null
+    })
+  }
+  /** 팝업을 종료했을때 팝업 위치와 selectedUser데이터를 초기화 */
+  const handleClose = () => {
+    setAnchorEl(null)
+    setSelectedUser(null)
+  }
+  // 리스트를 클릭했을 때에만 팝업이 나타나게 설정
+  const open = Boolean(anchorEl)
+
   return (
     <div
       style={{
@@ -32,6 +97,7 @@ export default function UserList({ dates }: UserPageProps) {
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
+          onChange={handleInputChange}
           placeholder="사용자 이름을 입력해주세요"
           inputProps={{ 'aria-label': 'search' }}
         />
@@ -39,14 +105,57 @@ export default function UserList({ dates }: UserPageProps) {
 
       <Box sx={{ width: '40%', justifyItems: 'center' }}>
         <Stack spacing={2}>
-          {dates.map((date) => (
-            <>
-              <ListPaper>
+          {searchResult.map((data) => (
+            <div key={data.id}>
+              <ListPaper onClick={(event) => popupToggle(event)}>
                 <Typography variant="h5">
-                  {date.username} ({date.email})
+                  {data.username} ({data.email})
                 </Typography>
               </ListPaper>
-            </>
+              <Popover
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'center',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <Box sx={{ padding: '10px' }}>
+                  <Typography variant="h6">권한을 선택하세요</Typography>
+                  <Box
+                    sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+                  >
+                    <RadioGroup
+                      value={selectedUser?.role}
+                      onChange={(event) => editUserRole(event, data)}
+                    >
+                      <FormControlLabel value="user" control={<Radio />} label="일반" />
+                      <FormControlLabel value="admin" control={<Radio />} label="관리자" />
+                    </RadioGroup>
+                    <Button onClick={dialogToggle}>변경</Button>
+                    <Dialog open={dialogOpen}>
+                      <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                          '{data.username}'의 권한을 {selectedUser?.role}(으)로 변경하시겠습니까?
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={editRole}>예</Button>
+                        <Button onClick={dialogToggle} autoFocus>
+                          아니오
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </Box>
+                </Box>
+              </Popover>
+            </div>
           ))}
         </Stack>
       </Box>
