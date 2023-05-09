@@ -10,7 +10,7 @@ export const useAuth = () => {
   const queryClient = useQueryClient()
   const [isOpened, setIsOpened] = useState(false)
 
-  const successLogin = (data) => {
+  const successLogin = (data: LoginResponse | SignupResponse) => {
     setCookie('accessToken', data.payload!.accessToken, {
       path: '/',
       maxAge: data.payload!.content?.exp - data.payload!.content?.iat,
