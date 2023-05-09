@@ -12,32 +12,59 @@ import FaceIcon from '@mui/icons-material/Face'
 import { DatesPayload } from '../../types/dates'
 // import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
-import Box from '@mui/material/Box'
+// import Box from '@mui/material/Box'
+import { useQuery } from 'react-query'
+import { ACCESSTOKEN_KEY } from '../../apis/instance'
+import { verify } from '../../apis/axios'
+import Toast from '../Common/Toast'
 // import Button from '@mui/material/Button'
 
 type ViewType = 'month' | 'week' | 'day'
 
-const today = new TZDate()
-const viewModeOptions = [
-  {
-    title: 'Monthly',
-    value: 'month',
-  },
-  {
-    title: 'Weekly',
-    value: 'week',
-  },
-  {
-    title: 'Daily',
-    value: 'day',
-  },
-]
-interface CalendarUIProps {
+// const today = new TZDate()
+// const viewModeOptions = [
+//   {
+//     title: 'Monthly',
+//     value: 'month',
+//   },
+//   {
+//     title: 'Weekly',
+//     value: 'week',
+//   },
+//   {
+//     title: 'Daily',
+//     value: 'day',
+//   },
+// ]
+
+
+interface PropsType {
   view: ViewType
   dates: DatesPayload[]
+  setCreated: Function
+  setUpdated: Function
+  setDeleted: Function
 }
+export default function CalendarUI({ view, dates, setCreated, setUpdated, setDeleted }: PropsType) {
+  /**
+   * 
+   */
+  const [user, setUser] = useState<string>()
+  const { data: verifyPayload, status } = useQuery(['verify', ACCESSTOKEN_KEY], verify, {
+    retry: false,
+  })
 
-export default function CalendarUI({ view, dates }: CalendarUIProps) {
+  function popup() {
+    if (verifyPayload && status !== 'error') {
+      if (user === undefined || verifyPayload?.payload.user.username === user) {
+        return true
+      }
+    }
+    return false
+  }
+ 
+
+
   const calendarRef = useRef<typeof Calendar>(null)
   const [selectedDateRangeText, setSelectedDateRangeText] = useState('')
   const [selectedView, setSelectedView] = useState(view)
@@ -133,13 +160,17 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
   }
 
   const onBeforeDeleteEvent: ExternalEventTypes['beforeDeleteEvent'] = (res) => {
+    if (verifyPayload.payload.user.username === user) {
     console.group('onBeforeDeleteEvent')
     console.log('Event Info : ', res.title)
     console.groupEnd()
 
     const { id, calendarId } = res
-
+    setDeleted(res)
     getCalInstance().deleteEvent(id, calendarId)
+    } else {
+      alert('같은 user가 아닙니다')
+    }
   }
 
   const onChangeSelect = (ev: ChangeEvent<HTMLSelectElement>) => {
@@ -166,6 +197,7 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
     console.log('MouseEvent : ', res.nativeEvent)
     console.log('Event Info : ', res.event)
     console.groupEnd()
+    setUser(res.event.attendees[0])
   }
 
   const onClickTimezonesCollapseBtn: ExternalEventTypes['clickTimezonesCollapseBtn'] = (
@@ -184,15 +216,19 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
   }
 
   const onBeforeUpdateEvent: ExternalEventTypes['beforeUpdateEvent'] = (updateData) => {
+    if (verifyPayload.payload.user.username === user) {
     console.group('onBeforeUpdateEvent')
     console.log(updateData)
     console.groupEnd()
 
     const targetEvent = updateData.event
     const changes = { ...updateData.changes }
-
+    setUpdated(updateData)
     getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes)
+  } else {
+    alert('user가 같지 않습니다')
   }
+}
 
   const onBeforeCreateEvent: ExternalEventTypes['beforeCreateEvent'] = (eventData) => {
     const event = {
@@ -208,10 +244,21 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
       state: eventData.state,
       isPrivate: eventData.isPrivate,
     }
-
+    setCreated(event)
     getCalInstance().createEvents([event])
   }
+  const [open, setOpen] = useState(false)
+  const handleClick = () => {
+    setOpen(true)
+  }
 
+  const handleClose = (reason?: string) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpen(false)
+  }
   return (
     <div>
       {/* <Typography variant="h2" color="initial" align="center">
@@ -255,6 +302,7 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
         </span>
         <span className="render-range">{selectedDateRangeText}</span>
       </div>
+      <div onClick={handleClick}>
       <Calendar
         height="900px"
         calendars={initialCalendars}
@@ -266,6 +314,12 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
           },
           allday(event) {
             return `[All day] ${event.title}`
+          },
+          popupEdit() {
+            return '수정'
+          },
+          popupDelete() {
+            return '삭제'
           },
           popupIsAllday() {
             return 'all day'
@@ -287,7 +341,7 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
           ],
         }}
         useDetailPopup={true}
-        useFormPopup={true}
+        useFormPopup={popup()}
         view={selectedView}
         week={{
           showTimezoneCollapseButton: true,
@@ -306,6 +360,14 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
         onBeforeUpdateEvent={onBeforeUpdateEvent}
         onBeforeCreateEvent={onBeforeCreateEvent}
       />
+        {verifyPayload ? null : (
+          <Toast
+            isOpened={open}
+            message="로그인 후에 글 작성이나 수정이 가능합니다"
+            handleClose={handleClose}
+          />
+        )}
+      </div>
     </div>
   )
 }
