@@ -36,13 +36,8 @@ export const signup = async (user: SignupRequest) => {
 
 export const verify = async () => {
   try {
-<<<<<<< HEAD
     const { data } = await instance.get("/auth/verify");
     return data;
-=======
-    const { data } = await instance.get<VerifyPayload>('/auth/verify')
-    return data
->>>>>>> develop
   } catch (error) {
     console.log(error)
   }

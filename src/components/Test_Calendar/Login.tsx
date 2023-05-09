@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 //   modal: boolean;
 // }
 
-function LoginForm() {
+function _LoginForm() {
     const navigate = useNavigate()
         const { mutate, isLoading, error } = useMutation(login, {
           onSuccess: (data: LoginResponse) => {
@@ -81,4 +81,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default _LoginForm;

@@ -214,7 +214,7 @@ export default function CalendarUI({ view, dates }: CalendarUIProps) {
 
   return (
     <div>
-      <Typography variant="h2" color="initial" align="center">
+      {/* <Typography variant="h2" color="initial" align="center">
         아듀 캘린더
       </Typography> */}
 

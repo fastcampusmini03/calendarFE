@@ -3,8 +3,9 @@ import { useQuery } from 'react-query'
 // import CalendarUI from '../../components/CalendarUI'
 import { DatesPayload } from '../../types/dates'
 import { getDates } from '../../apis/axios'
-import { CalendarApp } from "../../components/Calendar"
+import { CalendarApp } from "../../components/Test_Calendar"
 import { useEffect, useState } from "react"
+
 
 function MainPage() {
   const [created, setCreated] = useState<[]>([]);
@@ -29,7 +30,8 @@ function MainPage() {
   return (
     <PersistentDrawerRight>
       {/* <CalendarUI view="month" dates={dates} /> */}
-      <CalendarApp view="month" dates={dates} setCreated={setCreated} setUpdated={setUpdated} setDeleted={setDeleted}/>
+      <CalendarApp view="month" dates={dates} setCreated={setCreated} setUpdated={setUpdated} setDeleted={setDeleted} />
+    
     </PersistentDrawerRight>
   )
 }

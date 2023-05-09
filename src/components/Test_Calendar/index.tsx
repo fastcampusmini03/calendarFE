@@ -1,23 +1,22 @@
 /* eslint-disable no-console */
 // import './Calendar.css';
 import type { EventObject, ExternalEventTypes, Options } from '@toast-ui/calendar';
-import { TZDate } from '@toast-ui/calendar';
+// import { TZDate } from '@toast-ui/calendar';
 // import type { ChangeEvent, MouseEvent } from 'react';
 import type { MouseEvent } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Calendar from '@toast-ui/react-calendar'
-import { addDate, addHours, subtractDate } from '../../utils/utils';
 // import styled from '@emotion/styled';
 import { theme } from '../../utils/theme';
-import styled from '@emotion/styled';
+// import styled from '@emotion/styled';
 import { useQuery } from 'react-query';
 import { getCookie } from '../../utils/cookies';
 import { ACCESSTOKEN_KEY } from '../../apis/instance';
 import { verify } from '../../apis/axios';
 import { useNavigate } from 'react-router-dom';
-import { CalendarUIProps, DatesPayload } from '../../types/dates';
+import { DatesPayload } from '../../types/dates';
+import Toast from '../Common/Toast';
 // import { Helmet } from 'react-helmet'
-
 
 
 interface PropsType {
@@ -31,12 +30,9 @@ interface PropsType {
   
 }
 type ViewType = 'month' | 'week' | 'day';
-const WrapTypography = styled.div`
-   text-align: center; 
 
-`
 
-const today = new TZDate();
+// const today = new TZDate();
 // const viewModeOptions = [
 //   {
 //     title: 'Monthly',
@@ -70,19 +66,24 @@ export function CalendarApp({ view, dates, setCreated, setUpdated, setDeleted }:
     if(verifyPayload && status !== "error") {
         return true;
       } 
-     return false;
+     return false
   }
+  
   // function  ClickedHandler() {
   //   navigate('/login')
   //   return true;
   // }
   // const divClickedHandler = (event: React.MouseEvent<HTMLDivElement>) => {
-  //   alert('글을 작성 하려면 로그인이 필요 합니다')
+  //   if(verifyPayload && status !== "error") {
   //     const div = event.currentTarget;
-  //     console.log(true)
+  //     console.log(div)
+  //       return true;
+  //   } else {
+  //     handleClick
+       
+  //   }
+   
 
-     
-    
   // };
 
   const calendarRef = useRef<typeof Calendar>(null);
@@ -283,8 +284,8 @@ console.log(user)
   };
 // console.log(typeof verifyPayload.payload.user.username)
   const onBeforeUpdateEvent: ExternalEventTypes['beforeUpdateEvent'] = (updateData) => {
-    if(verifyPayload) {
-       if(verifyPayload.payload.user.username === 'testUser1') {
+   
+       if(verifyPayload.payload.user.username === user) {
         console.group('onBeforeUpdateEvent');
         console.log(updateData);
         console.log(updateData.event.attendees[0]);
@@ -294,17 +295,12 @@ console.log(user)
         const changes = { ...updateData.changes };
         setUpdated(updateData)
         getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes);
-       } else if(verifyPayload.payload.user.username !== 'testUser1') {
-        alert('같은 user가 아닙니다')
+       } else {
+
+         alert('user가 같지 않습니다')
        }
+        
       
-    } else {
-       
-      alert('로그인이 안되어있습니다')
-    
-      // navigate('/login')
-    } 
-    
   };
 
   const onBeforeCreateEvent: ExternalEventTypes['beforeCreateEvent'] = (eventData) => {
@@ -327,10 +323,31 @@ console.log(user)
      
     
   };
+  const [open, setOpen] = React.useState(false);
 
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  
   return (
     <div>
-     
+      {/* <button
+        onClick={handleClick({
+          vertical: 'top',
+          horizontal: 'center',
+        })}
+      >
+        Top-Center
+      </button> */}
     {/* <Helmet>
        <title>메인페이지</title>
     </Helmet> */}
@@ -383,7 +400,8 @@ console.log(user)
         {/* <LoginButton>login</LoginButton> */}
       </div>
      
-      {/* <div onClick={divClickedHandler}> */}
+      <div onClick={handleClick}>
+        
       <Calendar
      
         height="900px"
@@ -442,7 +460,11 @@ console.log(user)
         onBeforeCreateEvent={onBeforeCreateEvent}
       
       />
+      
+      {verifyPayload? null : 
+      <Toast isOpened={open} message='로그인 후에 글 작성이나 수정이 가능합니다' handleClose={handleClose}/>
+      }
       </div>
-    // </div>
+    </div>
   );
 }
