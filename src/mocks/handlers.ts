@@ -146,12 +146,12 @@ const editresult = [
     title: '수정 후',
     start: new Date(),
     end: new Date(),
-    isAllday: true,
+    isAllday: false,
     role: 'normal',
     prevDate: {
       start: new Date(),
       end: new Date(),
-      title: '수정 전',
+      title: 'sdfsdfsdfsdfsdfs',
     },
   },
 ]
