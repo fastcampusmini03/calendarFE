@@ -52,6 +52,13 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          fontSize: '20px',
+        },
+      },
+    },
   },
 })
 

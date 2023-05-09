@@ -4,8 +4,29 @@ import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
 import { LoginResponse, SignupResponse, VerifyPayload } from '../types/response'
 
-export const getDates = async () => {
-  const response = await axios.get<DatesPayload[]>('/annualDuty')
+export const getUsers = async () => {
+  const response = await axios.get<DatesPayload[]>('/s/user')
+  return response.data
+}
+
+/** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
+export const getAllDates = async () => {
+  const response = await axios.get<DatesPayload[]>('/s/admin/all')
+  return response.data
+}
+
+export const getSaveDates = async () => {
+  const response = await axios.get<DatesPayload[]>('/s/admin/save')
+  return response.data
+}
+
+export const getEditDates = async () => {
+  const response = await axios.get<DatesPayload[]>('/s/admin/update')
+  return response.data
+}
+
+export const getDeleteDates = async () => {
+  const response = await axios.get<DatesPayload[]>('/s/admin/delete')
   return response.data
 }
 
