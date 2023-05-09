@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -25,8 +25,10 @@ import { getCookie, removeCookie } from '../../utils/cookies';
 import { ACCESSTOKEN_KEY } from '../../apis/instance';
 import { useQuery, useQueryClient } from 'react-query';
 import { verify } from '../../apis/axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import Toast from '../Common/Toast';
 // import { useAuth } from '../../hooks/useAuth'
 const drawerWidth = 240;
 
@@ -160,7 +162,7 @@ export default function PersistentDrawerRight({ children }: any) {
   };
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   // const { logoutUser } = useAuth()
 
   
@@ -173,13 +175,27 @@ export default function PersistentDrawerRight({ children }: any) {
     setOpen(false)
   }
 
+
+  const [show, setShow] = useState(false);
+
+  const handleClick = () => {
+    setShow(true);
+  };
+
+  const handleClose = (reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setShow(false);
+  };
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} color='transparent'>
+      <AppBar position="fixed" open={open} color='transparent' style={{color: 'green'}}>
            <WrapTypography>
         <Toolbar>
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
+          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div" style={{color: 'green'}}>
             Adu Calendar
           </Typography>
           
@@ -222,8 +238,8 @@ export default function PersistentDrawerRight({ children }: any) {
           ) : (
             // 로그인 상태가 아닌 경우에만 보이는 버튼들
             <WrapButton>
-          <Button>login</Button>
-          <MainSignButton>signup</MainSignButton>
+          <Button><Link to='/login' style={{ textDecoration: "none", color: "white"}}>login</Link></Button>
+          <MainSignButton><Link to='/signup' style={{ textDecoration: "none"}}>singup</Link></MainSignButton>
         </WrapButton>
           )}
        
@@ -240,6 +256,7 @@ export default function PersistentDrawerRight({ children }: any) {
         variant="persistent"
         anchor="right"
         open={open}
+       
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
@@ -248,14 +265,42 @@ export default function PersistentDrawerRight({ children }: any) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['홈', 'Profile', '당직', '연차'].map((text, index) => (
+          <Link to='/' style={{ textDecoration: "none", color: "lightcoral" }}>
+           <ListItem key={'홈'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon><CalendarMonthOutlinedIcon /></ListItemIcon>
+                <ListItemText primary={'홈'} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+          {verifyPayload && status !== "error" ? (
+            <>
+          {['Profile', '당직', '연차'].map((text, index) => (
+               <Link to='/mypage' style={{ textDecoration: "none", color: "gray" }}>
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
+            </Link>
           ))}
+          </>
+          ): 
+          <>
+          {['Profile', '당직', '연차'].map((text, index) => (
+              
+            <ListItem key={text} disablePadding>
+              <ListItemButton onClick={handleClick}>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={text} />
+                <Toast isOpened={show} message='로그인 후에 시도해 주세요!' handleClose={handleClose}/>
+              </ListItemButton>
+            </ListItem>
+           
+          ))}
+          </>
+          }
         </List>
         <Divider />
         {verifyPayload && status !== "error" ? (
