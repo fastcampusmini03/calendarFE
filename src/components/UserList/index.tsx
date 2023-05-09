@@ -16,6 +16,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogActions from '@mui/material/DialogActions'
+import Toast from '../Common/Toast'
 
 interface UserPageProps {
   users: UsersPayload[]
@@ -23,6 +24,7 @@ interface UserPageProps {
 
 export default function UserList({ users }: UserPageProps) {
   const [searchResult, setSearchResult] = useState<UsersPayload[]>(users)
+  const [toastToggle, setToastToggle] = useState(false)
   /** input에 입력된 값에 따라  해당 유저의 이름과 일치하는 유저 리스트 데이터를 설정*/
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value
@@ -40,6 +42,10 @@ export default function UserList({ users }: UserPageProps) {
   /**클릭시 팝업위치와 선택된 유저 정보를 바탕으로 정보수정을 요청하는 메소드*/
   const editRole = () => {
     setDialogOpen((prev) => !prev)
+    setTimeout(() => {
+      setToastToggle((prev) => !prev)
+    }, 500) // 0.5초 후에 스낵바를 활성화
+
     //TODO 여기에 수정을 요청하는 메소드를 집어넣을것
     console.log(selectedUser)
   }
@@ -56,7 +62,7 @@ export default function UserList({ users }: UserPageProps) {
       setDialogOpen((prev) => !prev)
     }
   }
-  /** radioGroup 선택시 null일 경우 date 전체를, 아니라면 유저의 role 정보만 수정하여 저장하는 메소드 */
+  /**  선택항 리스트의 user를 setState 하고 유저의 role 정보만 수정하여 저장하는 메소드 */
   const editUserRole = (event: React.ChangeEvent<HTMLInputElement>, user: UsersPayload) => {
     setSelectedUser(user)
     setSelectedUser((prevUser) => {
@@ -159,6 +165,12 @@ export default function UserList({ users }: UserPageProps) {
           ))}
         </Stack>
       </Box>
+      {/*권한 변경 confirm시 나타나는 Toast*/}
+      <Toast
+        isOpened={toastToggle}
+        handleClose={() => setToastToggle(false)}
+        message={'권한변경 완료!'}
+      />
     </div>
   )
 }
