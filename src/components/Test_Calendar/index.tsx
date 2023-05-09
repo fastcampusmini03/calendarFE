@@ -63,10 +63,10 @@ export function CalendarApp({ view, dates, setCreated, setUpdated, setDeleted }:
   );
  
   function popup() {
-    if(verifyPayload && status !== "error") {
+    if(verifyPayload?.payload.user.username === user) {
         return true;
       } 
-     return false
+     false
   }
   
   // function  ClickedHandler() {
@@ -284,8 +284,7 @@ console.log(user)
   };
 // console.log(typeof verifyPayload.payload.user.username)
   const onBeforeUpdateEvent: ExternalEventTypes['beforeUpdateEvent'] = (updateData) => {
-   
-       if(verifyPayload.payload.user.username === user) {
+      //  if(verifyPayload.payload.user.username === user) {
         console.group('onBeforeUpdateEvent');
         console.log(updateData);
         console.log(updateData.event.attendees[0]);
@@ -295,10 +294,10 @@ console.log(user)
         const changes = { ...updateData.changes };
         setUpdated(updateData)
         getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes);
-       } else {
+      //  } else {
 
-         alert('user가 같지 않습니다')
-       }
+      //    alert('user가 같지 않습니다')
+      //  }
         
       
   };
@@ -465,6 +464,6 @@ console.log(user)
       <Toast isOpened={open} message='로그인 후에 글 작성이나 수정이 가능합니다' handleClose={handleClose}/>
       }
       </div>
-    </div>
+     </div>
   );
 }
