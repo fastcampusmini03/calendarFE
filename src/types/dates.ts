@@ -28,3 +28,15 @@ export interface CalendarUIProps {
   view: ViewType
   dates: DatesPayload[]
 }
+
+export interface MainDatePayload {
+  calendarId: string;
+  id: string;
+  title: string | undefined;
+  isAllday: boolean | undefined;
+  start: any | undefined;
+  end: any | undefined;
+  email: any;
+  username: any;
+  role: any;
+}

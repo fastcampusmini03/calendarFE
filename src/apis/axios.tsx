@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { DatesPayload } from '../types/dates'
+import { DatesPayload, MainDatePayload } from '../types/dates'
 import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
 import { LoginResponse, SignupResponse, VerifyPayload } from '../types/response'
@@ -8,12 +8,17 @@ export const getUsers = async () => {
   const response = await axios.get<DatesPayload[]>('/s/user')
   return response.data
 }
-
-/** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
-export const getAllDates = async () => {
-  const response = await axios.get<DatesPayload[]>('/s/admin/all')
-  return response.data
+export const postDate = async (post: MainDatePayload) => {
+  
+    const { data } = await instance.post('/s/user/annualDuty/save', post)
+    return data
+ 
 }
+/** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
+// export const getAllDates = async () => {
+//   const response = await instance.get<DatesPayload[]>('/s/annualDuty')
+//   return response.data
+// }
 
 export const getSaveDates = async () => {
   const response = await axios.get<DatesPayload[]>('/s/admin/save')
@@ -32,7 +37,7 @@ export const getDeleteDates = async () => {
 
 export const login = async (user: LoginRequest) => {
   try {
-    const { data } = await instance.post<LoginResponse>('/auth/login', user)
+    const { data } = await instance.post<LoginResponse>('/login', user)
     return data
   } catch (error) {
     throw error
@@ -43,7 +48,7 @@ export const signup = async (user: SignupRequest) => {
   console.log({ user })
   try {
     const { data } = await instance.post<SignupResponse>(
-      '/auth/signup',
+      '/join',
       user,
       // {
       //   headers: { 'Content-Type': 'multipart/form-data' },

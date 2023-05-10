@@ -10,9 +10,9 @@ import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './style/style';
 import './App.css'
 
-if (process.env.NODE_ENV === 'development') {
-  worker.start()
-}
+// if (process.env.NODE_ENV === 'development') {
+//   worker.start()
+// }
 
 const queryClient = new QueryClient({
   defaultOptions: {

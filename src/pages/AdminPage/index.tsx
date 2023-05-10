@@ -1,6 +1,6 @@
 import AnnualDutyList from '../../components/AnnualDutyList'
 import { useQuery } from 'react-query'
-import { getAllDates, getDeleteDates, getEditDates, getSaveDates } from '../../apis/axios'
+import {  getDeleteDates, getEditDates, getSaveDates } from '../../apis/axios'
 import CalendarUI from '../../components/CalendarUI'
 import { DatesPayload } from '../../types/dates'
 import Grid from '@mui/material/Grid'
