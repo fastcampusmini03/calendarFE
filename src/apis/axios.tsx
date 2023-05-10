@@ -32,7 +32,7 @@ export const getDeleteDates = async () => {
 
 export const login = async (user: LoginRequest) => {
   try {
-    const { data } = await instance.post<LoginResponse>('/login', user)
+    const { data } = await instance.post<LoginResponse>('/auth/login', user)
     return data
   } catch (error) {
     throw error
@@ -40,9 +40,10 @@ export const login = async (user: LoginRequest) => {
 }
 
 export const signup = async (user: SignupRequest) => {
+  console.log({ user })
   try {
-    const data = await instance.post<SignupResponse>(
-      '/join',
+    const { data } = await instance.post<SignupResponse>(
+      '/auth/signup',
       user,
       // {
       //   headers: { 'Content-Type': 'multipart/form-data' },
@@ -56,8 +57,8 @@ export const signup = async (user: SignupRequest) => {
 
 export const verify = async () => {
   try {
-    const { data } = await instance.get('/auth/verify')
-    return data
+    const { data } = await instance.get("/auth/verify");
+    return data;
   } catch (error) {
     console.log(error)
   }
