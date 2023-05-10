@@ -3,6 +3,11 @@ import InputBase from '@mui/material/InputBase'
 import { styled, alpha } from '@mui/material/styles'
 
 export const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#5c940d',
+    },
+  },
   components: {
     MuiCssBaseline: {
       styleOverrides: `@font-face {
