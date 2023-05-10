@@ -37,7 +37,9 @@ function handleRequest(req: InternalAxiosRequestConfig<any>) {
 
 function handleResponse(res: AxiosResponse<any, any>) {
   let token = res.headers[AUTHORIZATION_KEY]
-  token = token.split(' ')
+
+  console.log({ token })
+  token = token?.split(' ')
   console.log({ token })
   if (token) {
     console.log('Token from header:', token[1])
