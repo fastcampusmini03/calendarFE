@@ -40,9 +40,8 @@ export const login = async (user: LoginRequest) => {
 }
 
 export const signup = async (user: SignupRequest) => {
-  console.log({ user })
   try {
-    const { data } = await instance.post<SignupResponse>(
+    const data = await instance.post<SignupResponse>(
       '/join',
       user,
       // {

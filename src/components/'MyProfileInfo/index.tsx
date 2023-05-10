@@ -74,10 +74,10 @@ const MyprofileInfo = ({ userInfo }) => {
                     ) : (
                       <>
                         <S.Input
-                          value={userInfo?.username}
                           required
                           id="username"
                           autoFocus
+                          defaultValue={userInfo?.username}
                           {...register('username', {
                             required: '이름은 필수 입력 항목입니다.',
                           })}
