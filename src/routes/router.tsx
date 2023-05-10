@@ -5,7 +5,7 @@ import LoginPage from '../pages/LoginPage'
 import MyPage from '../pages/MyPage'
 import AdminPage from '../pages/AdminPage'
 import UserListPage from '../pages/UserListPage'
-
+import ErrorPage from '../pages/ErrorPage'
 
 function Router() {
   return (
@@ -17,7 +17,7 @@ function Router() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/user" element={<UserListPage />} />
-        <Route path="*" element={<>notFound</>} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   )
