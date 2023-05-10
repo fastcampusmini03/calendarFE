@@ -7,7 +7,7 @@ import '@toast-ui/calendar/dist/toastui-calendar.min.css'
 import Calendar from '@toast-ui/react-calendar'
 import { theme } from '../../utils/theme'
 import './style.css'
-import FaceIcon from '@mui/icons-material/Face'
+
 // import { addDate, addHours, subtractDate } from '../../utils/utils'
 import { DatesPayload } from '../../types/dates'
 // import Typography from '@mui/material/Typography'
@@ -17,7 +17,12 @@ import { useQuery } from 'react-query'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { verify } from '../../apis/axios'
 import Toast from '../Common/Toast'
+<<<<<<< HEAD
 import { useMutate } from '../../pages/MainPage'
+=======
+
+import Box from '@mui/material/Box'
+>>>>>>> develop
 // import Button from '@mui/material/Button'
 
 type ViewType = 'month' | 'week' | 'day'
@@ -339,16 +344,16 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
             </option>
           ))}
         </select> */}
-        <Chip icon={<FaceIcon />} label="userName" variant="outlined" />
+
         <span>
-          {/* <button
+          <button
             type="button"
             className="btn btn-default btn-sm move-today"
             data-action="move-today"
             onClick={onClickNavi}
           >
             Today
-          </button> */}
+          </button>
           <button
             type="button"
             className="btn btn-default btn-sm move-day"

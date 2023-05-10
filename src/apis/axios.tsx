@@ -5,14 +5,22 @@ import { instance } from './instance'
 import { LoginResponse, SignupResponse, VerifyPayload } from '../types/response'
 
 export const getUsers = async () => {
-  const response = await axios.get<DatesPayload[]>('/s/user')
+  const response = await instance.get<DatesPayload[]>('/s/user')
   return response.data
 }
+<<<<<<< HEAD
 export const postDate = async (post: MainDatePayload) => {
   
     const { data } = await instance.post('/s/user/annualDuty/save', post)
     return data
  
+=======
+
+/** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
+export const getAllDates = async () => {
+  const response = await instance.get<DatesPayload[]>('/s/admin/users')
+  return response.data
+>>>>>>> develop
 }
 /** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
 // export const getAllDates = async () => {
@@ -21,17 +29,17 @@ export const postDate = async (post: MainDatePayload) => {
 // }
 
 export const getSaveDates = async () => {
-  const response = await axios.get<DatesPayload[]>('/s/admin/save')
+  const response = await instance.get<DatesPayload[]>('/s/admin/save')
   return response.data
 }
 
 export const getEditDates = async () => {
-  const response = await axios.get<DatesPayload[]>('/s/admin/update')
+  const response = await instance.get<DatesPayload[]>('/s/admin/update')
   return response.data
 }
 
 export const getDeleteDates = async () => {
-  const response = await axios.get<DatesPayload[]>('/s/admin/delete')
+  const response = await instance.get<DatesPayload[]>('/s/admin/delete')
   return response.data
 }
 
@@ -45,9 +53,12 @@ export const login = async (user: LoginRequest) => {
 }
 
 export const signup = async (user: SignupRequest) => {
-  console.log({ user })
   try {
+<<<<<<< HEAD
     const { data } = await instance.post<SignupResponse>(
+=======
+    const data = await instance.post<SignupResponse>(
+>>>>>>> develop
       '/join',
       user,
       // {
@@ -62,8 +73,8 @@ export const signup = async (user: SignupRequest) => {
 
 export const verify = async () => {
   try {
-    const { data } = await instance.get("/auth/verify");
-    return data;
+    const { data } = await instance.get('/auth/verify')
+    return data
   } catch (error) {
     console.log(error)
   }
