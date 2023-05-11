@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { DatesPayload, MainDatePayload } from '../types/dates'
+import { DatesPayload, MainDatePayload, MainPutDatePayload } from '../types/dates'
 import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
 import { LoginResponse, SignupResponse, VerifyPayload } from '../types/response'
@@ -8,19 +8,26 @@ export const getUsers = async () => {
   const response = await instance.get<DatesPayload[]>('/s/user')
   return response.data
 }
-<<<<<<< HEAD
 export const postDate = async (post: MainDatePayload) => {
   
     const { data } = await instance.post('/s/user/annualDuty/save', post)
     return data
  
-=======
-
+}
+export const putDate = async ({ put, mainid }: any) => {
+  
+    const { data } = await instance.post(`/s/user/annualDuty/update/${mainid}`, put)
+    return data
+}
+export const deleteDate = async (mainid: any) => {
+  
+  const { data } = await instance.post(`/s/user/annualDuty/delete/${mainid}`)
+  return data
+}
 /** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
 export const getAllDates = async () => {
   const response = await instance.get<DatesPayload[]>('/s/admin/users')
   return response.data
->>>>>>> develop
 }
 /** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
 // export const getAllDates = async () => {
@@ -54,11 +61,7 @@ export const login = async (user: LoginRequest) => {
 
 export const signup = async (user: SignupRequest) => {
   try {
-<<<<<<< HEAD
     const { data } = await instance.post<SignupResponse>(
-=======
-    const data = await instance.post<SignupResponse>(
->>>>>>> develop
       '/join',
       user,
       // {
@@ -73,7 +76,7 @@ export const signup = async (user: SignupRequest) => {
 
 export const verify = async () => {
   try {
-    const { data } = await instance.get('/auth/verify')
+    const { data } = await instance.get('/s/user')
     return data
   } catch (error) {
     console.log(error)

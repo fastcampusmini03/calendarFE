@@ -13,16 +13,11 @@ import { DatesPayload } from '../../types/dates'
 // import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 // import Box from '@mui/material/Box'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
-import { verify } from '../../apis/axios'
+import { deleteDate, postDate, putDate, verify } from '../../apis/axios'
 import Toast from '../Common/Toast'
-<<<<<<< HEAD
-import { useMutate } from '../../pages/MainPage'
-=======
-
-import Box from '@mui/material/Box'
->>>>>>> develop
+import { usePutMutate } from '../../pages/MainPage'
 // import Button from '@mui/material/Button'
 
 type ViewType = 'month' | 'week' | 'day'
@@ -50,29 +45,56 @@ interface PropsType {
   setCreated: Function
   setUpdated: Function
   setDeleted: Function
+  id: any
  
 }
-// interface Mutate {
-//   mutate: (data: any) => void;
-//   isLoading: boolean;
-//   error: unknown;
-// }
+
 export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }: PropsType) {
- 
+  
+   const [mainid, setMainId] = useState()
+  /**calendar 일정 작성 요청 */
+    const { mutate } = useMutation(postDate, {
+      onSuccess: (data) => {
+        console.log(data)
+        console.log(data.data.id)
+      },
+    });
+  
+  /**calendar 일정 수정  */
+  const { mutate: putMutate } = useMutation(putDate, {
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  });
+/**calendar 일정 삭제  */
+  const { mutate: deleteMutate } = useMutation(deleteDate, {
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  });
+
+/**snackbar state */
   const [editopen, setEditOpen] = useState(false)
   const [editmessage, setEditMessage] = useState('')
 
   const [deleteopen, setDeleteOpen] = useState(false)
   const [deletemessage, setDeleteMessage] = useState('')
+  const [open, setOpen] = useState(false)
 
-  
+  const handleClick = () => {
+    setOpen(true)
+  }
 
-
-
-  const {mutate, isLoading, error } = useMutate()
-  /**
-   * 
-   */
+  const handleClose = (reason?: string) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setEditOpen(false)
+    setDeleteOpen(false)
+    setOpen(false)
+  }
+ 
+/**user 인증 */
   const [user, setUser] = useState<string>()
   const { data: verifyPayload, status } = useQuery(['verify', ACCESSTOKEN_KEY], verify, {
     retry: false,
@@ -80,14 +102,13 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
 
   function popup() {
     if (verifyPayload && status !== 'error') {
-      if (user === undefined || verifyPayload?.payload.user.username === user) {
+      if (user === undefined || verifyPayload?.data.username === user) {
         return true
       }
     }
     return false
   }
  
-
 
   const calendarRef = useRef<typeof Calendar>(null)
   const [selectedDateRangeText, setSelectedDateRangeText] = useState('')
@@ -207,19 +228,20 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
   const onAfterRenderEvent: ExternalEventTypes['afterRenderEvent'] = (res) => {
     console.log(res)
     res.title = res.isAllday === true ? '당직' + res.title : '연휴' + res.title
-    res.attendees.push(verifyPayload?.payload.user.username);
+    res.attendees.push(verifyPayload?.data.username);
     console.group('onAfterRenderEvent')
     console.log('Event Info : ', res.title)
     console.groupEnd()
   }
 
   const onBeforeDeleteEvent: ExternalEventTypes['beforeDeleteEvent'] = (res) => {
-    if (verifyPayload.payload.user.username === user) {
+    if (verifyPayload.data.username === user) {
     console.group('onBeforeDeleteEvent')
     console.log('Event Info : ', res.title)
     console.groupEnd()
 
     const { id, calendarId } = res
+    deleteMutate(mainid)
     setDeleted(res)
     getCalInstance().deleteEvent(id, calendarId)
     } else {
@@ -246,12 +268,13 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
       updateRenderRangeText()
     }
   }
-
+/**일정 클릭 했을 때 발생 이벤트 */
   const onClickEvent: ExternalEventTypes['clickEvent'] = (res) => {
     console.group('onClickEvent')
     console.log('MouseEvent : ', res.nativeEvent)
     console.log('Event Info : ', res.event)
     console.groupEnd()
+    setMainId(res.event.id)
     setUser(res.event.attendees[0])
   }
 
@@ -269,25 +292,24 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
 
     getCalInstance().setTheme(newTheme)
   }
-
+/**일정 수정 했을 때 발생 이벤트 */
   const onBeforeUpdateEvent: ExternalEventTypes['beforeUpdateEvent'] = (updateData) => {
-    if (verifyPayload.payload.user.username === user) {
+    if (verifyPayload.data.username === user) {
     console.group('onBeforeUpdateEvent')
     console.log(updateData)
     console.groupEnd()
     const event = {
-      calendarId: updateData.event.calendarId || '',
-      id: String(Math.random()),
-      title: updateData.event.title,
-      isAllday: updateData.event.isAllday,
-      start: updateData.event.start,
-      end: updateData.event.end,
-      email: verifyPayload?.payload.user.email,
-      username: verifyPayload?.payload.user.username,
-      role: verifyPayload?.payload.user.role,
+      // id: String(Math.random()), calendar 전체 데이터 불러와서 거기에 맞는 id를 찾는다
+      title: updateData.changes.title,
+      start: "2023-05-08T18:47:43.08946",
+      end: "2023-05-10T18:47:44.08946",
     }
     const targetEvent = updateData.event
     const changes = { ...updateData.changes }
+    let put = event;
+    putMutate({put, mainid})
+    console.log(mainid)
+    console.log(event)
     setUpdated(event)
     getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes)
   } else {
@@ -299,37 +321,22 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
   const onBeforeCreateEvent: ExternalEventTypes['beforeCreateEvent'] = (eventData) => {
     const event = {
       calendarId: eventData.calendarId || '',
-      id: String(Math.random()),
+      // id: String(Math.random()),
+      id: mainid,
       title: eventData.title,
       isAllday: eventData.isAllday,
-      start: eventData.start,
-      end: eventData.end,
-      // category: eventData.isAllday ? 'allday' : 'time',
-      // dueDateClass: '',
-      // location: eventData.location,
-      // state: eventData.state,
-      // isPrivate: eventData.isPrivate,
-      email: verifyPayload?.payload.user.email,
-      username: verifyPayload?.payload.user.username,
-      role: verifyPayload?.payload.user.role,
+      start: "2023-05-08T18:47:43.08946",
+      end: "2023-05-10T18:47:44.08946",
+      email: verifyPayload?.data.email,
+      username: verifyPayload?.data.username,
+      role: verifyPayload?.data.role,
     }
     setCreated(event)
     mutate(event)
     getCalInstance().createEvents([event])
   }
-  const [open, setOpen] = useState(false)
-  const handleClick = () => {
-    setOpen(true)
-  }
 
-  const handleClose = (reason?: string) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setEditOpen(false)
-    setDeleteOpen(false)
-    setOpen(false)
-  }
+ 
   return (
     <div>
       {/* <Typography variant="h2" color="initial" align="center">

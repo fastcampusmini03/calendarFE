@@ -1,23 +1,9 @@
 import PersistentDrawerRight from "../../components/Header"
 import { useMutation, useQuery } from 'react-query'
 // import CalendarUI from '../../components/CalendarUI'
-import { DatesPayload, MainDatePayload } from '../../types/dates'
-import { postDate } from '../../apis/axios'
+import { DatesPayload } from '../../types/dates'
 import { useEffect, useState } from "react"
 import CalendarUI from "../../components/CalendarUI"
-
-
-
-
-export const useMutate = () => {
-  const { mutate, isLoading, error } = useMutation(postDate, {
-    onSuccess: (data) => {
-      console.log(data)
-    },
-  });
-
-  return { mutate, isLoading, error };
-};
 
 
 
@@ -45,7 +31,7 @@ function MainPage() {
   // }
   return (
     <PersistentDrawerRight>
-      <CalendarUI view="month" setCreated={setCreated} setUpdated={setUpdated} setDeleted={setDeleted}/>
+      <CalendarUI view="month" setCreated={setCreated} setUpdated={setUpdated} setDeleted={setDeleted} />
     </PersistentDrawerRight>
   )
 }

@@ -31,12 +31,20 @@ export interface CalendarUIProps {
 
 export interface MainDatePayload {
   calendarId: string;
-  id: string;
+  email: any;
+  username: any;
   title: string | undefined;
   isAllday: boolean | undefined;
   start: any | undefined;
   end: any | undefined;
-  email: any;
-  username: any;
   role: any;
+}
+
+export type  MainPutDatePayload = Pick<put, "title" | "start" | "end"> & {
+  id: any;
+}
+export interface put {
+  title: FormDataEntryValue;
+  start: FormDataEntryValue;
+  end: FormDataEntryValue;
 }
