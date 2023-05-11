@@ -18,14 +18,20 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogActions from '@mui/material/DialogActions'
 import Toast from '../Common/Toast'
 import { User, UserData } from '../../types/user'
+import { updateRole } from '../../apis/axios'
+import { useMutation } from 'react-query'
 
 interface UserPageProps {
   users: UserData
 }
 
 export default function UserList({ users }: UserPageProps) {
+  /** 검색 결과 state */
   const [searchResult, setSearchResult] = useState<User[]>(users.content)
+
+  /** toast 컴포넌트 팝업 토글 */
   const [toastToggle, setToastToggle] = useState(false)
+
   /** input에 입력된 값에 따라  해당 유저의 이름과 일치하는 유저 리스트 데이터를 설정*/
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value
@@ -35,20 +41,30 @@ export default function UserList({ users }: UserPageProps) {
       setSearchResult(users.content.filter((data) => data.username === input))
     }
   }
+
   /** popper 생성 위치 기준점 state */
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+
   /** api수정 메소드 요청에 필요한 요청 데이터 state */
-  const [selectedUser, setSelectedUser] = useState<User | null>(null) // 각 항목에 대한 선택된 유저 정보 상태
+  const [value, setValue] = useState<string>('')
+
+  /** dialog 팝업 토글 */
   const [dialogOpen, setDialogOpen] = useState(false)
+
+  /** 권한 변경 mutate */
+  const { mutate: mutateUR } = useMutation((params: { email: string; role: string }) =>
+    updateRole(params.email, params.role),
+  )
+
   /**클릭시 팝업위치와 선택된 유저 정보를 바탕으로 정보수정을 요청하는 메소드*/
-  const editRole = () => {
+  const editRole = (email: string, role: string) => () => {
     setDialogOpen((prev) => !prev)
     setTimeout(() => {
       setToastToggle((prev) => !prev)
     }, 500) // 0.5초 후에 스낵바를 활성화
 
     //TODO 여기에 수정을 요청하는 메소드를 집어넣을것
-    console.log(selectedUser)
+    mutateUR({ email, role })
   }
   /**클릭시 팝업위치를 변경해서 popper를 나타나게 하는 메소드*/
   const popupToggle = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -56,7 +72,7 @@ export default function UserList({ users }: UserPageProps) {
   }
   /** 사용자가 radioGroup 중 하나를 선택해서  selectedUser가 있을때만 토글하는 메소드*/
   const dialogToggle = () => {
-    if (!selectedUser) {
+    if (value === '') {
       alert('please select role')
       return
     } else {
@@ -64,22 +80,13 @@ export default function UserList({ users }: UserPageProps) {
     }
   }
   /**  선택항 리스트의 user를 setState 하고 유저의 role 정보만 수정하여 저장하는 메소드 */
-  const editUserRole = (event: React.ChangeEvent<HTMLInputElement>, user: User) => {
-    setSelectedUser(user)
-    setSelectedUser((prevUser) => {
-      if (prevUser) {
-        return {
-          ...prevUser,
-          role: event.target.value,
-        }
-      }
-      return null
-    })
+  const editUserRole = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value)
   }
   /** 팝업을 종료했을때 팝업 위치와 selectedUser데이터를 초기화 */
   const handleClose = () => {
     setAnchorEl(null)
-    setSelectedUser(null)
+    setValue('')
   }
   // 리스트를 클릭했을 때에만 팝업이 나타나게 설정
   const open = Boolean(anchorEl)
@@ -137,23 +144,21 @@ export default function UserList({ users }: UserPageProps) {
                   <Box
                     sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
                   >
-                    <RadioGroup
-                      value={selectedUser?.role}
-                      onChange={(event) => editUserRole(event, data)}
-                    >
-                      <FormControlLabel value="user" control={<Radio />} label="일반" />
-                      <FormControlLabel value="admin" control={<Radio />} label="관리자" />
+                    <RadioGroup value={value} onChange={editUserRole}>
+                      <FormControlLabel value="USER" control={<Radio />} label="일반" />
+                      <FormControlLabel value="ADMIN" control={<Radio />} label="관리자" />
                     </RadioGroup>
                     <Button onClick={dialogToggle}>변경</Button>
                     <Dialog open={dialogOpen}>
                       <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
                       <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                          '{data.username}'의 권한을 {selectedUser?.role}(으)로 변경하시겠습니까?
+                          '{data.username}'의 권한을 {value === 'USER' ? '일반' : '관리자'}(으)로
+                          변경하시겠습니까?
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>
-                        <Button onClick={editRole}>예</Button>
+                        <Button onClick={editRole(data.email, value)}>예</Button>
                         <Button onClick={dialogToggle} autoFocus>
                           아니오
                         </Button>

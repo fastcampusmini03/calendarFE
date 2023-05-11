@@ -173,6 +173,25 @@ const deleteresult = [
     },
   },
 ]
+const MainPost = [
+  {
+    id: 1,
+    calendarId: 0,
+    username: 'jyc',
+    email: 'test@test.com',
+    title: '삭제를 요청하는 일정입니다.',
+    start: new Date(),
+    end: new Date(),
+    isAllday: true,
+    role: 'normal',
+    prevDate: {
+      start: new Date(),
+      end: new Date(),
+      title: '수정 전',
+    },
+  },
+]
+
 export const AUTHORIZATION_KEY = 'Authorization'
 export const ACCESSTOKEN_KEY = 'accessToken'
 const TEST_ACCESSTOKEN =
@@ -281,6 +300,9 @@ export const handlers = [
   }),
   rest.get('/s/admin/delete', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(deleteresult))
+  }),
+  rest.post('/s/main/post', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(MainPost))
   }),
   ...authHandler,
 ]
