@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import PersistentDrawerRight from '../../components/Header'
+// import React, { useEffect, useState } from 'react'
+// import PersistentDrawerRight from '../../components/Header'
 
 import useVerify from '../../hooks/useVerify'
-import MyprofileInfo from "../../components/MyProfileInfo"
+import MyprofileInfo from '../../components/MyProfileInfo'
 
-import { Container } from '@mui/material'
-import { getUserDuty } from '../../apis/axios'
+// import { Container } from '@mui/material'
+// import { getUserDuty } from '../../apis/axios'
 
 const MyPage = () => {
   const { userInfo, isAuthenticated } = useVerify()

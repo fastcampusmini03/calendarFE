@@ -1,16 +1,13 @@
-import PersistentDrawerRight from "../../components/Header"
+import PersistentDrawerRight from '../../components/Header'
 import { useQuery } from 'react-query'
 // import CalendarUI from '../../components/CalendarUI'
-import { CalendarData, DatesPayload } from '../../types/dates'
-import { useEffect, useState } from "react"
-import CalendarUI from "../../components/CalendarUI"
-import { getCalendarDates } from "../../apis/axios"
-
-
-
+import { CalendarData } from '../../types/dates'
+// import { useEffect, useState } from "react"
+import CalendarUI from '../../components/CalendarUI'
+import { getCalendarDates } from '../../apis/axios'
 
 function MainPage() {
-  const { data: calendarDates, isLoading } = useQuery<CalendarData[] | any>('dates', getCalendarDates)
+  const { data: calendarDates } = useQuery<CalendarData[] | any>('dates', getCalendarDates)
   // const [created, setCreated] = useState<[]>([]);
   // const [updated, setUpdated] = useState<[]>([]);
   // const [deleted, setDeleted] = useState<[]>([]);

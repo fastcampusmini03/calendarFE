@@ -2,10 +2,10 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
-import React from 'react'
+// import React from 'react'
 import { theme } from '../../style/style'
 
-type Props = {}
+// type Props = {}
 
 const ErrorPage = () => {
   return (

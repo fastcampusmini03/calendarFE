@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from 'react-query'
 import { getUsers } from '../../apis/axios'
 import UserList from '../../components/UserList'
-import { DatesPayload } from '../../types/dates'
+// import { DatesPayload } from '../../types/dates'
 import { UserData } from '../../types/user'
 
 function UserListPage() {
