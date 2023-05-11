@@ -4,8 +4,13 @@ import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
 import { LoginResponse, SignupResponse, VerifyPayload } from '../types/response'
 
-export const getUsers = async () => {
+export const getUser = async () => {
   const response = await instance.get<DatesPayload[]>('/s/user')
+  return response.data
+}
+
+export const postUser = async (user) => {
+  const response = await instance.post<DatesPayload[]>('/s/user',user)
   return response.data
 }
 
