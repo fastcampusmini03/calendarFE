@@ -1,35 +1,38 @@
 import PersistentDrawerRight from "../../components/Header"
 import { useQuery } from 'react-query'
 // import CalendarUI from '../../components/CalendarUI'
-import { DatesPayload } from '../../types/dates'
-import { getAllDates } from '../../apis/axios'
+import { CalendarData, DatesPayload } from '../../types/dates'
 import { useEffect, useState } from "react"
 import CalendarUI from "../../components/CalendarUI"
+import { getCalendarDates } from "../../apis/axios"
+
+
 
 
 function MainPage() {
-  const [created, setCreated] = useState<[]>([]);
-  const [updated, setUpdated] = useState<[]>([]);
-  const [deleted, setDeleted] = useState<[]>([]);
+  const { data: calendarDates, isLoading } = useQuery<CalendarData[] | any>('dates', getCalendarDates)
+  // const [created, setCreated] = useState<[]>([]);
+  // const [updated, setUpdated] = useState<[]>([]);
+  // const [deleted, setDeleted] = useState<[]>([]);
 
-  useEffect(() => {
-       console.log('=============created===================')
-       console.log(created);
+  // useEffect(() => {
+  //      console.log('=============created===================')
+  //      console.log(created);
 
-       console.log('=============updated===================')
-       console.log(updated);
+  //      console.log('=============updated===================')
+  //      console.log(updated);
 
-       console.log('=============deleted===================')
-       console.log(deleted);
+  //      console.log('=============deleted===================')
+  //      console.log(deleted);
 
-  }, [created, updated, deleted])
-  const { data: dates, isLoading } = useQuery<DatesPayload[]>('dates', getAllDates)
-  if (isLoading || dates === undefined) {
-    return <div>로딩중...</div>
-  }
+  // }, [created, updated, deleted])
+  // const { data: dates, isLoading } = useQuery<DatesPayload[]>('dates', getAllDates)
+  // if (isLoading || calendarDates === undefined) {
+  //   return <div>로딩중...</div>
+  // }
   return (
     <PersistentDrawerRight>
-      <CalendarUI view="month" dates={dates} setCreated={setCreated} setUpdated={setUpdated} setDeleted={setDeleted}/>
+      <CalendarUI view="month" dates={calendarDates} />
     </PersistentDrawerRight>
   )
 }

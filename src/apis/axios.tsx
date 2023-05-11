@@ -1,6 +1,6 @@
-import axios from 'axios'
 import {
   DatesPayload,
+  MainDatePayload,
   ResponseApproveData,
   ResponseData,
   ResponseDeleteData,
@@ -9,7 +9,7 @@ import {
 } from '../types/dates'
 import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
-import { LoginResponse, SignupResponse, VerifyPayload } from '../types/response'
+import { LoginResponse, SignupResponse } from '../types/response'
 import { ResponseUser } from '../types/user'
 
 export const getUsers = async () => {
@@ -92,7 +92,7 @@ export const login = async (user: LoginRequest) => {
 
 export const signup = async (user: SignupRequest) => {
   try {
-    const data = await instance.post<SignupResponse>(
+    const { data } = await instance.post<SignupResponse>(
       '/join',
       user,
       // {
@@ -117,4 +117,22 @@ export const verify = async () => {
 export const refresh = async () => {
   const { data } = await instance.get<SignupResponse>('/auth/refresh')
   return data
+}
+
+/**Calendar 일정 작성, 수정, 삭제 */
+export const postDate = async (post: MainDatePayload) => {
+  
+  const { data } = await instance.post('/s/user/annualDuty/save', post)
+  return data
+
+}
+export const putDate = async ({ put, mainid }: any) => {
+
+  const { data } = await instance.post(`/s/user/annualDuty/update/${mainid}`, put)
+  return data
+}
+export const deleteDate = async (mainid: any) => {
+
+const { data } = await instance.post(`/s/user/annualDuty/delete/${mainid}`)
+return data
 }
