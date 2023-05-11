@@ -12,6 +12,7 @@ interface UserInput {
   password: string
 }
 
+//@ts-ignore
 const MyprofileInfo = ({ userInfo }) => {
   const navigate = useNavigate()
   const [userInput, setUserInput] = useState<UserInput>({ username: '', password: '' })
@@ -26,6 +27,7 @@ const MyprofileInfo = ({ userInfo }) => {
     formState: { errors },
   } = useForm()
 
+  //@ts-ignore
   const handleUpdate = async (data) => {
     const user = {
       password: data.password,

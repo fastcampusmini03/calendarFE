@@ -85,7 +85,7 @@ export default function CalendarUI({ view, dates, setCreated, setUpdated, setDel
     },
   ]
   /** api로부터 받아온 일정 데이터 */
-  const initialEvents: Partial<EventObject>[] = dates.map((date) => ({
+  const initialEvents: Partial<EventObject>[] = dates?.map((date) => ({
     id: date.id.toString(),
     calendarId: date.status,
     title: date.title,
