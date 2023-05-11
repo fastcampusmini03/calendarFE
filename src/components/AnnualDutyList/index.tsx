@@ -1,5 +1,5 @@
 import List from '@mui/material/List'
-import { DatesPayload } from '../../types/dates'
+import { ApproveData, DatesPayload, DeleteData, EditData } from '../../types/dates'
 import Typography from '@mui/material/Typography'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
@@ -14,13 +14,12 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogActions from '@mui/material/DialogActions'
 import { useState } from 'react'
-import { justifyContent } from 'styled-system'
 import Toast from '../Common/Toast'
 
 interface AdminPageProps {
-  saveDates: DatesPayload[]
-  editDates: DatesPayload[]
-  deleteDates: DatesPayload[]
+  saveDates: ApproveData
+  editDates: EditData
+  deleteDates: DeleteData
 }
 
 function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
@@ -85,9 +84,9 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
         {(() => {
           switch (value) {
             case 'edit':
-              return editDates.map((data) => (
+              return editDates.content.map((data) => (
                 <>
-                  {data.prevDate && (
+                  {data.startTime && (
                     <>
                       <Tabs variant="fullWidth">
                         <Tab label="수정 전" />
@@ -111,11 +110,11 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                               justifyContent: 'center',
                               height: '120px',
                               borderRadius: '20px',
-                              background: data.isAllday ? '#5c940d' : '#08D8C1',
+                              background: data.annualDuty.type ? '#5c940d' : '#08D8C1',
                             }}
                           >
                             <Typography variant="h6" align="center" color="#FFF">
-                              {data.isAllday ? '당직' : '연차'}
+                              {data.annualDuty.type ? '당직' : '연차'}
                             </Typography>
                           </Box>
                         </Grid>
@@ -136,22 +135,26 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                               <Box>
                                 <ListItemText
                                   primary={
-                                    data.username +
+                                    // data.username +
                                     ' ' +
-                                    data.role +
+                                    // data.role +
                                     ' ' +
-                                    (data.prevDate.title.length > 10
-                                      ? `${data.prevDate.title.substring(0, 10)}...`
-                                      : data.prevDate.title)
+                                    (data.annualDuty.title.length > 10
+                                      ? `${data.annualDuty.title.substring(0, 10)}...`
+                                      : data.annualDuty.title)
                                   }
                                 />
 
                                 <ListItemText
                                   secondary={
                                     <>
-                                      <div>{formatter.format(new Date(data.prevDate.start))}</div>
+                                      <div>
+                                        {formatter.format(new Date(data.annualDuty.startTime))}
+                                      </div>
                                       <div>{' - '}</div>
-                                      <div>{formatter.format(new Date(data.prevDate.end))}</div>
+                                      <div>
+                                        {formatter.format(new Date(data.annualDuty.endTime))}
+                                      </div>
                                     </>
                                   }
                                   sx={{ marginTop: '10px' }}
@@ -160,9 +163,9 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                               <Box sx={{ marginRight: '20px' }}>
                                 <ListItemText
                                   primary={
-                                    data.username +
+                                    // data.username +
                                     ' ' +
-                                    data.role +
+                                    // data.role +
                                     ' ' +
                                     (data.title.length > 10
                                       ? `${data.title.substring(0, 10)}...`
@@ -172,9 +175,9 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                                 <ListItemText
                                   secondary={
                                     <>
-                                      <div>{formatter.format(new Date(data.start))}</div>
+                                      <div>{formatter.format(new Date(data.startTime))}</div>
                                       <div>{' - '}</div>
-                                      <div>{formatter.format(new Date(data.end))}</div>
+                                      <div>{formatter.format(new Date(data.endTime))}</div>
                                     </>
                                   }
                                   sx={{ marginTop: '10px' }}
@@ -233,7 +236,7 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                 </>
               ))
             case 'delete':
-              return deleteDates.map((data) => (
+              return deleteDates.content.map((data) => (
                 <>
                   <ListItem
                     sx={{
@@ -252,11 +255,11 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                           justifyContent: 'center',
                           height: '120px',
                           borderRadius: '20px',
-                          background: data.isAllday ? '#5c940d' : '#08D8C1',
+                          background: data.type ? '#5c940d' : '#08D8C1',
                         }}
                       >
                         <Typography variant="h6" align="center" color="#FFF">
-                          {data.isAllday ? '당직' : '연차'}
+                          {data.type ? '당직' : '연차'}
                         </Typography>
                       </Box>
                     </Grid>
@@ -277,9 +280,9 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                           <Box sx={{ marginRight: '20px' }}>
                             <ListItemText
                               primary={
-                                data.username +
+                                data.user.username +
                                 ' ' +
-                                data.role +
+                                data.user.role +
                                 ' ' +
                                 (data.title.length > 10
                                   ? `${data.title.substring(0, 10)}...`
@@ -289,9 +292,9 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                             <ListItemText
                               secondary={
                                 <>
-                                  <div>{formatter.format(new Date(data.start))}</div>
+                                  <div>{formatter.format(new Date(data.startTime))}</div>
                                   <div>{' - '}</div>
-                                  <div>{formatter.format(new Date(data.end))}</div>
+                                  <div>{formatter.format(new Date(data.endTime))}</div>
                                 </>
                               }
                               sx={{ marginTop: '10px' }}
@@ -348,7 +351,7 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                 </>
               ))
             default:
-              return saveDates.map((data) => (
+              return saveDates.content.map((data) => (
                 <>
                   <ListItem
                     sx={{
@@ -367,11 +370,11 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                           justifyContent: 'center',
                           height: '120px',
                           borderRadius: '20px',
-                          background: data.isAllday ? '#5c940d' : '#08D8C1',
+                          background: data.type ? '#5c940d' : '#08D8C1',
                         }}
                       >
                         <Typography variant="h6" align="center" color="#FFF">
-                          {data.isAllday ? '당직' : '연차'}
+                          {data.type ? '당직' : '연차'}
                         </Typography>
                       </Box>
                     </Grid>
@@ -392,9 +395,9 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                           <Box sx={{ marginRight: '20px' }}>
                             <ListItemText
                               primary={
-                                data.username +
+                                data.user.username +
                                 ' ' +
-                                data.role +
+                                data.user.role +
                                 ' ' +
                                 (data.title.length > 10
                                   ? `${data.title.substring(0, 10)}...`
@@ -404,9 +407,9 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                             <ListItemText
                               secondary={
                                 <>
-                                  <div>{formatter.format(new Date(data.start))}</div>
+                                  <div>{formatter.format(new Date(data.startTime))}</div>
                                   <div>{' - '}</div>
-                                  <div>{formatter.format(new Date(data.end))}</div>
+                                  <div>{formatter.format(new Date(data.endTime))}</div>
                                 </>
                               }
                               sx={{ marginTop: '10px' }}

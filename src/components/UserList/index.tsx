@@ -17,27 +17,28 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogActions from '@mui/material/DialogActions'
 import Toast from '../Common/Toast'
+import { User, UserData } from '../../types/user'
 
 interface UserPageProps {
-  users: UsersPayload[]
+  users: UserData
 }
 
 export default function UserList({ users }: UserPageProps) {
-  const [searchResult, setSearchResult] = useState<UsersPayload[]>(users)
+  const [searchResult, setSearchResult] = useState<User[]>(users.content)
   const [toastToggle, setToastToggle] = useState(false)
   /** input에 입력된 값에 따라  해당 유저의 이름과 일치하는 유저 리스트 데이터를 설정*/
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value
     if (input === '') {
-      setSearchResult(users)
+      setSearchResult(users.content)
     } else {
-      setSearchResult(users.filter((data) => data.username === input))
+      setSearchResult(users.content.filter((data) => data.username === input))
     }
   }
   /** popper 생성 위치 기준점 state */
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   /** api수정 메소드 요청에 필요한 요청 데이터 state */
-  const [selectedUser, setSelectedUser] = useState<UsersPayload | null>(null) // 각 항목에 대한 선택된 유저 정보 상태
+  const [selectedUser, setSelectedUser] = useState<User | null>(null) // 각 항목에 대한 선택된 유저 정보 상태
   const [dialogOpen, setDialogOpen] = useState(false)
   /**클릭시 팝업위치와 선택된 유저 정보를 바탕으로 정보수정을 요청하는 메소드*/
   const editRole = () => {
@@ -63,7 +64,7 @@ export default function UserList({ users }: UserPageProps) {
     }
   }
   /**  선택항 리스트의 user를 setState 하고 유저의 role 정보만 수정하여 저장하는 메소드 */
-  const editUserRole = (event: React.ChangeEvent<HTMLInputElement>, user: UsersPayload) => {
+  const editUserRole = (event: React.ChangeEvent<HTMLInputElement>, user: User) => {
     setSelectedUser(user)
     setSelectedUser((prevUser) => {
       if (prevUser) {
