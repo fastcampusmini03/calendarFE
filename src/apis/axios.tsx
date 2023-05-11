@@ -1,33 +1,45 @@
 import axios from 'axios'
-import { DatesPayload } from '../types/dates'
+import {
+  DatesPayload,
+  ResponseApproveData,
+  ResponseData,
+  ResponseDeleteData,
+  ResponseEditData,
+} from '../types/dates'
 import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
 import { LoginResponse, SignupResponse, VerifyPayload } from '../types/response'
+import { ResponseUser } from '../types/user'
 
 export const getUsers = async () => {
-  const response = await instance.get<DatesPayload[]>('/s/user')
-  return response.data
+  const response = await instance.get<ResponseUser>('/s/admin/users')
+  return response.data.data
 }
 
-/** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
 export const getAllDates = async () => {
   const response = await instance.get<DatesPayload[]>('/s/admin/users')
   return response.data
 }
 
+/** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
+export const getCalendarDates = async () => {
+  const response = await instance.get<ResponseData>('/annualDuty?year=2023&month=5')
+  return response.data.data
+}
+
 export const getSaveDates = async () => {
-  const response = await instance.get<DatesPayload[]>('/s/admin/save')
-  return response.data
+  const response = await instance.get<ResponseApproveData>('/s/admin/save?page=0')
+  return response.data.data
 }
 
 export const getEditDates = async () => {
-  const response = await instance.get<DatesPayload[]>('/s/admin/update')
-  return response.data
+  const response = await instance.get<ResponseEditData>('/s/admin/update')
+  return response.data.data
 }
 
 export const getDeleteDates = async () => {
-  const response = await instance.get<DatesPayload[]>('/s/admin/delete')
-  return response.data
+  const response = await instance.get<ResponseDeleteData>('/s/admin/delete')
+  return response.data.data
 }
 
 export const login = async (user: LoginRequest) => {
