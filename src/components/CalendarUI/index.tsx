@@ -9,7 +9,7 @@ import { theme } from '../../utils/theme'
 import './style.css'
 
 // import { addDate, addHours, subtractDate } from '../../utils/utils'
-import { DatesPayload } from '../../types/dates'
+import { CalendarData, DatesPayload, ResponseData } from '../../types/dates'
 // import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 // import Box from '@mui/material/Box'
@@ -39,17 +39,16 @@ type ViewType = 'month' | 'week' | 'day'
 //   },
 // ]
 
-
 interface PropsType {
   view: ViewType
-  dates: DatesPayload[]
+  dates: CalendarData[]
   setCreated: Function
   setUpdated: Function
   setDeleted: Function
 }
 export default function CalendarUI({ view, dates, setCreated, setUpdated, setDeleted }: PropsType) {
   /**
-   * 
+   *
    */
   const [user, setUser] = useState<string>()
   const { data: verifyPayload, status } = useQuery(['verify', ACCESSTOKEN_KEY], verify, {
@@ -64,8 +63,6 @@ export default function CalendarUI({ view, dates, setCreated, setUpdated, setDel
     }
     return false
   }
- 
-
 
   const calendarRef = useRef<typeof Calendar>(null)
   const [selectedDateRangeText, setSelectedDateRangeText] = useState('')
@@ -90,13 +87,13 @@ export default function CalendarUI({ view, dates, setCreated, setUpdated, setDel
   /** api로부터 받아온 일정 데이터 */
   const initialEvents: Partial<EventObject>[] = dates.map((date) => ({
     id: date.id.toString(),
-    calendarId: date.calendarId.toString(),
+    calendarId: date.status,
     title: date.title,
-    start: new Date(date.start),
-    end: new Date(date.end),
-    email: date.email,
-    role: date.role,
-    attendees: [date.username],
+    start: new Date(date.startTime),
+    end: new Date(date.endTime),
+    email: date.user.email,
+    role: date.user.role,
+    attendees: [date.user.username],
   }))
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -163,13 +160,13 @@ export default function CalendarUI({ view, dates, setCreated, setUpdated, setDel
 
   const onBeforeDeleteEvent: ExternalEventTypes['beforeDeleteEvent'] = (res) => {
     if (verifyPayload.payload.user.username === user) {
-    console.group('onBeforeDeleteEvent')
-    console.log('Event Info : ', res.title)
-    console.groupEnd()
+      console.group('onBeforeDeleteEvent')
+      console.log('Event Info : ', res.title)
+      console.groupEnd()
 
-    const { id, calendarId } = res
-    setDeleted(res)
-    getCalInstance().deleteEvent(id, calendarId)
+      const { id, calendarId } = res
+      setDeleted(res)
+      getCalInstance().deleteEvent(id, calendarId)
     } else {
       alert('같은 user가 아닙니다')
     }
@@ -219,18 +216,18 @@ export default function CalendarUI({ view, dates, setCreated, setUpdated, setDel
 
   const onBeforeUpdateEvent: ExternalEventTypes['beforeUpdateEvent'] = (updateData) => {
     if (verifyPayload.payload.user.username === user) {
-    console.group('onBeforeUpdateEvent')
-    console.log(updateData)
-    console.groupEnd()
+      console.group('onBeforeUpdateEvent')
+      console.log(updateData)
+      console.groupEnd()
 
-    const targetEvent = updateData.event
-    const changes = { ...updateData.changes }
-    setUpdated(updateData)
-    getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes)
-  } else {
-    alert('user가 같지 않습니다')
+      const targetEvent = updateData.event
+      const changes = { ...updateData.changes }
+      setUpdated(updateData)
+      getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes)
+    } else {
+      alert('user가 같지 않습니다')
+    }
   }
-}
 
   const onBeforeCreateEvent: ExternalEventTypes['beforeCreateEvent'] = (eventData) => {
     const event = {
@@ -305,63 +302,63 @@ export default function CalendarUI({ view, dates, setCreated, setUpdated, setDel
         <span className="render-range">{selectedDateRangeText}</span>
       </div>
       <div onClick={handleClick}>
-      <Calendar
-        height="900px"
-        calendars={initialCalendars}
-        month={{ startDayOfWeek: 1 }}
-        events={initialEvents}
-        template={{
-          milestone(event) {
-            return `<span style="color: #fff; background-color: ${event.backgroundColor};">${event.title}</span>`
-          },
-          allday(event) {
-            return `[All day] ${event.title}`
-          },
-          popupEdit() {
-            return '수정'
-          },
-          popupDelete() {
-            return '삭제'
-          },
-          popupIsAllday() {
-            return 'all day'
-          },
-        }}
-        theme={theme}
-        timezone={{
-          zones: [
-            {
-              timezoneName: 'Asia/Seoul',
-              displayLabel: 'Seoul',
-              tooltip: 'UTC+09:00',
+        <Calendar
+          height="900px"
+          calendars={initialCalendars}
+          month={{ startDayOfWeek: 1 }}
+          events={initialEvents}
+          template={{
+            milestone(event) {
+              return `<span style="color: #fff; background-color: ${event.backgroundColor};">${event.title}</span>`
             },
-            {
-              timezoneName: 'Pacific/Guam',
-              displayLabel: 'Guam',
-              tooltip: 'UTC+10:00',
+            allday(event) {
+              return `[All day] ${event.title}`
             },
-          ],
-        }}
-        useDetailPopup={true}
-        useFormPopup={popup()}
-        view={selectedView}
-        week={{
-          showTimezoneCollapseButton: true,
-          timezonesCollapsed: false,
-          eventView: true,
-          taskView: true,
-        }}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        ref={calendarRef}
-        onAfterRenderEvent={onAfterRenderEvent}
-        onBeforeDeleteEvent={onBeforeDeleteEvent}
-        onClickDayname={onClickDayName}
-        onClickEvent={onClickEvent}
-        onClickTimezonesCollapseBtn={onClickTimezonesCollapseBtn}
-        onBeforeUpdateEvent={onBeforeUpdateEvent}
-        onBeforeCreateEvent={onBeforeCreateEvent}
-      />
+            popupEdit() {
+              return '수정'
+            },
+            popupDelete() {
+              return '삭제'
+            },
+            popupIsAllday() {
+              return 'all day'
+            },
+          }}
+          theme={theme}
+          timezone={{
+            zones: [
+              {
+                timezoneName: 'Asia/Seoul',
+                displayLabel: 'Seoul',
+                tooltip: 'UTC+09:00',
+              },
+              {
+                timezoneName: 'Pacific/Guam',
+                displayLabel: 'Guam',
+                tooltip: 'UTC+10:00',
+              },
+            ],
+          }}
+          useDetailPopup={true}
+          useFormPopup={popup()}
+          view={selectedView}
+          week={{
+            showTimezoneCollapseButton: true,
+            timezonesCollapsed: false,
+            eventView: true,
+            taskView: true,
+          }}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          ref={calendarRef}
+          onAfterRenderEvent={onAfterRenderEvent}
+          onBeforeDeleteEvent={onBeforeDeleteEvent}
+          onClickDayname={onClickDayName}
+          onClickEvent={onClickEvent}
+          onClickTimezonesCollapseBtn={onClickTimezonesCollapseBtn}
+          onBeforeUpdateEvent={onBeforeUpdateEvent}
+          onBeforeCreateEvent={onBeforeCreateEvent}
+        />
         {verifyPayload ? null : (
           <Toast
             isOpened={open}
