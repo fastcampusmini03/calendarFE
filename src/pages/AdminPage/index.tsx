@@ -1,8 +1,14 @@
 import AnnualDutyList from '../../components/AnnualDutyList'
-import { useQuery } from 'react-query'
-import {  getDeleteDates, getEditDates, getSaveDates } from '../../apis/axios'
+import { QueryClient, useQuery, useQueryClient } from 'react-query'
+import {
+  getAllDates,
+  getCalendarDates,
+  getDeleteDates,
+  getEditDates,
+  getSaveDates,
+} from '../../apis/axios'
 import CalendarUI from '../../components/CalendarUI'
-import { DatesPayload } from '../../types/dates'
+import { ApproveData, CalendarData, DatesPayload, DeleteData, EditData } from '../../types/dates'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -14,10 +20,10 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
 function AdminPage() {
-  const { data: allDates } = useQuery<DatesPayload[]>('dates', getAllDates)
-  const { data: saveDates, isLoading } = useQuery<DatesPayload[]>('savedates', getSaveDates)
-  const { data: editDates } = useQuery<DatesPayload[]>('editDates', getEditDates)
-  const { data: deleteDates } = useQuery<DatesPayload[]>('deleteDates', getDeleteDates)
+  const { data: calendarDates } = useQuery<CalendarData[]>('dates', getCalendarDates)
+  const { data: saveDates, isLoading } = useQuery<ApproveData>('savedates', getSaveDates)
+  const { data: editDates } = useQuery<EditData>('editDates', getEditDates)
+  const { data: deleteDates } = useQuery<DeleteData>('deleteDates', getDeleteDates)
   const [created, setCreated] = useState<[]>([])
   const [updated, setUpdated] = useState<[]>([])
   const [deleted, setDeleted] = useState<[]>([])
@@ -40,9 +46,10 @@ function AdminPage() {
     queryClient.invalidateQueries(['auth', 'verify'])
     navigate('/')
   }
+  console.log(calendarDates)
   if (
     isLoading ||
-    allDates === undefined ||
+    calendarDates === undefined ||
     saveDates === undefined ||
     editDates === undefined ||
     deleteDates === undefined
@@ -75,7 +82,7 @@ function AdminPage() {
         <Grid item xs={8}>
           <CalendarUI
             view={'month'}
-            dates={allDates}
+            dates={calendarDates}
             setCreated={setCreated}
             setUpdated={setUpdated}
             setDeleted={setDeleted}

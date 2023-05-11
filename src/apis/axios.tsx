@@ -1,53 +1,45 @@
-import axios from 'axios'
-import { DatesPayload, MainDatePayload, MainPutDatePayload } from '../types/dates'
+import {
+  DatesPayload,
+  MainDatePayload,
+  ResponseApproveData,
+  ResponseData,
+  ResponseDeleteData,
+  ResponseEditData,
+} from '../types/dates'
 import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
-import { LoginResponse, SignupResponse, VerifyPayload } from '../types/response'
+import { LoginResponse, SignupResponse } from '../types/response'
+import { ResponseUser } from '../types/user'
 
 export const getUsers = async () => {
-  const response = await instance.get<DatesPayload[]>('/s/user')
-  return response.data
+  const response = await instance.get<ResponseUser>('/s/admin/users')
+  return response.data.data
 }
-export const postDate = async (post: MainDatePayload) => {
-  
-    const { data } = await instance.post('/s/user/annualDuty/save', post)
-    return data
- 
-}
-export const putDate = async ({ put, mainid }: any) => {
-  
-    const { data } = await instance.post(`/s/user/annualDuty/update/${mainid}`, put)
-    return data
-}
-export const deleteDate = async (mainid: any) => {
-  
-  const { data } = await instance.post(`/s/user/annualDuty/delete/${mainid}`)
-  return data
-}
-/** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
+
 export const getAllDates = async () => {
   const response = await instance.get<DatesPayload[]>('/s/admin/users')
   return response.data
 }
+
 /** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
-// export const getAllDates = async () => {
-//   const response = await instance.get<DatesPayload[]>('/s/annualDuty')
-//   return response.data
-// }
+export const getCalendarDates = async () => {
+  const response = await instance.get<ResponseData>('/annualDuty?year=2023&month=5')
+  return response.data.data
+}
 
 export const getSaveDates = async () => {
-  const response = await instance.get<DatesPayload[]>('/s/admin/save')
-  return response.data
+  const response = await instance.get<ResponseApproveData>('/s/admin/save?page=0')
+  return response.data.data
 }
 
 export const getEditDates = async () => {
-  const response = await instance.get<DatesPayload[]>('/s/admin/update')
-  return response.data
+  const response = await instance.get<ResponseEditData>('/s/admin/update')
+  return response.data.data
 }
 
 export const getDeleteDates = async () => {
-  const response = await instance.get<DatesPayload[]>('/s/admin/delete')
-  return response.data
+  const response = await instance.get<ResponseDeleteData>('/s/admin/delete')
+  return response.data.data
 }
 
 export const login = async (user: LoginRequest) => {
@@ -86,4 +78,22 @@ export const verify = async () => {
 export const refresh = async () => {
   const { data } = await instance.get<SignupResponse>('/auth/refresh')
   return data
+}
+
+/**Calendar 일정 작성, 수정, 삭제 */
+export const postDate = async (post: MainDatePayload) => {
+  
+  const { data } = await instance.post('/s/user/annualDuty/save', post)
+  return data
+
+}
+export const putDate = async ({ put, mainid }: any) => {
+
+  const { data } = await instance.post(`/s/user/annualDuty/update/${mainid}`, put)
+  return data
+}
+export const deleteDate = async (mainid: any) => {
+
+const { data } = await instance.post(`/s/user/annualDuty/delete/${mainid}`)
+return data
 }

@@ -9,7 +9,7 @@ import { theme } from '../../utils/theme'
 import './style.css'
 
 // import { addDate, addHours, subtractDate } from '../../utils/utils'
-import { DatesPayload } from '../../types/dates'
+import { CalendarData, DatesPayload, ResponseData } from '../../types/dates'
 // import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 // import Box from '@mui/material/Box'
@@ -38,10 +38,9 @@ type ViewType = 'month' | 'week' | 'day'
 //   },
 // ]
 
-
 interface PropsType {
   view: ViewType
-  dates: DatesPayload[]
+  dates: CalendarData[]
   setCreated: Function
   setUpdated: Function
   setDeleted: Function
@@ -135,13 +134,13 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
   /** api로부터 받아온 일정 데이터 */
   // const initialEvents: Partial<EventObject>[] = dates?.map((date) => ({
   //   id: date.id.toString(),
-  //   calendarId: date.calendarId.toString(),
+  //   calendarId: date.status,
   //   title: date.title,
-  //   start: new Date(date.start),
-  //   end: new Date(date.end),
-  //   email: date.email,
-  //   role: date.role,
-  //   attendees: [date.username],
+  //   start: new Date(date.startTime),
+  //   end: new Date(date.endTime),
+  //   email: date.user.email,
+  //   role: date.user.role,
+  //   attendees: [date.user.username],
   // }))
   const initialEvents: Partial<EventObject>[] = [
     {
