@@ -12,6 +12,22 @@ import { instance } from './instance'
 import { LoginResponse, SignupResponse } from '../types/response'
 import { ResponseUser } from '../types/user'
 
+export const getUserDuty = async () => {
+  const response = await instance.get('/s/user/annualDutyCheck')
+  return response.data
+}
+
+export const getUser = async () => {
+  const response = await instance.get<DatesPayload[]>('/s/user')
+  return response.data
+}
+
+//@ts-ignore
+export const postUser = async (user) => {
+  const response = await instance.post<DatesPayload[]>('/s/user', user)
+  return response.data
+}
+
 export const getUsers = async () => {
   const response = await instance.get<ResponseUser>('/s/admin/users')
   return response.data.data
