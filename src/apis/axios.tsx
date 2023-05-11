@@ -33,12 +33,44 @@ export const getSaveDates = async () => {
 }
 
 export const getEditDates = async () => {
-  const response = await instance.get<ResponseEditData>('/s/admin/update')
+  const response = await instance.get<ResponseEditData>('/s/admin/update?page=0')
   return response.data.data
 }
 
 export const getDeleteDates = async () => {
   const response = await instance.get<ResponseDeleteData>('/s/admin/delete')
+  return response.data.data
+}
+
+/** 등록 승인 수락 */
+export const acceptSave = async (id: number) => {
+  const response = await instance.post<ResponseData>(`/s/admin/save/accept/${id}`)
+  return response.data.data
+}
+/** 등록 승인 거절 */
+export const rejectSave = async (id: number) => {
+  const response = await instance.post<ResponseData>(`/s/admin/save/reject/${id}`)
+  return response.data.data
+}
+
+/** 수정 승인 수락 */
+export const acceptUpdate = async (id: number) => {
+  const response = await instance.post<ResponseData>(`/s/admin/update/accept/${id}`)
+  return response.data.data
+}
+/** 수정 승인 거절 */
+export const rejectUpdate = async (id: number) => {
+  const response = await instance.post<ResponseData>(`/s/admin/update/reject/${id}`)
+  return response.data.data
+}
+/** 삭제 승인 수락 */
+export const acceptDelete = async (id: number) => {
+  const response = await instance.post<ResponseData>(`/s/admin/delete/accept/${id}`)
+  return response.data.data
+}
+/** 삭제 승인 거절 */
+export const rejectDelete = async (id: number) => {
+  const response = await instance.post<ResponseData>(`/s/admin/delete/reject/${id}`)
   return response.data.data
 }
 
