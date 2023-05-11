@@ -5,6 +5,7 @@ import {
   ResponseData,
   ResponseDeleteData,
   ResponseEditData,
+  ResponseUpdateRole,
 } from '../types/dates'
 import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
@@ -71,6 +72,12 @@ export const acceptDelete = async (id: number) => {
 /** 삭제 승인 거절 */
 export const rejectDelete = async (id: number) => {
   const response = await instance.post<ResponseData>(`/s/admin/delete/reject/${id}`)
+  return response.data.data
+}
+
+/** 권한 업데이트 */
+export const updateRole = async (email: string, role: string) => {
+  const response = await instance.post<ResponseUpdateRole>('/s/admin/update/role', { email, role })
   return response.data.data
 }
 

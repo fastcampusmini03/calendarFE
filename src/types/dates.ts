@@ -12,6 +12,17 @@ export interface CalendarData {
   updatedAt: string
   updateStatus: any
 }
+
+/** 권한 변경 요청 데이터 response 타입 */
+export interface UpdateRoleData {
+  id: number
+  email: string
+  username: string
+  role: string
+  createdAt: string
+  updatedAt: string
+  loggedInAt: string
+}
 /** 승인 요청 response 데이터 타입 */
 export interface ApproveData {
   content: CalendarData[]
@@ -110,6 +121,13 @@ export interface ResponseEditData {
   status: number
   msg: string
   data: EditData
+}
+
+/** 권한 변경 api response 타입 */
+export interface ResponseUpdateRole {
+  status: number
+  msg: string
+  data: UpdateRoleData
 }
 
 export interface DatesPayload {
