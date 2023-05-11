@@ -17,7 +17,6 @@ import { useMutation, useQuery } from 'react-query'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { deleteDate, postDate, putDate, verify } from '../../apis/axios'
 import Toast from '../Common/Toast'
-import { usePutMutate } from '../../pages/MainPage'
 // import Button from '@mui/material/Button'
 
 type ViewType = 'month' | 'week' | 'day'
@@ -41,14 +40,14 @@ type ViewType = 'month' | 'week' | 'day'
 interface PropsType {
   view: ViewType
   dates: CalendarData[]
-  setCreated: Function
-  setUpdated: Function
-  setDeleted: Function
-  id: any
+  // setCreated: Function
+  // setUpdated: Function
+  // setDeleted: Function
+  // id: any
  
 }
 
-export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }: PropsType) {
+export default function CalendarUI({ view, dates }: PropsType) {
   
    const [mainid, setMainId] = useState()
   /**calendar 일정 작성 요청 */
@@ -132,44 +131,18 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
     },
   ]
   /** api로부터 받아온 일정 데이터 */
-  // const initialEvents: Partial<EventObject>[] = dates?.map((date) => ({
-  //   id: date.id.toString(),
-  //   calendarId: date.status,
-  //   title: date.title,
-  //   start: new Date(date.startTime),
-  //   end: new Date(date.endTime),
-  //   email: date.user.email,
-  //   role: date.user.role,
-  //   attendees: [date.user.username],
-  // }))
-  const initialEvents: Partial<EventObject>[] = [
-    {
-      id: '1',
-      calendarId: '0',
-      title: 'TOAST UI Calendar Study',
-      category: 'time',
-      // start: today,
-      // end: addHours(today, 3),
-    },
-    {
-      id: '2',
-      calendarId: '0',
-      title: 'Practice',
-      category: 'milestone',
-      // start: addDate(today, 1),
-      // end: addDate(today, 1),
-      isReadOnly: true,
-    },
-    {
-      id: '3',
-      calendarId: '0',
-      title: 'FE Workshop',
-      category: 'allday',
-      // start: subtractDate(today, 2),
-      // end: subtractDate(today, 1),
-      isReadOnly: true,
-    },
-  ];
+ 
+  const initialEvents: Partial<EventObject>[] = dates?.map((date) => ({
+    id: date.id.toString(),
+    calendarId: date.status,
+    title: date.title,
+    start: new Date(date.startTime),
+    end: new Date(date.endTime),
+    email: date.user.email,
+    role: date.user.role,
+    attendees: [date.user.username],
+  }))  
+  
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const getCalInstance = useCallback(() => calendarRef.current?.getInstance?.(), [])
@@ -227,7 +200,7 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
   const onAfterRenderEvent: ExternalEventTypes['afterRenderEvent'] = (res) => {
     console.log(res)
     res.title = res.isAllday === true ? '당직' + res.title : '연휴' + res.title
-    res.attendees.push(verifyPayload?.data.username);
+    // res.attendees.push(verifyPayload?.data.username);
     console.group('onAfterRenderEvent')
     console.log('Event Info : ', res.title)
     console.groupEnd()
@@ -241,7 +214,7 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
 
     const { id, calendarId } = res
     deleteMutate(mainid)
-    setDeleted(res)
+    // setDeleted(res)
     getCalInstance().deleteEvent(id, calendarId)
     } else {
       setDeleteOpen(true)
@@ -309,7 +282,7 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
     putMutate({put, mainid})
     console.log(mainid)
     console.log(event)
-    setUpdated(event)
+    // setUpdated(event)
     getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes)
   } else {
     setEditOpen(true)
@@ -321,16 +294,16 @@ export default function CalendarUI({ view,  setCreated, setUpdated, setDeleted }
     const event = {
       calendarId: eventData.calendarId || '',
       // id: String(Math.random()),
-      id: mainid,
+      // id: mainid,
       title: eventData.title,
       isAllday: eventData.isAllday,
-      start: "2023-05-08T18:47:43.08946",
-      end: "2023-05-10T18:47:44.08946",
+      start: new Date(eventData.start).toISOString(),
+      end: new Date(eventData.end).toISOString(),
       email: verifyPayload?.data.email,
       username: verifyPayload?.data.username,
       role: verifyPayload?.data.role,
     }
-    setCreated(event)
+    // setCreated(event)
     mutate(event)
     getCalInstance().createEvents([event])
   }
