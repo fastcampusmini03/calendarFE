@@ -21,7 +21,7 @@ import { useState, useEffect } from 'react'
 
 function AdminPage() {
   const { data: calendarDates } = useQuery<CalendarData[]>('dates', getCalendarDates)
-  const { data: saveDates, isLoading } = useQuery<ApproveData>('savedates', getSaveDates)
+  const { data: saveDates, isLoading } = useQuery<ApproveData>('saveDates', getSaveDates)
   const { data: editDates } = useQuery<EditData>('editDates', getEditDates)
   const { data: deleteDates } = useQuery<DeleteData>('deleteDates', getDeleteDates)
   const [created, setCreated] = useState<[]>([])
@@ -46,7 +46,7 @@ function AdminPage() {
     queryClient.invalidateQueries(['auth', 'verify'])
     navigate('/')
   }
-  console.log(calendarDates)
+
   if (
     isLoading ||
     calendarDates === undefined ||
