@@ -152,8 +152,7 @@ export default function PersistentDrawerRight({ children }: any) {
     }
   );
   // payload타입을 고려하기 아니면 server쪽 응답을 어떻게 보내주는가에 따라 타입이 바뀔 수 있다.axios에서 verify타입 확인
-  console.log(verifyPayload?.payload.user.email)
-  console.log(verifyPayload?.payload.user.username)
+  
 
   const handleLogout = () => {
     removeCookie(ACCESSTOKEN_KEY);
@@ -228,9 +227,9 @@ export default function PersistentDrawerRight({ children }: any) {
                 logout
               </Button> */}
               <WrapUserName>
-              <UserName>{verifyPayload?.payload.user.username}</UserName>
+              <UserName>{verifyPayload?.data.username}</UserName>
               
-              <UserName>{verifyPayload?.payload.user.email}</UserName>
+              <UserName>{verifyPayload?.data.email}</UserName>
               </WrapUserName>
             </Wrap>
             </WrapButton>
