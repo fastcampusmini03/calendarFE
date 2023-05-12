@@ -76,6 +76,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
       content: '""',
     },
   },
+  
   '@keyframes ripple': {
     '0%': {
       transform: 'scale(.8)',
