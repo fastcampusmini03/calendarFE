@@ -12,21 +12,19 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: ['GmargetSans', 'Comfortaa'].join(','),
+    fontFamily: ['Gmarket Sans', 'Comfortaa'].join(','),
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: `@font-face {
-                    font-family: 'GmarketSanse';
-                    src: url('assets/GmarketSansTTKLight.ttf');
+                    font-family: 'Gmarket Sans';
+                    src: url('/fonts/GmarketSansTTFLight.ttf') format('truetype');
                     font-weight: 300;
                     font-style: normal;
                 }
                 @font-face {
                     font-family: 'Comfortaa';
-                    src: url('assets/Comfortaa-Light.ttf');
-                    font-weight: 300;
-                    font-style: normal;
+                    src: url('/fonts/Comfortaa-Medium.ttf') format('truetype');
                 }`,
     },
     MuiButton: {
@@ -79,7 +77,7 @@ export const theme = createTheme({
     MuiTypography: {
       styleOverrides: {
         root: {
-          fontFamily: ['GmarketSans', 'Comfortaa'].join(','),
+          fontFamily: ['Gmarket Sans', 'Comfortaa'].join(','),
         },
       },
     },
