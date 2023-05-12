@@ -52,14 +52,9 @@ function AdminPage() {
           display="flex"
           flexDirection="row"
           alignItems="center"
-          justifyContent="space-between"
+          justifyContent="right"
           gap="10px"
         >
-          <Box display="flex" gap="10px">
-            <Button>연차/당직</Button>
-            <Button href="/admin/user">사용자 관리</Button>
-          </Box>
-
           <Box display="flex" gap="10px">
             <Chip icon={<FaceIcon />} label="Admin" variant="outlined" />
             <Button variant="outlined" onClick={handleLogout}>

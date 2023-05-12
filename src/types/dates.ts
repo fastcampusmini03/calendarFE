@@ -20,9 +20,6 @@ export interface UpdateRoleData {
   email: string
   username: string
   role: string
-  createdAt: string
-  updatedAt: string
-  loggedInAt: string
 }
 /** 승인 요청 response 데이터 타입 */
 export interface ApproveData {

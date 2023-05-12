@@ -37,9 +37,9 @@ export const theme = createTheme({
          * variant outlined type style
          */
         outlined: {
-          backgroundColor: '#c8c8c8',
+          backgroundColor: '#DBDFEA',
           border: 'none',
-          color: '#5c940d',
+          color: 'red',
           '&:hover': {
             border: 'none',
             backgroundColor: 'red',
@@ -50,13 +50,13 @@ export const theme = createTheme({
          * variant text type style
          */
         text: {
-          backgroundColor: '#2CDFFF',
-          color: '#fff',
+          backgroundColor: '#DBDFEA',
+          color: 'blue',
           transition: 'all 0.3s ease',
           padding: '3px 9px 3px 9px',
 
           '&:hover': {
-            backgroundColor: '#08D8C1',
+            backgroundColor: 'blue',
             color: '#fff',
             filter: 'brightness(1.2)',
           },
@@ -137,7 +137,7 @@ export const Search = styled('div')(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(3),
-    width: '40%',
+    width: '80%',
   },
 }))
 

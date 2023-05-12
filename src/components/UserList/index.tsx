@@ -18,7 +18,9 @@ import DialogActions from '@mui/material/DialogActions'
 import Toast from '../Common/Toast'
 import { User, UserData } from '../../types/user'
 import { updateRole } from '../../apis/axios'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
+import CssBaseline from '@mui/material/CssBaseline'
+import Container from '@mui/material/Container'
 
 interface UserPageProps {
   users: UserData
@@ -27,7 +29,7 @@ interface UserPageProps {
 export default function UserList({ users }: UserPageProps) {
   /** 검색 결과 state */
   const [searchResult, setSearchResult] = useState<User[]>(users.content)
-
+  console.log(searchResult)
   /** toast 컴포넌트 팝업 토글 */
   const [toastToggle, setToastToggle] = useState(false)
 
@@ -51,8 +53,21 @@ export default function UserList({ users }: UserPageProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
 
   /** 권한 변경 mutate */
-  const { mutate: mutateUR } = useMutation((params: { email: string; role: string }) =>
-    updateRole(params.email, params.role),
+  const queryClient = useQueryClient()
+  const { mutate: mutateUR } = useMutation(
+    (params: { email: string; role: string }) => updateRole(params.email, params.role),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('users', { exact: true }).then(() => {
+          const queryData = queryClient.getQueryData<UserData>('users')
+          if (queryData) {
+            const updatedUsers = queryData.content
+            setAnchorEl(null)
+            setSearchResult(updatedUsers)
+          }
+        })
+      },
+    },
   )
 
   /**클릭시 팝업위치와 선택된 유저 정보를 바탕으로 정보수정을 요청하는 메소드*/
@@ -98,84 +113,113 @@ export default function UserList({ users }: UserPageProps) {
         alignItems: 'center',
       }}
     >
-      <Box display="flex" flexDirection="row" alignItems="center" gap="10px">
-        <Button href="/admin">연차/당직</Button>
-        <Button>사용자 관리</Button>
-      </Box>
-      <Typography variant="h2" color="initial" align="center">
-        사용자 관리
+      <CssBaseline />
+      <Typography
+        variant="h2"
+        color="initial"
+        style={{ whiteSpace: 'nowrap', textAlign: 'center' }}
+      >
+        <span style={{ textAlign: 'center', marginLeft: '100px' }}>
+          사용자 관리{' '}
+          <a
+            style={{
+              fontSize: '20px',
+              textDecoration: 'none',
+              color: '#000',
+            }}
+            href="/admin"
+          >
+            일정 관리로 이동
+          </a>
+        </span>
       </Typography>
-      <Search>
-        <SearchIconWrapper>
-          <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase
-          onChange={handleInputChange}
-          placeholder="사용자 이름을 입력해주세요"
-          inputProps={{ 'aria-label': 'search' }}
-        />
-      </Search>
+      <Container
+        maxWidth="md"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column',
+          border: '2px solid black',
+          height: '100vh',
+          paddingTop: '20px',
+        }}
+      >
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
+            onChange={handleInputChange}
+            placeholder="사용자 이름을 입력해주세요"
+            inputProps={{ 'aria-label': 'search' }}
+          />
+        </Search>
 
-      <Box sx={{ width: '40%', justifyItems: 'center' }}>
-        <Stack spacing={2}>
-          {searchResult.map((data) => (
-            <div key={data.id}>
-              <ListPaper onClick={(event) => popupToggle(event)}>
-                <Typography variant="h5">
-                  {data.username} ({data.email})
-                </Typography>
-              </ListPaper>
-              <Popover
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'center',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-              >
-                <Box sx={{ padding: '10px' }}>
-                  <Typography variant="h6">권한을 선택하세요</Typography>
-                  <Box
-                    sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
-                  >
-                    <RadioGroup value={value} onChange={editUserRole}>
-                      <FormControlLabel value="USER" control={<Radio />} label="일반" />
-                      <FormControlLabel value="ADMIN" control={<Radio />} label="관리자" />
-                    </RadioGroup>
-                    <Button onClick={dialogToggle}>변경</Button>
-                    <Dialog open={dialogOpen}>
-                      <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
-                      <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                          '{data.username}'의 권한을 {value === 'USER' ? '일반' : '관리자'}(으)로
-                          변경하시겠습니까?
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={editRole(data.email, value)}>예</Button>
-                        <Button onClick={dialogToggle} autoFocus>
-                          아니오
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
+        <Box sx={{ width: '80%', justifyItems: 'center' }}>
+          <Stack spacing={2}>
+            {searchResult.map((data) => (
+              <div key={data.id}>
+                <ListPaper onClick={(event) => popupToggle(event)}>
+                  <Typography variant="h5">
+                    {data.username} ({data.email}) {data.role === 'USER' ? '일반' : '관리자'}
+                  </Typography>
+                </ListPaper>
+                <Popover
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'center',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                >
+                  <Box sx={{ padding: '10px' }}>
+                    <Typography variant="h6">권한을 선택하세요</Typography>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <RadioGroup value={value} onChange={editUserRole}>
+                        <FormControlLabel value="USER" control={<Radio />} label="일반" />
+                        <FormControlLabel value="ADMIN" control={<Radio />} label="관리자" />
+                      </RadioGroup>
+                      <Button onClick={dialogToggle}>변경</Button>
+                      <Dialog open={dialogOpen}>
+                        <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            '{data.username}'의 권한을 {value === 'USER' ? '일반' : '관리자'}(으)로
+                            변경하시겠습니까?
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={editRole(data.email, value)}>예</Button>
+                          <Button onClick={dialogToggle} autoFocus>
+                            아니오
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </Box>
                   </Box>
-                </Box>
-              </Popover>
-            </div>
-          ))}
-        </Stack>
-      </Box>
-      {/*권한 변경 confirm시 나타나는 Toast*/}
-      <Toast
-        isOpened={toastToggle}
-        handleClose={() => setToastToggle(false)}
-        message={'권한변경 완료!'}
-      />
+                </Popover>
+              </div>
+            ))}
+          </Stack>
+        </Box>
+        {/*권한 변경 confirm시 나타나는 Toast*/}
+        <Toast
+          isOpened={toastToggle}
+          handleClose={() => setToastToggle(false)}
+          message={'권한변경 완료!'}
+        />
+      </Container>
     </div>
   )
 }

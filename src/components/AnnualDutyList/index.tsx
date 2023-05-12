@@ -143,8 +143,22 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
           color="initial"
           style={{ whiteSpace: 'nowrap', textAlign: 'center' }}
         >
-          연차 / 당직 관리
+          <span>
+            일정 관리
+            <a
+              style={{
+                fontSize: '20px',
+                textDecoration: 'none',
+                color: '#000',
+                marginLeft: '20px',
+              }}
+              href="/admin/user"
+            >
+              사용자 관리로 이동
+            </a>
+          </span>
         </Typography>
+
         <Tabs value={value} onChange={handleChange} variant="fullWidth">
           <Tab label="승인" value="approve" />
           <Tab label="수정" value="update" />
