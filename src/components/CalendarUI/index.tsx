@@ -6,17 +6,11 @@ import '@toast-ui/calendar/dist/toastui-calendar.min.css'
 import Calendar from '@toast-ui/react-calendar'
 import { theme } from '../../utils/theme'
 import './style.css'
-
-// import { addDate, addHours, subtractDate } from '../../utils/utils'
 import { CalendarData } from '../../types/dates'
-// import Typography from '@mui/material/Typography'
-// import Chip from '@mui/material/Chip'
-// import Box from '@mui/material/Box'
 import { useMutation, useQuery } from 'react-query'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { deleteDate, postDate, putDate, verify } from '../../apis/axios'
 import Toast from '../Common/Toast'
-// import Button from '@mui/material/Button'
 
 type ViewType = 'month' | 'week' | 'day'
 
@@ -39,14 +33,14 @@ type ViewType = 'month' | 'week' | 'day'
 interface PropsType {
   view: ViewType
   dates: CalendarData[]
-  // setCreated: Function
-  // setUpdated: Function
-  // setDeleted: Function
-  // id: any
+  setYear: any
+  setMonth: any
+ 
 }
 
-export default function CalendarUI({ view, dates }: PropsType) {
-  const [mainid, setMainId] = useState()
+export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType) {
+  
+   const [mainid, setMainId] = useState()
   /**calendar 일정 작성 요청 */
   const { mutate } = useMutation(postDate, {
     onSuccess: (data) => {
@@ -68,7 +62,8 @@ export default function CalendarUI({ view, dates }: PropsType) {
     },
   })
 
-  /**snackbar state */
+
+/**snackbar state */
   const [editopen, setEditOpen] = useState(false)
   const [editmessage, setEditMessage] = useState('')
 
@@ -155,7 +150,9 @@ export default function CalendarUI({ view, dates }: PropsType) {
     const rangeEnd = calInstance.getDateRangeEnd()
 
     let year = calDate.getFullYear()
+    setYear(year)
     let month = calDate.getMonth() + 1
+    setMonth(month)
     let date = calDate.getDate()
     let dateRangeText: string
 
@@ -217,7 +214,7 @@ export default function CalendarUI({ view, dates }: PropsType) {
       setDeleteMessage('작성자가 달라 이 글을 삭제 할 수 없습니다')
     }
   }
-  // console.log(verifyPayload?.payload.user.role)
+
   // const onChangeSelect = (ev: ChangeEvent<HTMLSelectElement>) => {
   //   setSelectedView(ev.target.value as ViewType)
   // }
@@ -232,6 +229,7 @@ export default function CalendarUI({ view, dates }: PropsType) {
     if ((ev.target as HTMLButtonElement).tagName === 'BUTTON') {
       const button = ev.target as HTMLButtonElement
       const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
+      console.log(ev)
       getCalInstance()[actionName]()
       updateRenderRangeText()
     }
@@ -262,47 +260,68 @@ export default function CalendarUI({ view, dates }: PropsType) {
   }
   /**일정 수정 했을 때 발생 이벤트 */
   const onBeforeUpdateEvent: ExternalEventTypes['beforeUpdateEvent'] = (updateData) => {
+    const offset = new Date().getTimezoneOffset() * 60000;
+    /**시간이 변경 되면 */
+    const offsetstart: any = new Date(updateData.changes.start as Date)
+    const datestart = offsetstart - offset
+
+    const offsetend: any = new Date(updateData.changes.end as Date)
+    const dateend = offsetend - offset
+   /**시간이 그대로면*/
+   const offseteventstart: any = new Date(updateData.event.start as Date)
+   const eventstart = offseteventstart - offset
+  
+   const offseteventend: any = new Date(updateData.event.end as Date)
+   const eventend = offseteventend - offset
+   
     if (verifyPayload.data.username === user) {
-      console.group('onBeforeUpdateEvent')
-      console.log(updateData)
-      console.groupEnd()
-      const event = {
-        // id: String(Math.random()), calendar 전체 데이터 불러와서 거기에 맞는 id를 찾는다
-        title: updateData.changes.title,
-        start: '2023-05-08T18:47:43.08946',
-        end: '2023-05-10T18:47:44.08946',
-      }
-      const targetEvent = updateData.event
-      const changes = { ...updateData.changes }
-      let put = event
-      putMutate({ put, mainid })
-      console.log(mainid)
-      console.log(event)
-      // setUpdated(event)
-      getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes)
-    } else {
-      setEditOpen(true)
-      setEditMessage('작성자가 달라 이 글을 수정 할 수 없습니다.')
+    console.group('onBeforeUpdateEvent')
+    console.log(updateData)
+    console.groupEnd()
+   
+    const event = {
+      title: updateData.changes.title,
+      start: updateData.changes.start ? new Date(datestart).toISOString() : new Date(eventstart).toISOString() ,
+      end: updateData.changes.end ? new Date(dateend).toISOString() : new Date(eventend).toISOString(),
     }
+    const targetEvent = updateData.event
+    const changes = { ...updateData.changes }
+    let put = event;
+    putMutate({put, mainid})
+    console.log(mainid)
+    console.log(event.start)
+    console.log(event.end)
+  
+    getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes)
+  } else {
+    setEditOpen(true)
+    setEditMessage('작성자가 달라 이 글을 수정 할 수 없습니다.')
   }
+}
 
   const onBeforeCreateEvent: ExternalEventTypes['beforeCreateEvent'] = (eventData) => {
+    const offset = new Date().getTimezoneOffset() * 60000;
+    const newoffset: any = new Date(eventData.start as Date)
+    const newdate = newoffset - offset
+    console.log(newdate.toString())
+   
+    const newoffsetend: any = new Date(eventData.end as Date)
+    const newdateend = newoffsetend - offset
+    console.log(newdateend.toString())
     const event = {
       calendarId: eventData.calendarId || '',
-      // id: String(Math.random()),
-      // id: mainid,
       title: eventData.title,
       isAllday: eventData.isAllday,
-      start: eventData.start ? new Date(eventData.start as Date).toISOString() : '',
-      end: eventData.end ? new Date(eventData.end as Date).toISOString() : '',
+      start: eventData.start ? new Date(newdate).toISOString() : '',
+      end: eventData.end ? new Date(newdateend).toISOString() : '',
       email: verifyPayload?.data.email,
       username: verifyPayload?.data.username,
       role: verifyPayload?.data.role,
     }
-    // setCreated(event)
     mutate(event)
     getCalInstance().createEvents([event])
   }
+
 
   return (
     <div>
