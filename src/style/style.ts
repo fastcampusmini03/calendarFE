@@ -7,13 +7,25 @@ export const theme = createTheme({
     primary: {
       main: '#5c940d',
     },
+    background: {
+      default: '#DBDFEA',
+    },
+  },
+  typography: {
+    fontFamily: ['GmargetSans', 'Comfortaa'].join(','),
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: `@font-face {
-                    font-family: 'Pretendard-Regular';
-                    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-                    font-weight: 400;
+                    font-family: 'GmarketSanse';
+                    src: url('assets/GmarketSansTTKLight.ttf');
+                    font-weight: 300;
+                    font-style: normal;
+                }
+                @font-face {
+                    font-family: 'Comfortaa';
+                    src: url('assets/Comfortaa-Light.ttf');
+                    font-weight: 300;
                     font-style: normal;
                 }`,
     },
@@ -61,6 +73,13 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '20px',
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily: ['GmarketSans', 'Comfortaa'].join(','),
         },
       },
     },
