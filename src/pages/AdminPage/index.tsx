@@ -12,21 +12,21 @@ import { removeCookie } from '../../utils/cookies'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-
+// import { useState, useEffect } from 'react'
 
 function AdminPage() {
   const [year, setYear] = useState(2023)
   const [month, setMonth] = useState(5)
-  const { data: calendarDates, refetch } = useQuery<CalendarData[]>('dates', () => getCalendarDates({year, month}))
+  const { data: calendarDates, refetch } = useQuery<CalendarData[]>('dates', () =>
+    getCalendarDates({ year, month }),
+  )
   const { data: saveDates, isLoading } = useQuery<ApproveData>('saveDates', getSaveDates)
   const { data: editDates } = useQuery<EditData>('editDates', getEditDates)
   const { data: deleteDates } = useQuery<DeleteData>('deleteDates', getDeleteDates)
-  
-
 
   useEffect(() => {
-    refetch();
-  }, [year,month]);
+    refetch()
+  }, [year, month])
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -47,39 +47,40 @@ function AdminPage() {
   }
   return (
     <>
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        gap="10px"
-        marginBottom="10px"
-      >
-        <Box display="flex" gap="10px">
-          <Button>연차/당직</Button>
-          <Button href="/admin/user">사용자 관리</Button>
-        </Box>
+      <Box sx={{ background: 'default' }}>
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          gap="10px"
+        >
+          <Box display="flex" gap="10px">
+            <Button>연차/당직</Button>
+            <Button href="/admin/user">사용자 관리</Button>
+          </Box>
 
-        <Box display="flex" gap="10px">
-          <Button variant="outlined" onClick={handleLogout}>
-            로그아웃
-          </Button>
-          <Chip icon={<FaceIcon />} label="Admin" variant="outlined" />
+          <Box display="flex" gap="10px">
+            <Button variant="outlined" onClick={handleLogout}>
+              로그아웃
+            </Button>
+            <Chip icon={<FaceIcon />} label="Admin" variant="outlined" />
+          </Box>
         </Box>
+        <Grid container spacing={1}>
+          <Grid item xs={8}>
+            <CalendarUI
+              view={'month'}
+              dates={calendarDates}
+              setYear={setYear}
+              setMonth={setMonth}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <AnnualDutyList saveDates={saveDates} editDates={editDates} deleteDates={deleteDates} />
+          </Grid>
+        </Grid>
       </Box>
-      <Grid container spacing={1}>
-        <Grid item xs={8}>
-          <CalendarUI
-            view={'month'}
-            dates={calendarDates}
-            setYear={setYear}
-            setMonth={setMonth}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <AnnualDutyList saveDates={saveDates} editDates={editDates} deleteDates={deleteDates} />
-        </Grid>
-      </Grid>
     </>
   )
 }
