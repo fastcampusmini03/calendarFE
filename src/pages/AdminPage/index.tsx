@@ -11,27 +11,22 @@ import FaceIcon from '@mui/icons-material/Face'
 import { removeCookie } from '../../utils/cookies'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { useNavigate } from 'react-router-dom'
-// import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
 
 function AdminPage() {
-  const { data: calendarDates } = useQuery<CalendarData[]>('dates', getCalendarDates)
+  const [year, setYear] = useState(2023)
+  const [month, setMonth] = useState(5)
+  const { data: calendarDates, refetch } = useQuery<CalendarData[]>('dates', () => getCalendarDates({year, month}))
   const { data: saveDates, isLoading } = useQuery<ApproveData>('saveDates', getSaveDates)
   const { data: editDates } = useQuery<EditData>('editDates', getEditDates)
   const { data: deleteDates } = useQuery<DeleteData>('deleteDates', getDeleteDates)
-  // const [created, setCreated] = useState<[]>([])
-  // const [updated, setUpdated] = useState<[]>([])
-  // const [deleted, setDeleted] = useState<[]>([])
+  
 
-  // useEffect(() => {
-  //   console.log('=============created===================')
-  //   console.log(created)
 
-  //   console.log('=============updated===================')
-  //   console.log(updated)
-
-  //   console.log('=============deleted===================')
-  //   console.log(deleted)
-  // }, [created, updated, deleted])
+  useEffect(() => {
+    refetch();
+  }, [year,month]);
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -77,9 +72,8 @@ function AdminPage() {
           <CalendarUI
             view={'month'}
             dates={calendarDates}
-            // setCreated={setCreated}
-            // setUpdated={setUpdated}
-            // setDeleted={setDeleted}
+            setYear={setYear}
+            setMonth={setMonth}
           />
         </Grid>
         <Grid item xs={4}>

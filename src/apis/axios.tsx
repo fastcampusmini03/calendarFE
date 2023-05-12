@@ -38,9 +38,8 @@ export const getAllDates = async () => {
   return response.data
 }
 
-/** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
-export const getCalendarDates = async () => {
-  const response = await instance.get<ResponseData>(`/annualDuty?year=2023&month=5`)
+export const getCalendarDates = async ({ year, month }: any) => {
+  const response = await instance.get<ResponseData>(`/annualDuty?year=${year}&month=${month}`)
   return response.data.data
 }
 
@@ -53,6 +52,12 @@ export const getAllCalendarDates = async () => {
   const response = await instance.get<ResponseData>('/annualDuty')
   return response.data.data
 }
+
+/** 관리자 전용 : 모든 데이터를 가져오는 메소드 */
+// export const getCalendarDates = async () => {
+//   const response = await instance.get<ResponseData>('/annualDuty?year=2023&month=5')
+//   return response.data.data
+// }
 
 export const getSaveDates = async () => {
   const response = await instance.get<ResponseApproveData>('/s/admin/save?page=0')
