@@ -11,7 +11,8 @@ import FaceIcon from '@mui/icons-material/Face'
 import { removeCookie } from '../../utils/cookies'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { useNavigate } from 'react-router-dom'
-// import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
 
 function AdminPage() {
   const [year, setYear] = useState(2023)

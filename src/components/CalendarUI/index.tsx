@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import type { EventObject, ExternalEventTypes, Options } from '@toast-ui/calendar'
 import type { MouseEvent } from 'react'
-import type { MouseEvent } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import '@toast-ui/calendar/dist/toastui-calendar.min.css'
 import Calendar from '@toast-ui/react-calendar'
