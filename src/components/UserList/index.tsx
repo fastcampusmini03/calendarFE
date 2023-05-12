@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import { DatesPayload, UsersPayload } from '../../types/dates'
 import Stack from '@mui/material/Stack'
 
 import SearchIcon from '@mui/icons-material/Search'

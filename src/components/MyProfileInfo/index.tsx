@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import * as S from './style'
 
-import { Box, Grid, TextField, CssBaseline, Button, FormControl } from '@mui/material'
+import { Box, Grid, Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { usePostUser } from '../../hooks/usePostUser'
 import { useNavigate } from 'react-router-dom'
 import Toast from '../Common/Toast'
 
-interface UserInput {
-  username: string
-  password: string
-}
+// interface UserInput {
+//   username: string
+//   password: string
+// }
 
 //@ts-ignore
 const MyprofileInfo = ({ userInfo }) => {
   const navigate = useNavigate()
-  const [userInput, setUserInput] = useState<UserInput>({ username: '', password: '' })
+  // const [userInput, setUserInput] = useState<UserInput>({ username: '', password: '' })
   const { updateUser, isOpened } = usePostUser()
 
   const [isClicked, setIsClicked] = useState(false)

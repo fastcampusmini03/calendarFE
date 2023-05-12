@@ -106,18 +106,13 @@ export const login = async (user: LoginRequest) => {
   }
 }
 
-export const signup = async (user: SignupRequest) => {
+export const signup = async (user: SignupRequest): Promise<SignupResponse> => {
   try {
-    const { data } = await instance.post<SignupResponse>(
-      '/join',
-      user,
-      // {
-      //   headers: { 'Content-Type': 'multipart/form-data' },
-      // }
-    )
+    const { data } = await instance.post<SignupResponse>('/join', user)
     return data
   } catch (error) {
     console.log(error)
+    throw error // 예외를 던져서 catch 블록에서 오류 처리를 할 수 있도록 합니다.
   }
 }
 
@@ -137,18 +132,14 @@ export const refresh = async () => {
 
 /**Calendar 일정 작성, 수정, 삭제 */
 export const postDate = async (post: MainDatePayload) => {
-  
   const { data } = await instance.post('/s/user/annualDuty/save', post)
   return data
-
 }
 export const putDate = async ({ put, mainid }: any) => {
-
   const { data } = await instance.post(`/s/user/annualDuty/update/${mainid}`, put)
   return data
 }
 export const deleteDate = async (mainid: any) => {
-
-const { data } = await instance.post(`/s/user/annualDuty/delete/${mainid}`)
-return data
+  const { data } = await instance.post(`/s/user/annualDuty/delete/${mainid}`)
+  return data
 }
