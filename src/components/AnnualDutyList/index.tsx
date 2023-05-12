@@ -3,7 +3,7 @@ import { ApproveData, DeleteData, EditData } from '../../types/dates'
 import Typography from '@mui/material/Typography'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
-import { Box, Button } from '@mui/material'
+import { Box, Button, CssBaseline } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
@@ -133,6 +133,7 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
 
   return (
     <div>
+      <CssBaseline />
       <Box>
         <Typography
           variant="h2"
