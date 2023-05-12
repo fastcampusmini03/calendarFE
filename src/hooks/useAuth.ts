@@ -9,13 +9,15 @@ export const useAuth = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [isOpened, setIsOpened] = useState(false)
+  const [userName, setUserName] = useState('')
 
   const successLogin = (data: LoginResponse | SignupResponse) => {
     // setCookie('accessToken', data.payload!.accessToken, {
     //   path: '/',
     //   maxAge: data.payload!.content?.exp - data.payload!.content?.iat,
     // })
-    console.log(data)
+    console.log(data.data.username)
+    setUserName(data.data.username)
     setIsOpened((prev) => !prev)
   }
 
@@ -40,5 +42,5 @@ export const useAuth = () => {
     navigate('/login')
   }
 
-  return { loginUser, signupUser, logoutUser, isOpened, isError }
+  return { loginUser, signupUser, logoutUser, isOpened, isError, userName }
 }
