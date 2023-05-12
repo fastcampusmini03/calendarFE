@@ -11,7 +11,7 @@ interface UserInput {
 }
 
 const LoginForm = () => {
-  const { loginUser, isOpened, isError } = useAuth()
+  const { loginUser, isOpened, isError, userName } = useAuth()
   const [userInput, setUserInput] = useState<UserInput>({ email: '', password: '' })
 
   const navigate = useNavigate()
@@ -19,6 +19,7 @@ const LoginForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    
     loginUser(userInput)
   }
 
@@ -79,7 +80,11 @@ const LoginForm = () => {
           </Box>
         </Box>
       </Container>
-      <Toast isOpened={isOpened} handleClose={() => navigate('/')} message={`님 환영합니다!`} />
+      <Toast
+        isOpened={isOpened}
+        handleClose={() => navigate('/')}
+        message={`${userName}님 환영합니다!`}
+      />
     </>
   )
 }
