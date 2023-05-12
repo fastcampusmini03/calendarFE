@@ -1,38 +1,29 @@
 import PersistentDrawerRight from "../../components/Header"
 import { useQuery } from 'react-query'
-// import CalendarUI from '../../components/CalendarUI'
-import { CalendarData, DatesPayload } from '../../types/dates'
+import { CalendarData  } from '../../types/dates'
 import { useEffect, useState } from "react"
 import CalendarUI from "../../components/CalendarUI"
-import { getCalendarDates } from "../../apis/axios"
+import {  getCalendarDates } from "../../apis/axios"
 
 
 
 
 function MainPage() {
-  const { data: calendarDates, isLoading } = useQuery<CalendarData[] | any>('dates', getCalendarDates)
-  // const [created, setCreated] = useState<[]>([]);
-  // const [updated, setUpdated] = useState<[]>([]);
-  // const [deleted, setDeleted] = useState<[]>([]);
-
-  // useEffect(() => {
-  //      console.log('=============created===================')
-  //      console.log(created);
-
-  //      console.log('=============updated===================')
-  //      console.log(updated);
-
-  //      console.log('=============deleted===================')
-  //      console.log(deleted);
-
-  // }, [created, updated, deleted])
-  // const { data: dates, isLoading } = useQuery<DatesPayload[]>('dates', getAllDates)
-  // if (isLoading || calendarDates === undefined) {
-  //   return <div>로딩중...</div>
-  // }
+  /**calendar next/prev 버튼 기능 */
+const [year, setYear] = useState(2023)
+const [month, setMonth] = useState(5)
+console.log(year)
+console.log(month)
+// const queryClient = useQueryClient();
+  const { data: calendarDates, refetch } = useQuery<CalendarData[] | any>('dates', () => getCalendarDates({year, month})  
+  )
+  useEffect(() => {
+    refetch();
+  }, [year,month]);
+  
   return (
     <PersistentDrawerRight>
-      <CalendarUI view="month" dates={calendarDates} />
+      <CalendarUI view="month" dates={calendarDates} setYear={setYear} setMonth={setMonth}/>
     </PersistentDrawerRight>
   )
 }

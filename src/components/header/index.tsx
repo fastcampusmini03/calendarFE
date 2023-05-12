@@ -286,7 +286,7 @@ export default function PersistentDrawerRight({ children }: any) {
           ))}
           </>
           ): 
-          <>
+          <div>
           {['Profile', '당직', '연차'].map((text, index) => (
               
             <ListItem key={text} disablePadding>
@@ -298,7 +298,7 @@ export default function PersistentDrawerRight({ children }: any) {
             </ListItem>
            
           ))}
-          </>
+          </div>
           }
         </List>
         <Divider />
