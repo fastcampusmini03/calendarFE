@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import type { EventObject, ExternalEventTypes, Options } from '@toast-ui/calendar'
 import type { MouseEvent } from 'react'
+import type { MouseEvent } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import '@toast-ui/calendar/dist/toastui-calendar.min.css'
 import Calendar from '@toast-ui/react-calendar'
@@ -42,25 +43,25 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
   
    const [mainid, setMainId] = useState()
   /**calendar 일정 작성 요청 */
-    const { mutate } = useMutation(postDate, {
-      onSuccess: (data) => {
-        console.log(data)
-        console.log(data.data.id)
-      },
-    });
-  
+  const { mutate } = useMutation(postDate, {
+    onSuccess: (data) => {
+      console.log(data)
+      console.log(data.data.id)
+    },
+  })
+
   /**calendar 일정 수정  */
   const { mutate: putMutate } = useMutation(putDate, {
     onSuccess: (data) => {
       console.log(data)
     },
-  });
-/**calendar 일정 삭제  */
+  })
+  /**calendar 일정 삭제  */
   const { mutate: deleteMutate } = useMutation(deleteDate, {
     onSuccess: (data) => {
       console.log(data)
     },
-  });
+  })
 
 
 /**snackbar state */
@@ -83,8 +84,8 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     setDeleteOpen(false)
     setOpen(false)
   }
- 
-/**user 인증 */
+
+  /**user 인증 */
   const [user, setUser] = useState<string>()
   const { data: verifyPayload, status } = useQuery(['verify', ACCESSTOKEN_KEY], verify, {
     retry: false,
@@ -98,7 +99,6 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     }
     return false
   }
- 
 
   const calendarRef = useRef<typeof Calendar>(null)
   const [selectedDateRangeText, setSelectedDateRangeText] = useState('')
@@ -123,7 +123,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     },
   ]
   /** api로부터 받아온 일정 데이터 */
- 
+
   const initialEvents: Partial<EventObject>[] = dates?.map((date) => ({
     id: date.id.toString(),
     calendarId: date.status,
@@ -133,8 +133,8 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     email: date.user.email,
     role: date.user.role,
     attendees: [date.user.username],
-  }))  
-  
+  }))
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const getCalInstance = useCallback(() => calendarRef.current?.getInstance?.(), [])
@@ -202,14 +202,14 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
 
   const onBeforeDeleteEvent: ExternalEventTypes['beforeDeleteEvent'] = (res) => {
     if (verifyPayload.data.username === user) {
-    console.group('onBeforeDeleteEvent')
-    console.log('Event Info : ', res.title)
-    console.groupEnd()
+      console.group('onBeforeDeleteEvent')
+      console.log('Event Info : ', res.title)
+      console.groupEnd()
 
-    const { id, calendarId } = res
-    deleteMutate(mainid)
-    // setDeleted(res)
-    getCalInstance().deleteEvent(id, calendarId)
+      const { id, calendarId } = res
+      deleteMutate(mainid)
+      // setDeleted(res)
+      getCalInstance().deleteEvent(id, calendarId)
     } else {
       setDeleteOpen(true)
       setDeleteMessage('작성자가 달라 이 글을 삭제 할 수 없습니다')
@@ -235,7 +235,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
       updateRenderRangeText()
     }
   }
-/**일정 클릭 했을 때 발생 이벤트 */
+  /**일정 클릭 했을 때 발생 이벤트 */
   const onClickEvent: ExternalEventTypes['clickEvent'] = (res) => {
     console.group('onClickEvent')
     console.log('MouseEvent : ', res.nativeEvent)
@@ -259,7 +259,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
 
     getCalInstance().setTheme(newTheme)
   }
-/**일정 수정 했을 때 발생 이벤트 */
+  /**일정 수정 했을 때 발생 이벤트 */
   const onBeforeUpdateEvent: ExternalEventTypes['beforeUpdateEvent'] = (updateData) => {
     const offset = new Date().getTimezoneOffset() * 60000;
     /**시간이 변경 되면 */
@@ -323,7 +323,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     getCalInstance().createEvents([event])
   }
 
- 
+
   return (
     <div>
       {/* <Typography variant="h2" color="initial" align="center">
@@ -368,86 +368,77 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
         <span className="render-range">{selectedDateRangeText}</span>
       </div>
       <div onClick={handleClick}>
-      <Calendar
-        height="900px"
-        calendars={initialCalendars}
-        month={{ startDayOfWeek: 1 }}
-        events={initialEvents}
-        template={{
-          milestone(event) {
-            return `<span style="color: #fff; background-color: ${event.backgroundColor};">${event.title}</span>`
-          },
-          allday(event) {
-            return `[All day] ${event.title}`
-          },
-          popupEdit() {
-            return '수정'
-          },
-          popupDelete() {
-            return '삭제'
-          },
-          popupIsAllday() {
-            return 'all day'
-          },
-          locationPlaceholder() {
-            return '부서를 입력 하세요!';
-          },
-          titlePlaceholder() {
-            return '일정을 입력 하세요!';
-          },
-          popupSave() {
-            return '승인 요청';
-          },
-          popupUpdate() {
-            return '일정 수정';
-          },
-         
-        }}
-        theme={theme}
-        timezone={{
-          zones: [
-            {
-              timezoneName: 'Asia/Seoul',
-              displayLabel: 'Seoul',
-              tooltip: 'UTC+09:00',
+        <Calendar
+          height="900px"
+          calendars={initialCalendars}
+          month={{ startDayOfWeek: 1 }}
+          events={initialEvents}
+          template={{
+            milestone(event) {
+              return `<span style="color: #fff; background-color: ${event.backgroundColor};">${event.title}</span>`
             },
-            {
-              timezoneName: 'Pacific/Guam',
-              displayLabel: 'Guam',
-              tooltip: 'UTC+10:00',
+            allday(event) {
+              return `[All day] ${event.title}`
             },
-          ],
-        }}
-        useDetailPopup={true}
-        useFormPopup={popup()}
-        view={selectedView}
-        week={{
-          showTimezoneCollapseButton: true,
-          timezonesCollapsed: false,
-          eventView: true,
-          taskView: true,
-        }}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        ref={calendarRef}
-        onAfterRenderEvent={onAfterRenderEvent}
-        onBeforeDeleteEvent={onBeforeDeleteEvent}
-        onClickDayname={onClickDayName}
-        onClickEvent={onClickEvent}
-        onClickTimezonesCollapseBtn={onClickTimezonesCollapseBtn}
-        onBeforeUpdateEvent={onBeforeUpdateEvent}
-        onBeforeCreateEvent={onBeforeCreateEvent}
-      />
-         <Toast
-            isOpened={editopen}
-            message={editmessage}
-            handleClose={handleClose}
-          />
-         <Toast
-            isOpened={deleteopen}
-            message={deletemessage}
-            handleClose={handleClose}
-          />
+            popupEdit() {
+              return '수정'
+            },
+            popupDelete() {
+              return '삭제'
+            },
+            popupIsAllday() {
+              return 'all day'
+            },
+            locationPlaceholder() {
+              return '부서를 입력 하세요!'
+            },
+            titlePlaceholder() {
+              return '일정을 입력 하세요!'
+            },
+            popupSave() {
+              return '승인 요청'
+            },
+            popupUpdate() {
+              return '일정 수정'
+            },
+          }}
+          theme={theme}
+          timezone={{
+            zones: [
+              {
+                timezoneName: 'Asia/Seoul',
+                displayLabel: 'Seoul',
+                tooltip: 'UTC+09:00',
+              },
+              {
+                timezoneName: 'Pacific/Guam',
+                displayLabel: 'Guam',
+                tooltip: 'UTC+10:00',
+              },
+            ],
+          }}
+          useDetailPopup={true}
+          useFormPopup={popup()}
+          view={selectedView}
+          week={{
+            showTimezoneCollapseButton: true,
+            timezonesCollapsed: false,
+            eventView: true,
+            taskView: true,
+          }}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          ref={calendarRef}
+          onAfterRenderEvent={onAfterRenderEvent}
+          onBeforeDeleteEvent={onBeforeDeleteEvent}
+          onClickDayname={onClickDayName}
+          onClickEvent={onClickEvent}
+          onClickTimezonesCollapseBtn={onClickTimezonesCollapseBtn}
+          onBeforeUpdateEvent={onBeforeUpdateEvent}
+          onBeforeCreateEvent={onBeforeCreateEvent}
+        />
+        <Toast isOpened={editopen} message={editmessage} handleClose={handleClose} />
+        <Toast isOpened={deleteopen} message={deletemessage} handleClose={handleClose} />
         {verifyPayload ? null : (
           <Toast
             isOpened={open}
@@ -456,7 +447,6 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
           />
         )}
       </div>
-        
     </div>
   )
 }

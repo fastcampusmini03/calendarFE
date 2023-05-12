@@ -1,14 +1,8 @@
 import AnnualDutyList from '../../components/AnnualDutyList'
-import { QueryClient, useQuery, useQueryClient } from 'react-query'
-import {
-  getAllDates,
-  getCalendarDates,
-  getDeleteDates,
-  getEditDates,
-  getSaveDates,
-} from '../../apis/axios'
+import { useQuery, useQueryClient } from 'react-query'
+import { getCalendarDates, getDeleteDates, getEditDates, getSaveDates } from '../../apis/axios'
 import CalendarUI from '../../components/CalendarUI'
-import { ApproveData, CalendarData, DatesPayload, DeleteData, EditData } from '../../types/dates'
+import { ApproveData, CalendarData, DeleteData, EditData } from '../../types/dates'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -17,7 +11,7 @@ import FaceIcon from '@mui/icons-material/Face'
 import { removeCookie } from '../../utils/cookies'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+// import { useState, useEffect } from 'react'
 
 function AdminPage() {
   const [year, setYear] = useState(2023)

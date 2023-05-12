@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { login, signup } from '../apis/axios'
 import { LoginResponse, SignupResponse } from '../types/response'
-import { setCookie } from '../utils/cookies'
+// import { setCookie } from '../utils/cookies'
 import { useNavigate } from 'react-router-dom'
 
 export const useAuth = () => {
@@ -15,6 +15,7 @@ export const useAuth = () => {
     //   path: '/',
     //   maxAge: data.payload!.content?.exp - data.payload!.content?.iat,
     // })
+    console.log(data)
     setIsOpened((prev) => !prev)
   }
 
