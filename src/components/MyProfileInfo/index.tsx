@@ -1,20 +1,46 @@
 import { useState } from 'react'
 import * as S from './style'
 
-import { Box, Grid, Button } from '@mui/material'
+import {
+  Box,
+  Grid,
+  Button,
+  Container,
+  ListItemText,
+  List,
+  ListItem,
+  Typography,
+  Tab,
+  Tabs,
+} from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { usePostUser } from '../../hooks/usePostUser'
 import { useNavigate } from 'react-router-dom'
 import Toast from '../Common/Toast'
+import DateView from '../DateView'
+import { useQuery } from 'react-query'
+import { CalendarData } from '../../types/dates'
+import { getCalendar, getCalendarDates } from '../../apis/axios'
 
 // interface UserInput {
 //   username: string
 //   password: string
 // }
 
-//@ts-ignore
 const MyprofileInfo = ({ userInfo }) => {
+  const [date, setDate] = useState({ year: 2023, month: 5 })
+
+  const handleChangeDate = (year: number, month: number) => {
+    setDate({
+      year,
+      month: month + 1,
+    })
+  }
+
+  console.log('date', date)
+  const [value, setValue] = useState('applied')
   const navigate = useNavigate()
+
   // const [userInput, setUserInput] = useState<UserInput>({ username: '', password: '' })
   const { updateUser, isOpened } = usePostUser()
 
@@ -36,6 +62,28 @@ const MyprofileInfo = ({ userInfo }) => {
 
     updateUser(user)
   }
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue)
+  }
+
+  // const { year, month } = date
+
+  const { data: calendarDates } = useQuery<CalendarData[] | any>(['dates', `month`], () =>
+    getCalendar(date.year, date.month),
+  )
+
+  console.log({ calendarDates })
+
+  // console.log({ calendarDates })
+
+  // const formatter = new Intl.DateTimeFormat('ko-KR', {
+  //   year: 'numeric',
+  //   month: 'long',
+  //   day: 'numeric',
+  //   hour: 'numeric',
+  //   minute: 'numeric',
+  // })
 
   return (
     <>
@@ -213,12 +261,47 @@ const MyprofileInfo = ({ userInfo }) => {
             <Box sx={{ fontWeight: 'bold' }} ml={1}>
               일정 정보
             </Box>
+            <Tabs
+              orientation="vertical"
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              sx={{ borderRight: 1, borderColor: 'divider' }}
+            >
+              <Tab label="신청한 일정" value="applied" sx={{ fontSize: '16px' }} />
+              <Tab label="확정된 일정" value="confirmed" sx={{ fontSize: '16px' }} />
+            </Tabs>
           </Grid>
-          <Grid item xs={2}>
+
+          {/* <Grid item xs={2}>
             <Box>신청한 일정</Box>
+            <Grid item xs={4}></Grid>
             <Box>확정된 일정</Box>
+            <Box>
+              <DateView />
+            </Box>
+            <Box>
+              <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                {userApprovedData?.map((data) => (
+                  <ListItem key={data.id}>
+                    <div>휴가</div>
+                    <div>{data?.user.username} </div>
+                    <div>{data?.startTime} </div>
+                    <div>{data?.endTime} </div>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          </Grid> */}
+          <Grid item xs={8}>
+            {value === 'applied' ? (
+              <div>222</div>
+            ) : (
+              <div>
+                <DateView handleChangeDate={handleChangeDate} setDate={setDate} />
+              </div>
+            )}
           </Grid>
-          <Grid item xs={8}></Grid>
         </Grid>
       </Box>
       <Toast
