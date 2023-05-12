@@ -221,13 +221,13 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                               <Box>
                                 <ListItemText
                                   primary={
-                                    data.annualDuty.user.username +
-                                    ' ' +
-                                    (data.annualDuty.user.role === 'USER' ? '일반' : '관리자') +
-                                    ' ' +
-                                    (data.annualDuty.title.length > 10
-                                      ? `${data.annualDuty.title.substring(0, 10)}...`
-                                      : data.annualDuty.title)
+                                    <div>
+                                      {data.annualDuty.user.username}{' '}
+                                      {data.annualDuty.user.role === 'USER' ? '일반' : '관리자'}{' '}
+                                      {data.annualDuty.title.length > 10
+                                        ? `${data.annualDuty.title.substring(0, 10)}...`
+                                        : data.annualDuty.title}
+                                    </div>
                                   }
                                 />
 
@@ -249,14 +249,13 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                               <Box>
                                 <ListItemText
                                   primary={
-                                    data.annualDuty.user.username +
-                                    ' ' +
-                                    (data.annualDuty.user.role === 'USER' ? '일반' : '관리자') +
-                                    ' ' +
-                                    ' ' +
-                                    (data.title.length > 10
-                                      ? `${data.title.substring(0, 10)}...`
-                                      : data.title)
+                                    <div>
+                                      {data.annualDuty.user.username}{' '}
+                                      {data.annualDuty.user.role === 'USER' ? '일반' : '관리자'}{' '}
+                                      {data.title.length > 10
+                                        ? `${data.title.substring(0, 10)}...`
+                                        : data.title}
+                                    </div>
                                   }
                                 />
                                 <ListItemText
@@ -373,13 +372,13 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                           <Box sx={{ marginRight: '20px' }}>
                             <ListItemText
                               primary={
-                                data.user.username +
-                                ' ' +
-                                data.user.role +
-                                ' ' +
-                                (data.title.length > 10
-                                  ? `${data.title.substring(0, 10)}...`
-                                  : data.title)
+                                <div>
+                                  {data.user.username}{' '}
+                                  {data.user.role === 'USER' ? '일반' : '관리자'}{' '}
+                                  {data.title.length > 10
+                                    ? `${data.title.substring(0, 10)}...`
+                                    : data.title}
+                                </div>
                               }
                             />
                             <ListItemText
@@ -460,7 +459,7 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                       textAlign: 'center',
                     }}
                   >
-                    <Grid xs={1}>
+                    <Grid xs={1} item>
                       <Box
                         sx={{
                           display: 'flex',
@@ -476,7 +475,7 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid xs={11}>
+                    <Grid xs={11} item>
                       <Container
                         sx={{
                           display: 'flex',
@@ -493,13 +492,13 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                           <Box sx={{ marginRight: '20px' }}>
                             <ListItemText
                               primary={
-                                data.user.username +
-                                ' ' +
-                                data.user.role +
-                                ' ' +
-                                (data.title.length > 10
-                                  ? `${data.title.substring(0, 10)}...`
-                                  : data.title)
+                                <div>
+                                  {data.user.username}{' '}
+                                  {data.user.role === 'USER' ? '일반' : '관리자'}{' '}
+                                  {data.title.length > 10
+                                    ? `${data.title.substring(0, 10)}...`
+                                    : data.title}
+                                </div>
                               }
                             />
                             <ListItemText
