@@ -18,7 +18,7 @@ import Toast from '../Common/Toast'
 import { useNavigate } from 'react-router-dom'
 
 const SignupForm = () => {
-  const { signupUser, isOpened } = useAuth()
+  const { signupUser, isOpened, userName } = useAuth()
 
   const navigate = useNavigate()
 
@@ -138,7 +138,11 @@ const SignupForm = () => {
           </Box>
         </Box>
       </Container>
-      <Toast isOpened={isOpened} handleClose={() => navigate('/')} message={`님 환영합니다!`} />
+      <Toast
+        isOpened={isOpened}
+        handleClose={() => navigate('/')}
+        message={`${userName}님 환영합니다!`}
+      />
     </>
   )
 }
