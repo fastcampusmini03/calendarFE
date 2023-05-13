@@ -8,7 +8,7 @@ interface DateViewProps {
   setDate: (date: Date) => void
 }
 
-const DateView = ({ handleChangeDate, setDate }: DateViewProps) => {
+const DateView = ({ handleChangeDate }: DateViewProps) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DatePicker', 'DatePicker', 'DatePicker']}>

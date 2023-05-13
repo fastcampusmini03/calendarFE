@@ -28,7 +28,7 @@ const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
   }
 
   const [value, setValue] = useState('applied')
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (newValue: string) => {
     setValue(newValue)
   }
 
@@ -81,7 +81,7 @@ const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
             <UserDutyList userMonthData={appliedUserData as any} />
           ) : (
             <div>
-              <DateView handleChangeDate={handleChangeDate} setDate={setDate} />
+              <DateView handleChangeDate={handleChangeDate} />
               <UserDutyList userMonthData={userMonthData} />
             </div>
           )}
