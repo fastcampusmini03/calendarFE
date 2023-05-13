@@ -6,7 +6,7 @@ import MyPage from '../pages/MyPage'
 import AdminPage from '../pages/AdminPage'
 import UserListPage from '../pages/UserListPage'
 import ErrorPage from '../pages/ErrorPage'
-import ProtectedRouter from './protectedRouter'
+import ProtectedRouter from './ProtectedRouter'
 
 function Router() {
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Toast from '../components/Common/Toast'
 import useVerify from '../hooks/useVerify'
 import ErrorPage from '../pages/ErrorPage'
@@ -15,8 +15,6 @@ const ProtectedRouter = () => {
 
   useEffect(() => {
     if (userInfo?.role === 'USER') {
-      console.log('protected', userInfo)
-
       setIsOpened(true)
     }
   }, [userInfo])

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Grid, Tab, Tabs } from '@mui/material'
 import { CalendarData } from '../../types/dates'
-import { getCalendar, getSaveDates, getUsers } from '../../apis/axios'
+import { getCalendar, getSaveDates } from '../../apis/axios'
 import { useQuery } from 'react-query'
 import DateView from '../DateView'
 import UserDutyList from '../UserDutyList'
