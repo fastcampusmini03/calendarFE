@@ -207,9 +207,9 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                               <Box>
                                 <ListItemText
                                   primary={
-                                    data.annualDuty.username +
+                                    data.annualDuty.user.username +
                                     ' ' +
-                                    data.annualDuty.role +
+                                    (data.annualDuty.user.role === 'USER' ? '일반' : '관리자') +
                                     ' ' +
                                     (data.annualDuty.title.length > 10
                                       ? `${data.annualDuty.title.substring(0, 10)}...`
@@ -235,9 +235,10 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                               <Box>
                                 <ListItemText
                                   primary={
-                                    data.annualDuty.username +
+                                    data.annualDuty.user.username +
                                     ' ' +
-                                    data.annualDuty.role +
+                                    (data.annualDuty.user.role === 'USER' ? '일반' : '관리자') +
+                                    ' ' +
                                     ' ' +
                                     (data.title.length > 10
                                       ? `${data.title.substring(0, 10)}...`
@@ -434,7 +435,7 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                 </>
               ))
             default:
-              return saveDates.content.map((data, index) => (
+              return saveDates.content.map((data) => (
                 <>
                   <ListItem
                     sx={{
