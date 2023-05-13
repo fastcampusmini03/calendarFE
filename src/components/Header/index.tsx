@@ -189,6 +189,7 @@ export default function PersistentDrawerRight({ children }: any) {
               sx={{ flexGrow: 1 }}
               component="div"
               style={{ color: 'green' }}
+              fontFamily="Comfortaa"
             >
               Adu Calendar
             </Typography>

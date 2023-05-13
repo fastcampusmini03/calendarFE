@@ -14,6 +14,7 @@ export interface CalendarData {
 }
 
 /** 권한 변경 요청 데이터 response 타입 */
+
 export interface UpdateRoleData {
   id: number
   email: string
@@ -55,6 +56,12 @@ export interface EditData {
         title: string
         startTime: string
         endTime: string
+        user: {
+          id: number
+          email: string
+          username: string
+          role: string
+        }
         type: boolean
         createdAt: string
         updatedAt: string
@@ -162,21 +169,21 @@ export interface CalendarUIProps {
 }
 
 export interface MainDatePayload {
-  calendarId: string;
-  email: any;
-  username: any;
-  title: string | undefined;
-  isAllday: boolean | undefined;
-  start: any | undefined;
-  end: any | undefined;
-  role: any;
+  calendarId: string
+  email: any
+  username: any
+  title: string | undefined
+  isAllday: boolean | undefined
+  start: any | undefined
+  end: any | undefined
+  role: any
 }
 
-export type  MainPutDatePayload = Pick<put, "title" | "start" | "end"> & {
-  id: any;
+export type MainPutDatePayload = Pick<put, 'title' | 'start' | 'end'> & {
+  id: any
 }
 export interface put {
-  title: FormDataEntryValue;
-  start: FormDataEntryValue;
-  end: FormDataEntryValue;
+  title: FormDataEntryValue
+  start: FormDataEntryValue
+  end: FormDataEntryValue
 }
