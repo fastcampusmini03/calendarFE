@@ -37,6 +37,7 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
   const [refuseOpen, setRefuseOpen] = useState(false)
   const [accToastOpen, setAccToastOpen] = useState(false)
   const [decToastOpen, setDecToastOpen] = useState(false)
+
   const queryClient = useQueryClient()
   const { mutate: mutateAS } = useMutation(acceptSave, {
     onSuccess: () => {
@@ -69,9 +70,11 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
     },
   })
 
+  /** Dialog  승인 토글 기능 */
   const toggleDialog = () => {
     setDialogOpen((prev) => !prev)
   }
+  /** Dialog  거절 토글 기능 */
   const toggleRefuseDialog = () => {
     setRefuseOpen((prev) => !prev)
   }
@@ -153,153 +156,163 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
         {(() => {
           switch (value) {
             case 'update':
-              return editDates.content.map((data) => (
+              return (
                 <>
-                  <>
-                    <Tabs variant="fullWidth">
-                      <Tab label="수정 전" />
-                      <Tab label="수정 후" />
-                    </Tabs>
-
-                    <ListItem
-                      sx={{
-                        border: '1px solid black',
-                        marginBottom: '2px',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        textAlign: 'center',
-                      }}
-                    >
-                      <Grid xs={1}>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: '120px',
-                            borderRadius: '20px',
-                            background: data.annualDuty.type ? '#5c940d' : '#08D8C1',
-                          }}
-                        >
-                          <Typography variant="h6" align="center" color="#FFF">
-                            {data.annualDuty.type ? '당직' : '연차'}
-                          </Typography>
-                        </Box>
-                      </Grid>
-                      <Grid xs={11}>
-                        <Container
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                          }}
-                        >
+                  <Tabs variant="fullWidth">
+                    <Tab label="수정 전" />
+                    <Tab label="수정 후" />
+                  </Tabs>
+                  {editDates.content.map((data) => (
+                    <>
+                      <ListItem
+                        sx={{
+                          border: '1px solid black',
+                          marginBottom: '2px',
+                          display: 'flex',
+                          flexDirection: 'row',
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Grid xs={1}>
                           <Box
                             sx={{
                               display: 'flex',
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <Box>
-                              <ListItemText
-                                primary={
-                                  // data.username +
-                                  ' ' +
-                                  // data.role +
-                                  ' ' +
-                                  (data.annualDuty.title.length > 10
-                                    ? `${data.annualDuty.title.substring(0, 10)}...`
-                                    : data.annualDuty.title)
-                                }
-                              />
-
-                              <ListItemText
-                                secondary={
-                                  <>
-                                    <div>
-                                      {formatter.format(new Date(data.annualDuty.startTime))}
-                                    </div>
-                                    <div>{' - '}</div>
-                                    <div>{formatter.format(new Date(data.annualDuty.endTime))}</div>
-                                  </>
-                                }
-                                sx={{ marginTop: '10px' }}
-                              />
-                            </Box>
-                            <Box sx={{ marginRight: '20px' }}>
-                              <ListItemText
-                                primary={
-                                  // data.username +
-                                  ' ' +
-                                  // data.role +
-                                  ' ' +
-                                  (data.title.length > 10
-                                    ? `${data.title.substring(0, 10)}...`
-                                    : data.title)
-                                }
-                              />
-                              <ListItemText
-                                secondary={
-                                  <>
-                                    <div>{formatter.format(new Date(data.startTime))}</div>
-                                    <div>{' - '}</div>
-                                    <div>{formatter.format(new Date(data.endTime))}</div>
-                                  </>
-                                }
-                                sx={{ marginTop: '10px' }}
-                              />
-                            </Box>
-                          </Box>
-
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              gap: '10px',
+                              alignItems: 'center',
                               justifyContent: 'center',
-                              marginRight: '20px',
+                              height: '120px',
+                              borderRadius: '20px',
+                              background: data.annualDuty.type ? '#5c940d' : '#08D8C1',
                             }}
                           >
-                            <Button onClick={toggleDialog}>승인</Button>
-                            <Button variant="outlined" onClick={toggleRefuseDialog}>
-                              거부
-                            </Button>
+                            <Typography variant="h6" align="center" color="#FFF">
+                              {data.annualDuty.type ? '당직' : '연차'}
+                            </Typography>
                           </Box>
-                        </Container>
-                      </Grid>
+                        </Grid>
+                        <Grid xs={11}>
+                          <Container
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                gap: '60px',
+                              }}
+                            >
+                              <Box>
+                                <ListItemText
+                                  primary={
+                                    // data.username +
+                                    ' ' +
+                                    // data.role +
+                                    ' ' +
+                                    (data.annualDuty.title.length > 10
+                                      ? `${data.annualDuty.title.substring(0, 10)}...`
+                                      : data.annualDuty.title)
+                                  }
+                                />
 
-                      <Dialog open={dialogOpen}>
-                        <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
-                        <DialogContent>
-                          <DialogContentText id="alert-dialog-description">
-                            승인하시겠습니까?
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <Button onClick={acceptDate(data.id, value)}>예</Button>
-                          <Button autoFocus onClick={toggleDialog}>
-                            아니오
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
-                      <Dialog open={refuseOpen}>
-                        <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
-                        <DialogContent>
-                          <DialogContentText id="alert-dialog-description">
-                            거부하시겠습니까?
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <Button onClick={rejectDate(data.id, value)}>예</Button>
-                          <Button autoFocus onClick={toggleRefuseDialog}>
-                            아니오
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
-                    </ListItem>
-                  </>
+                                <ListItemText
+                                  secondary={
+                                    <>
+                                      <div>
+                                        {formatter.format(new Date(data.annualDuty.startTime))}
+                                      </div>
+                                      <div>{' - '}</div>
+                                      <div>
+                                        {formatter.format(new Date(data.annualDuty.endTime))}
+                                      </div>
+                                    </>
+                                  }
+                                  sx={{ marginTop: '10px' }}
+                                />
+                              </Box>
+                              <Box>
+                                <ListItemText
+                                  primary={
+                                    // data.username +
+                                    ' ' +
+                                    // data.role +
+                                    ' ' +
+                                    (data.title.length > 10
+                                      ? `${data.title.substring(0, 10)}...`
+                                      : data.title)
+                                  }
+                                />
+                                <ListItemText
+                                  secondary={
+                                    <>
+                                      <div>{formatter.format(new Date(data.startTime))}</div>
+                                      <div>{' - '}</div>
+                                      <div>{formatter.format(new Date(data.endTime))}</div>
+                                    </>
+                                  }
+                                  sx={{ marginTop: '10px' }}
+                                />
+                              </Box>
+                            </Box>
+
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '10px',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <Button onClick={toggleDialog} sx={{ flex: '1' }}>
+                                승인
+                              </Button>
+                              <Button
+                                variant="outlined"
+                                onClick={toggleRefuseDialog}
+                                sx={{ flex: '1' }}
+                              >
+                                거부
+                              </Button>
+                            </Box>
+                          </Container>
+                        </Grid>
+
+                        <Dialog open={dialogOpen}>
+                          <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
+                          <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                              승인하시겠습니까?
+                            </DialogContentText>
+                          </DialogContent>
+                          <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Button onClick={acceptDate(data.id, value)}>예</Button>
+                            <Button autoFocus onClick={toggleDialog}>
+                              아니오
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                        <Dialog open={refuseOpen}>
+                          <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
+                          <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                              거부하시겠습니까?
+                            </DialogContentText>
+                          </DialogContent>
+                          <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Button onClick={rejectDate(data.id, value)}>예</Button>
+                            <Button autoFocus onClick={toggleRefuseDialog}>
+                              아니오
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </ListItem>
+                    </>
+                  ))}
                 </>
-              ))
+              )
+
             case 'delete':
               return deleteDates.content.map((data) => (
                 <>
@@ -373,11 +386,16 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                             flexDirection: 'row',
                             gap: '10px',
                             justifyContent: 'center',
-                            marginRight: '20px',
                           }}
                         >
-                          <Button onClick={toggleDialog}>승인</Button>
-                          <Button variant="outlined" onClick={toggleRefuseDialog}>
+                          <Button onClick={toggleDialog} sx={{ flex: '1' }}>
+                            승인
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            onClick={toggleRefuseDialog}
+                            sx={{ flex: '1' }}
+                          >
                             거부
                           </Button>
                         </Box>
@@ -416,7 +434,7 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                 </>
               ))
             default:
-              return saveDates.content.map((data) => (
+              return saveDates.content.map((data, index) => (
                 <>
                   <ListItem
                     sx={{
@@ -488,11 +506,16 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                             flexDirection: 'row',
                             gap: '10px',
                             justifyContent: 'center',
-                            marginRight: '20px',
                           }}
                         >
-                          <Button onClick={toggleDialog}>승인</Button>
-                          <Button variant="outlined" onClick={toggleRefuseDialog}>
+                          <Button onClick={toggleDialog} sx={{ flex: '1' }}>
+                            승인
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            onClick={toggleRefuseDialog}
+                            sx={{ flex: '1' }}
+                          >
                             거부
                           </Button>
                         </Box>
