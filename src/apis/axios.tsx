@@ -44,12 +44,8 @@ export const getCalendarDates = async ({ year, month }: any) => {
 }
 
 export const getCalendar = async (year: any, month: any) => {
+  console.log(year, month)
   const response = await instance.get<ResponseData>(`/annualDuty?year=${year}&month=${month}`)
-  return response.data.data
-}
-
-export const getAllCalendarDates = async () => {
-  const response = await instance.get<ResponseData>('/annualDuty')
   return response.data.data
 }
 
