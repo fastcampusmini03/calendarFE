@@ -61,10 +61,10 @@ function AdminPage() {
           </Box>
 
           <Box display="flex" gap="10px">
+            <Chip icon={<FaceIcon />} label="Admin" variant="outlined" />
             <Button variant="outlined" onClick={handleLogout}>
               로그아웃
             </Button>
-            <Chip icon={<FaceIcon />} label="Admin" variant="outlined" />
           </Box>
         </Box>
         <Grid container spacing={1}>
