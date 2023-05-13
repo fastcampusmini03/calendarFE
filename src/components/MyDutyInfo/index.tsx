@@ -28,7 +28,8 @@ const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
   }
 
   const [value, setValue] = useState('applied')
-  const handleChange = (newValue: string) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    console.log(event)
     setValue(newValue)
   }
 
