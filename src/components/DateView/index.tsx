@@ -5,7 +5,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 interface DateViewProps {
   handleChangeDate: (year: number, month: number) => void
-  setDate: (date: Date) => void
 }
 
 const DateView = ({ handleChangeDate }: DateViewProps) => {
