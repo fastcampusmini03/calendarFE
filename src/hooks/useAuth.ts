@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { login, signup } from '../apis/axios'
-import { LoginResponse, SignupResponse } from '../types/response'
+import { APIResponses} from '../types/response'
 // import { setCookie } from '../utils/cookies'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,18 +11,18 @@ export const useAuth = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [userName, setUserName] = useState('')
 
-  const successLogin = (data: LoginResponse | SignupResponse) => {
+  const successLogin = (data: APIResponses) => {
     // setCookie('accessToken', data.payload!.accessToken, {
     //   path: '/',
     //   maxAge: data.payload!.content?.exp - data.payload!.content?.iat,
     // })
-    console.log(data.data.username)
+    console.log(data)
     setUserName(data.data.username)
     setIsOpened((prev) => !prev)
   }
 
   const { mutate: loginUser, isError } = useMutation(login, {
-    onSuccess: (data: LoginResponse) => {
+    onSuccess: (data) => {
       if (!data) return
       console.log({ data })
       successLogin(data)
@@ -30,7 +30,7 @@ export const useAuth = () => {
   })
 
   const { mutate: signupUser } = useMutation(signup, {
-    onSuccess: (data: SignupResponse) => {
+    onSuccess: (data) => {
       if (!data) return
       console.log(data)
       successLogin(data)

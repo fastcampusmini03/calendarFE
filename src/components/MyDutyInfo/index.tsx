@@ -5,8 +5,19 @@ import { getCalendar, getSaveDates, getUsers } from '../../apis/axios'
 import { useQuery } from 'react-query'
 import DateView from '../DateView'
 import UserDutyList from '../UserDutyList'
+import { User } from '../../types/user'
 
-const MyDutyInfo = ({ userInfo }) => {
+interface MyDutyInfoProps {
+  userInfo: User
+}
+
+interface MyDutyInfoProps {
+  userInfo: User
+}
+
+const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
+  console.log({ userInfo })
+
   const [date, setDate] = useState({ year: 2023, month: 5 })
 
   const handleChangeDate = (year: number, month: number) => {
@@ -27,9 +38,13 @@ const MyDutyInfo = ({ userInfo }) => {
 
   const { data: appliedData } = useQuery(['ddd'], () => getSaveDates())
 
-  const appliedUserData = appliedData?.content.filter((item) => item.user.email === userInfo.email)
+  const appliedUserData: CalendarData[] | undefined = appliedData?.content.filter(
+    (item: CalendarData) => item.user.email === userInfo.email,
+  )
 
-  const userfilteredData = calendarDates?.filter((item) => item.user.email === userInfo.email)
+  const userfilteredData: CalendarData[] = calendarDates?.filter(
+    (item: CalendarData) => item.user.email === userInfo.email,
+  )
 
   const userApprovedData = userfilteredData?.filter((item) => item.status === '1')
 
@@ -63,7 +78,7 @@ const MyDutyInfo = ({ userInfo }) => {
         </Grid>
         <Grid item xs={8}>
           {value === 'applied' ? (
-            <UserDutyList userMonthData={appliedUserData} />
+            <UserDutyList userMonthData={appliedUserData as any} />
           ) : (
             <div>
               <DateView handleChangeDate={handleChangeDate} setDate={setDate} />
