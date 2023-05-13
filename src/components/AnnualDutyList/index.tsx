@@ -207,9 +207,9 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                               <Box>
                                 <ListItemText
                                   primary={
-                                    // data.username +
+                                    data.annualDuty.username +
                                     ' ' +
-                                    // data.role +
+                                    data.annualDuty.role +
                                     ' ' +
                                     (data.annualDuty.title.length > 10
                                       ? `${data.annualDuty.title.substring(0, 10)}...`
@@ -235,9 +235,9 @@ function AnnualDutyList({ saveDates, editDates, deleteDates }: AdminPageProps) {
                               <Box>
                                 <ListItemText
                                   primary={
-                                    // data.username +
+                                    data.annualDuty.username +
                                     ' ' +
-                                    // data.role +
+                                    data.annualDuty.role +
                                     ' ' +
                                     (data.title.length > 10
                                       ? `${data.title.substring(0, 10)}...`
