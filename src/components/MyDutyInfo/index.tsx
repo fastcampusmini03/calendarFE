@@ -36,14 +36,14 @@ const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
     getCalendar(date.year, date.month),
   )
 
-  const { data: appliedData } = useQuery(['ddd'], () => getSaveDates())
+  const { data: appliedData } = useQuery(['saveData'], () => getSaveDates())
 
   const appliedUserData: CalendarData[] | undefined = appliedData?.content.filter(
-    (item: CalendarData) => item.user.email === userInfo.email,
+    (item: CalendarData) => item.user.email === userInfo?.email,
   )
 
   const userfilteredData: CalendarData[] = calendarDates?.filter(
-    (item: CalendarData) => item.user.email === userInfo.email,
+    (item: CalendarData) => item.user.email === userInfo?.email,
   )
 
   const userApprovedData = userfilteredData?.filter((item) => item.status === '1')
