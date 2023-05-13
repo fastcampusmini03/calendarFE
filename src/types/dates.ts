@@ -56,8 +56,12 @@ export interface EditData {
         title: string
         startTime: string
         endTime: string
-        username: string
-        role: string
+        user: {
+          id: number
+          email: string
+          username: string
+          role: string
+        }
         type: boolean
         createdAt: string
         updatedAt: string
