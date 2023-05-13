@@ -9,7 +9,6 @@ import {
 } from '../types/dates'
 import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
-import { LoginResponse, SignupResponse } from '../types/response'
 import { ResponseUser } from '../types/user'
 
 export const getUserDuty = async () => {
@@ -110,16 +109,16 @@ export const updateRole = async (email: string, role: string) => {
 
 export const login = async (user: LoginRequest) => {
   try {
-    const { data } = await instance.post<LoginResponse>('/login', user)
+    const { data } = await instance.post('/login', user)
     return data
   } catch (error) {
     throw error
   }
 }
 
-export const signup = async (user: SignupRequest): Promise<SignupResponse> => {
+export const signup = async (user: SignupRequest) => {
   try {
-    const { data } = await instance.post<SignupResponse>('/join', user)
+    const { data } = await instance.post('/join', user)
     return data
   } catch (error) {
     console.log(error)
@@ -137,7 +136,7 @@ export const verify = async () => {
 }
 
 export const refresh = async () => {
-  const { data } = await instance.get<SignupResponse>('/auth/refresh')
+  const { data } = await instance.get('/auth/refresh')
   return data
 }
 

@@ -1,7 +1,14 @@
 import React from 'react'
 import { Box } from '@mui/material'
+import { CalendarData } from '../../types/dates'
 
-const UserDutyList = ({ userMonthData }) => {
+interface UserDutyListProps {
+  userMonthData: CalendarData[]
+}
+
+const UserDutyList = ({ userMonthData }: UserDutyListProps) => {
+  console.log('month', userMonthData)
+
   return (
     <div>
       {userMonthData?.map((item) => (

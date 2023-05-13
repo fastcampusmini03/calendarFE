@@ -15,8 +15,8 @@ const MyPage = () => {
       <PersistentDrawerRight>
         <Container maxWidth="md">
           <Box sx={{ height: '100vh' }}>
-            <MyprofileInfo userInfo={userInfo} />
-            <MyDutyInfo userInfo={userInfo} />
+            <MyprofileInfo userInfo={userInfo!} />
+            <MyDutyInfo userInfo={userInfo!} />
           </Box>
         </Container>
       </PersistentDrawerRight>

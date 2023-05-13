@@ -6,8 +6,13 @@ import { useForm } from 'react-hook-form'
 import { usePostUser } from '../../hooks/usePostUser'
 import { useNavigate } from 'react-router-dom'
 import Toast from '../Common/Toast'
+import { User } from 'src/types/user'
 
-const MyprofileInfo = ({ userInfo }) => {
+interface MyProfileInfoProps {
+  userInfo: User
+}
+
+const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
   const navigate = useNavigate()
 
   // const [userInput, setUserInput] = useState<UserInput>({ username: '', password: '' })
