@@ -5,7 +5,7 @@ import { styled, alpha } from '@mui/material/styles'
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#5c940d',
+      main: '#8294C4',
     },
     background: {
       default: '#DBDFEA',
@@ -63,6 +63,11 @@ export const theme = createTheme({
           '&:disabled': {
             color: 'grey',
             backgroundColor: '#fff',
+          },
+
+          mypage: {
+            color: '#000',
+            transition: 'all 0.3s ease',
           },
         },
       },

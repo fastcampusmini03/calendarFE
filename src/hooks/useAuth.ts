@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { login, signup } from '../apis/axios'
-import { APIResponses} from '../types/response'
+import { APIResponses } from '../types/response'
 // import { setCookie } from '../utils/cookies'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,11 +12,6 @@ export const useAuth = () => {
   const [userName, setUserName] = useState('')
 
   const successLogin = (data: APIResponses) => {
-    // setCookie('accessToken', data.payload!.accessToken, {
-    //   path: '/',
-    //   maxAge: data.payload!.content?.exp - data.payload!.content?.iat,
-    // })
-    console.log(data)
     setUserName(data.data.username)
     setIsOpened((prev) => !prev)
   }

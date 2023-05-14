@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Box, Grid, Tab, Tabs } from '@mui/material'
+import { Box, Tab, Tabs } from '@mui/material'
 import { CalendarData } from '../../types/dates'
-import { getCalendar, getSaveDates, getUsers } from '../../apis/axios'
+import { getCalendar, getSaveDates } from '../../apis/axios'
 import { useQuery } from 'react-query'
 import DateView from '../DateView'
 import UserDutyList from '../UserDutyList'
@@ -16,8 +16,6 @@ interface MyDutyInfoProps {
 }
 
 const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
-  console.log({ userInfo })
-
   const [date, setDate] = useState({ year: 2023, month: 5 })
 
   const handleChangeDate = (year: number, month: number) => {
@@ -29,6 +27,7 @@ const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
 
   const [value, setValue] = useState('applied')
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    console.log(event)
     setValue(newValue)
   }
 
@@ -36,14 +35,14 @@ const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
     getCalendar(date.year, date.month),
   )
 
-  const { data: appliedData } = useQuery(['ddd'], () => getSaveDates())
+  const { data: appliedData } = useQuery(['saveData'], () => getSaveDates())
 
   const appliedUserData: CalendarData[] | undefined = appliedData?.content.filter(
-    (item: CalendarData) => item.user.email === userInfo.email,
+    (item: CalendarData) => item.user.email === userInfo?.email,
   )
 
   const userfilteredData: CalendarData[] = calendarDates?.filter(
-    (item: CalendarData) => item.user.email === userInfo.email,
+    (item: CalendarData) => item.user.email === userInfo?.email,
   )
 
   const userApprovedData = userfilteredData?.filter((item) => item.status === '1')
@@ -53,41 +52,38 @@ const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
   )
 
   return (
-    <Box>
-      <Grid
-        container
-        spacing={2}
-        mb={6}
-        p={2}
-        sx={{ border: 1, borderRadius: 2, borderColor: 'rgb(218,220,224)' }}
-      >
-        <Grid item xs={2}>
-          <Box sx={{ fontWeight: 'bold' }} ml={1}>
-            일정 정보
-          </Box>
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={value}
-            onChange={handleChange}
-            sx={{ borderRight: 1, borderColor: 'divider' }}
-          >
-            <Tab label="신청한 일정" value="applied" sx={{ fontSize: '16px' }} />
-            <Tab label="확정된 일정" value="confirmed" sx={{ fontSize: '16px' }} />
-          </Tabs>
-        </Grid>
-        <Grid item xs={8}>
-          {value === 'applied' ? (
-            <UserDutyList userMonthData={appliedUserData as any} />
-          ) : (
-            <div>
-              <DateView handleChangeDate={handleChangeDate} setDate={setDate} />
-              <UserDutyList userMonthData={userMonthData} />
-            </div>
-          )}
-        </Grid>
-      </Grid>
-    </Box>
+    <>
+      <Box display="flex" alignItems="center" borderBottom={1} pb={1}>
+        <Box sx={{ fontWeight: 'bold' }} ml={1}>
+          신척내역
+        </Box>
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label="신청한 일정" value="applied" sx={{ fontSize: '16px' }} />
+          <Tab label="승인된 일정" value="confirmed" sx={{ fontSize: '16px' }} />
+        </Tabs>
+        <Box ml={2} flex={1}>
+          {value === 'confirmed' && <DateView handleChangeDate={handleChangeDate} />}
+        </Box>
+      </Box>
+      <Box display="flex" p={2} sx={{ borderBottom: '1px solid #808080' }}>
+        <Box flex={1} textAlign="center">
+          종류
+        </Box>
+        <Box flex={3} textAlign="center">
+          신청 제목
+        </Box>
+        <Box flex={4} textAlign="center">
+          일정 날짜
+        </Box>
+      </Box>
+      <Box>
+        {value === 'applied' ? (
+          <UserDutyList userMonthData={appliedUserData as any} />
+        ) : (
+          <UserDutyList userMonthData={userMonthData} />
+        )}
+      </Box>
+    </>
   )
 }
 

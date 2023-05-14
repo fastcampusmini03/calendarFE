@@ -48,7 +48,7 @@ const SignupForm = () => {
         >
           {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} /> */}
           <Typography component="h1" variant="h5">
-            Sign up
+            Signup
           </Typography>
           <Box
             onSubmit={handleSubmit((data) => handleSubmitRegister(data))}
@@ -125,7 +125,12 @@ const SignupForm = () => {
                 <S.ErrorMessage>{errors.passwordConfirm?.message as string}</S.ErrorMessage>
               </Grid>
             </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 4, mb: 2 }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 4, mb: 2, color: '#DBDFEA' }}
+            >
               회원 가입
             </Button>
             <Grid container justifyContent="flex-end">

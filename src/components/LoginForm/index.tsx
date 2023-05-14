@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 
-import { Container, Typography, Box, Link, TextField, CssBaseline, Button } from '@mui/material'
+import { Container, Typography, Box, Link, CssBaseline, Button } from '@mui/material'
 import { useAuth } from '../../hooks/useAuth'
 import Toast from '../Common/Toast'
 import { useNavigate } from 'react-router-dom'
+import * as S from './style'
 
 interface UserInput {
   email: string
@@ -19,7 +20,6 @@ const LoginForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    
     loginUser(userInput)
   }
 
@@ -43,12 +43,11 @@ const LoginForm = () => {
             alignItems: 'center',
           }}
         >
-          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar> */}
           <Typography component="h1" variant="h5">
-            Login In
+            Login
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <S.Input
               onChange={handleChange}
               margin="normal"
               required
@@ -58,7 +57,7 @@ const LoginForm = () => {
               name="email"
               autoFocus
             />
-            <TextField
+            <S.Input
               onChange={handleChange}
               margin="normal"
               required
@@ -71,7 +70,12 @@ const LoginForm = () => {
             <Box sx={{ height: '10px' }} mb={2}>
               {isError && <div>아이디와 비밀번호를 확인해주세요</div>}
             </Box>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, backgroundColor: '#8294C4', color: '#DBDFEA' }}
+            >
               로그인
             </Button>
             <Link href="/signup" variant="body2">
