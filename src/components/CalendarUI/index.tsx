@@ -11,7 +11,9 @@ import { useMutation, useQuery } from 'react-query'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { deleteDate, postDate, putDate, verify } from '../../apis/axios'
 import Toast from '../Common/Toast'
-
+// import IconButton from '@mui/material/IconButton';
+// import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+// import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 type ViewType = 'month' | 'week' | 'day'
 
 // const today = new TZDate()
@@ -158,7 +160,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
 
     switch (viewName) {
       case 'month': {
-        dateRangeText = `${year}-${month}`
+        dateRangeText = `${year}년 ${month}월`
         break
       }
       case 'week': {
@@ -225,6 +227,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     console.groupEnd()
   }
 
+  
   const onClickNavi = (ev: MouseEvent<HTMLButtonElement>) => {
     if ((ev.target as HTMLButtonElement).tagName === 'BUTTON') {
       const button = ev.target as HTMLButtonElement
@@ -318,6 +321,9 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
       username: verifyPayload?.data.username,
       role: verifyPayload?.data.role,
     }
+    console.log(eventData)
+    console.log(event.start)
+    console.log(event.end)
     mutate(event)
     getCalInstance().createEvents([event])
   }
@@ -329,7 +335,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
         아듀 캘린더
       </Typography> */}
 
-      <div>
+      <div style={{textAlign: 'center'}}>
         {/* <select onChange={onChangeSelect} value={selectedView}>
           {viewModeOptions.map((option, index) => (
             <option value={option.value} key={index}>
@@ -353,18 +359,21 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
             data-action="move-prev"
             onClick={onClickNavi}
           >
-            Prev
+            prev
+           
           </button>
+          <span className="render-range">{selectedDateRangeText}</span>
           <button
             type="button"
             className="btn btn-default btn-sm move-day"
             data-action="move-next"
             onClick={onClickNavi}
           >
-            Next
+            next
+          
           </button>
         </span>
-        <span className="render-range">{selectedDateRangeText}</span>
+       
       </div>
       <div onClick={handleClick}>
         <Calendar
@@ -395,7 +404,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
               return '일정을 입력 하세요!'
             },
             popupSave() {
-              return '승인 요청'
+              return 'Confirm'
             },
             popupUpdate() {
               return '일정 수정'

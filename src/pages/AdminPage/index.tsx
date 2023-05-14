@@ -19,6 +19,7 @@ function AdminPage() {
   const [month, setMonth] = useState(5)
   const { data: calendarDates, refetch } = useQuery<CalendarData[]>('dates', () => getCalendarDates({year, month}))
   const { data: saveDates, isLoading } = useQuery<ApproveData>('saveDates', getSaveDates)
+  console.log(saveDates)
   const { data: editDates } = useQuery<EditData>('editDates', getEditDates)
   const { data: deleteDates } = useQuery<DeleteData>('deleteDates', getDeleteDates)
   

@@ -28,7 +28,7 @@ import { verify } from '../../apis/axios'
 import { Link, useNavigate } from 'react-router-dom'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
-import Toast from '../Common/Toast'
+// import Toast from '../Common/Toast'
 // import { useAuth } from '../../hooks/useAuth'
 const drawerWidth = 240
 
@@ -39,7 +39,8 @@ display: flex;
    margin-right: 20px;
 `
 const WrapTypography = Styled.div`
-   text-align: center; 
+   /* text-align: center;  */
+   margin-left: 20px;
 
 `
 const Wrap = Styled.div`
@@ -164,19 +165,19 @@ export default function PersistentDrawerRight({ children }: any) {
     setOpen(false)
   }
 
-  const [show, setShow] = useState(false)
+  // const [show, setShow] = useState(false)
 
-  const handleClick = () => {
-    setShow(true)
-  }
+  // const handleClick = () => {
+  //   setShow(true)
+  // }
 
-  const handleClose = (reason?: string) => {
-    if (reason === 'clickaway') {
-      return
-    }
+  // const handleClose = (reason?: string) => {
+  //   if (reason === 'clickaway') {
+  //     return
+  //   }
 
-    setShow(false)
-  }
+  //   setShow(false)
+  // }
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -188,11 +189,11 @@ export default function PersistentDrawerRight({ children }: any) {
               noWrap
               sx={{ flexGrow: 1 }}
               component="div"
-              style={{ color: 'green' }}
+              style={{ color: 'black' }}
             >
               Adu Calendar
             </Typography>
-
+            {verifyPayload && status !== 'error' ? 
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -201,7 +202,9 @@ export default function PersistentDrawerRight({ children }: any) {
               sx={{ ...(open && { display: 'none' }) }}
             >
               <MenuIcon />
+
             </IconButton>
+            : ''}
           </Toolbar>
         </WrapTypography>
       </AppBar>
@@ -219,9 +222,6 @@ export default function PersistentDrawerRight({ children }: any) {
                   <AccountCircleOutlinedIcon fontSize="large" />
                 </Avatar>
               </StyledBadge>
-              {/* <Button onClick={handleLogout}>
-                logout
-              </Button> */}
               <WrapUserName>
                 <UserName>{verifyPayload?.data.username}</UserName>
 
@@ -276,8 +276,6 @@ export default function PersistentDrawerRight({ children }: any) {
               </ListItemButton>
             </ListItem>
           </Link>
-          {verifyPayload && status !== 'error' ? (
-            <>
               {['Profile', '당직', '연차'].map((text, index) => (
                 <Link to="/mypage" style={{ textDecoration: 'none', color: 'gray' }}>
                   <ListItem key={text} disablePadding>
@@ -288,42 +286,18 @@ export default function PersistentDrawerRight({ children }: any) {
                   </ListItem>
                 </Link>
               ))}
-            </>
-          ) : (
-            <>
-              {['Profile', '당직', '연차'].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton onClick={handleClick}>
-                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                    <ListItemText primary={text} />
-                    <Toast
-                      isOpened={show}
-                      message="로그인 후에 시도해 주세요!"
-                      handleClose={handleClose}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </>
-          )}
         </List>
         <Divider />
-        {verifyPayload && status !== 'error' ? (
           <List>
             {['로그아웃'].map((text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={handleLogout}>
                   <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                   <ListItemText primary={text} />
-                  {/* <ListItemButton onClick={logoutUser}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton> */}
                 </ListItemButton>
               </ListItem>
             ))}
           </List>
-        ) : null}
       </Drawer>
     </Box>
   )
