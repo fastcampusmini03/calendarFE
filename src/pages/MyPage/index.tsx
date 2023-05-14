@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PersistentDrawerRight from '../../components/Header'
 
 import useVerify from '../../hooks/useVerify'
 import MyprofileInfo from '../../components/MyProfileInfo'
 
-import { Container, Box, Tabs, Tab } from '@mui/material'
+import { Box, Tabs, Tab } from '@mui/material'
 import MyDutyInfo from '../../components/MyDutyInfo'
 
 const MyPage = () => {
@@ -12,6 +12,7 @@ const MyPage = () => {
   const [value, setValue] = useState('personalInfo')
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    console.log(event)
     setValue(newValue)
   }
 

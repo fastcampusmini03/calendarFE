@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Grid, Tab, Tabs } from '@mui/material'
+import { Box, Tab, Tabs } from '@mui/material'
 import { CalendarData } from '../../types/dates'
 import { getCalendar, getSaveDates } from '../../apis/axios'
 import { useQuery } from 'react-query'

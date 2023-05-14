@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { login, signup } from '../apis/axios'
 import { APIResponses } from '../types/response'

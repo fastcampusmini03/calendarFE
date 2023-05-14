@@ -188,15 +188,11 @@ const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
         </Grid>
       </Grid>
       <Box sx={{ textAlign: 'right' }}>
-        <Button
-          sx={{ fontSize: '18px' }}
-          variant="mypage"
-          onClick={() => setIsClicked((prev) => !prev)}
-        >
+        <Button sx={{ fontSize: '18px' }} onClick={() => setIsClicked((prev) => !prev)}>
           {!isClicked ? '수정' : '취소'}
         </Button>
         {isClicked && (
-          <Button type="submit" sx={{ fontSize: '18px' }} variant="mypage">
+          <Button type="submit" sx={{ fontSize: '18px' }}>
             저장
           </Button>
         )}
