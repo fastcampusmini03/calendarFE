@@ -14,16 +14,16 @@ const useVerify = () => {
 
   useQuery(['user'], () => getUser(), {
     staleTime: 60 * 60 * 1000,
+    retry: 0,
     onSuccess: (data) => {
       //@ts-ignore
       setUserInfo(data.data)
       setIsAuthenticated('SUCCESS')
     },
-    onError: () => {
+    onError: (error) => {
+      console.log(error)
       setIsAuthenticated('FAILED')
     },
-    retry: 0,
-    enabled: !!token,
   })
 
   return { userInfo, isAuthenticated }
