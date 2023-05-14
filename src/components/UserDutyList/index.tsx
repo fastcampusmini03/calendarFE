@@ -6,19 +6,23 @@ interface UserDutyListProps {
 }
 
 const UserDutyList = ({ userMonthData }: UserDutyListProps) => {
-  console.log('month', userMonthData)
-
+  console.log({ userMonthData })
   return (
-    <div>
+    <Box>
       {userMonthData?.map((item) => (
-        <Box key={item.id} sx={{ display: 'flex' }} p={1}>
-          <Box p={1}>{item.type ? '당직' : '연차'}</Box>
-          <Box p={1}>{item.title}</Box>
-          <Box p={1}>{item.startTime}</Box>
-          <Box p={1}>{item.endTime}</Box>
+        <Box key={item.id} sx={{ display: 'flex', borderColor: '#808080' }} p={2} borderBottom={1}>
+          <Box flex={1} textAlign="center">
+            {item.type ? '당직' : '연차'}
+          </Box>
+          <Box flex={3} textAlign="center">
+            {item.title}
+          </Box>
+          <Box flex={4} textAlign="center">
+            {item.startTime.split('T')[0]} - {item.endTime.split('T')[0]}
+          </Box>
         </Box>
       ))}
-    </div>
+    </Box>
   )
 }
 
