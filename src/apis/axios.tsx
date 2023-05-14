@@ -27,8 +27,8 @@ export const postUser = async (user) => {
   return response.data
 }
 
-export const getUsers = async () => {
-  const response = await instance.get<ResponseUser>('/s/admin/users')
+export const getUsers = async (page = 0) => {
+  const response = await instance.get<ResponseUser>(`/s/admin/users?pages=${page}`)
   return response.data.data
 }
 
