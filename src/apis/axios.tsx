@@ -9,7 +9,6 @@ import {
 } from '../types/dates'
 import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
-import { LoginResponse, SignupResponse } from '../types/response'
 import { ResponseUser } from '../types/user'
 
 export const getUserDuty = async () => {
@@ -38,7 +37,13 @@ export const getAllDates = async () => {
   return response.data
 }
 
-export const getCalendarDates = async ({year, month}: any) => {
+export const getCalendarDates = async ({ year, month }: any) => {
+  const response = await instance.get<ResponseData>(`/annualDuty?year=${year}&month=${month}`)
+  return response.data.data
+}
+
+export const getCalendar = async (year: any, month: any) => {
+  console.log(year, month)
   const response = await instance.get<ResponseData>(`/annualDuty?year=${year}&month=${month}`)
   return response.data.data
 }
@@ -49,18 +54,18 @@ export const getCalendarDates = async ({year, month}: any) => {
 //   return response.data.data
 // }
 
-export const getSaveDates = async () => {
-  const response = await instance.get<ResponseApproveData>('/s/admin/save?page=0')
+export const getSaveDates = async (page = 0) => {
+  const response = await instance.get<ResponseApproveData>(`/s/admin/save?page=${page}`)
   return response.data.data
 }
 
-export const getEditDates = async () => {
-  const response = await instance.get<ResponseEditData>('/s/admin/update?page=0')
+export const getEditDates = async (page = 0) => {
+  const response = await instance.get<ResponseEditData>(`/s/admin/update?page=${page}`)
   return response.data.data
 }
 
-export const getDeleteDates = async () => {
-  const response = await instance.get<ResponseDeleteData>('/s/admin/delete')
+export const getDeleteDates = async (page = 0) => {
+  const response = await instance.get<ResponseDeleteData>(`/s/admin/delete?page=${page}`)
   return response.data.data
 }
 
@@ -104,16 +109,16 @@ export const updateRole = async (email: string, role: string) => {
 
 export const login = async (user: LoginRequest) => {
   try {
-    const { data } = await instance.post<LoginResponse>('/login', user)
+    const { data } = await instance.post('/login', user)
     return data
   } catch (error) {
     throw error
   }
 }
 
-export const signup = async (user: SignupRequest): Promise<SignupResponse> => {
+export const signup = async (user: SignupRequest) => {
   try {
-    const { data } = await instance.post<SignupResponse>('/join', user)
+    const { data } = await instance.post('/join', user)
     return data
   } catch (error) {
     console.log(error)
@@ -131,10 +136,9 @@ export const verify = async () => {
 }
 
 export const refresh = async () => {
-  const { data } = await instance.get<SignupResponse>('/auth/refresh')
+  const { data } = await instance.get('/auth/refresh')
   return data
 }
-
 
 /**Calendar 일정 작성, 수정, 삭제 */
 export const postDate = async (post: MainDatePayload) => {

@@ -5,16 +5,26 @@ import { styled, alpha } from '@mui/material/styles'
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#5c940d',
+      main: '#8294C4',
     },
+    background: {
+      default: '#DBDFEA',
+    },
+  },
+  typography: {
+    fontFamily: ['Gmarket Sans', 'Comfortaa'].join(','),
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: `@font-face {
-                    font-family: 'Pretendard-Regular';
-                    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-                    font-weight: 400;
+                    font-family: 'Gmarket Sans';
+                    src: url('/fonts/GmarketSansTTFLight.ttf') format('truetype');
+                    font-weight: 300;
                     font-style: normal;
+                }
+                @font-face {
+                    font-family: 'Comfortaa';
+                    src: url('/fonts/Comfortaa-Medium.ttf') format('truetype');
                 }`,
     },
     MuiButton: {
@@ -27,9 +37,9 @@ export const theme = createTheme({
          * variant outlined type style
          */
         outlined: {
-          backgroundColor: '#c8c8c8',
+          backgroundColor: '#DBDFEA',
           border: 'none',
-          color: '#5c940d',
+          color: 'red',
           '&:hover': {
             border: 'none',
             backgroundColor: 'red',
@@ -40,19 +50,24 @@ export const theme = createTheme({
          * variant text type style
          */
         text: {
-          backgroundColor: '#acb1d6',
-          color: '#fff',
+          backgroundColor: '#DBDFEA',
+          color: 'blue',
           transition: 'all 0.3s ease',
           padding: '3px 9px 3px 9px',
 
           '&:hover': {
-            backgroundColor: '#08D8C1',
+            backgroundColor: 'blue',
             color: '#fff',
             filter: 'brightness(1.2)',
           },
           '&:disabled': {
             color: 'grey',
             backgroundColor: '#fff',
+          },
+
+          mypage: {
+            color: '#000',
+            transition: 'all 0.3s ease',
           },
         },
       },
@@ -61,6 +76,13 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '20px',
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily: ['Gmarket Sans', 'Comfortaa'].join(','),
         },
       },
     },
@@ -120,7 +142,7 @@ export const Search = styled('div')(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(3),
-    width: '40%',
+    width: '80%',
   },
 }))
 

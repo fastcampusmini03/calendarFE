@@ -37,12 +37,10 @@ interface PropsType {
   dates: CalendarData[]
   setYear: any
   setMonth: any
- 
 }
 
 export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType) {
-  
-   const [mainid, setMainId] = useState()
+  const [mainid, setMainId] = useState()
   /**calendar 일정 작성 요청 */
   const { mutate } = useMutation(postDate, {
     onSuccess: (data) => {
@@ -64,8 +62,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     },
   })
 
-
-/**snackbar state */
+  /**snackbar state */
   const [editopen, setEditOpen] = useState(false)
   const [editmessage, setEditMessage] = useState('')
 
@@ -263,51 +260,55 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
   }
   /**일정 수정 했을 때 발생 이벤트 */
   const onBeforeUpdateEvent: ExternalEventTypes['beforeUpdateEvent'] = (updateData) => {
-    const offset = new Date().getTimezoneOffset() * 60000;
+    const offset = new Date().getTimezoneOffset() * 60000
     /**시간이 변경 되면 */
     const offsetstart: any = new Date(updateData.changes.start as Date)
     const datestart = offsetstart - offset
 
     const offsetend: any = new Date(updateData.changes.end as Date)
     const dateend = offsetend - offset
-   /**시간이 그대로면*/
-   const offseteventstart: any = new Date(updateData.event.start as Date)
-   const eventstart = offseteventstart - offset
-  
-   const offseteventend: any = new Date(updateData.event.end as Date)
-   const eventend = offseteventend - offset
-   
+    /**시간이 그대로면*/
+    const offseteventstart: any = new Date(updateData.event.start as Date)
+    const eventstart = offseteventstart - offset
+
+    const offseteventend: any = new Date(updateData.event.end as Date)
+    const eventend = offseteventend - offset
+
     if (verifyPayload.data.username === user) {
-    console.group('onBeforeUpdateEvent')
-    console.log(updateData)
-    console.groupEnd()
-   
-    const event = {
-      title: updateData.changes.title,
-      start: updateData.changes.start ? new Date(datestart).toISOString() : new Date(eventstart).toISOString() ,
-      end: updateData.changes.end ? new Date(dateend).toISOString() : new Date(eventend).toISOString(),
+      console.group('onBeforeUpdateEvent')
+      console.log(updateData)
+      console.groupEnd()
+
+      const event = {
+        title: updateData.changes.title,
+        start: updateData.changes.start
+          ? new Date(datestart).toISOString()
+          : new Date(eventstart).toISOString(),
+        end: updateData.changes.end
+          ? new Date(dateend).toISOString()
+          : new Date(eventend).toISOString(),
+      }
+      const targetEvent = updateData.event
+      const changes = { ...updateData.changes }
+      let put = event
+      putMutate({ put, mainid })
+      console.log(mainid)
+      console.log(event.start)
+      console.log(event.end)
+
+      getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes)
+    } else {
+      setEditOpen(true)
+      setEditMessage('작성자가 달라 이 글을 수정 할 수 없습니다.')
     }
-    const targetEvent = updateData.event
-    const changes = { ...updateData.changes }
-    let put = event;
-    putMutate({put, mainid})
-    console.log(mainid)
-    console.log(event.start)
-    console.log(event.end)
-  
-    getCalInstance().updateEvent(targetEvent.id, targetEvent.calendarId, changes)
-  } else {
-    setEditOpen(true)
-    setEditMessage('작성자가 달라 이 글을 수정 할 수 없습니다.')
   }
-}
 
   const onBeforeCreateEvent: ExternalEventTypes['beforeCreateEvent'] = (eventData) => {
-    const offset = new Date().getTimezoneOffset() * 60000;
+    const offset = new Date().getTimezoneOffset() * 60000
     const newoffset: any = new Date(eventData.start as Date)
     const newdate = newoffset - offset
     console.log(newdate.toString())
-   
+
     const newoffsetend: any = new Date(eventData.end as Date)
     const newdateend = newoffsetend - offset
     console.log(newdateend.toString())
@@ -327,7 +328,6 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     mutate(event)
     getCalInstance().createEvents([event])
   }
-
 
   return (
     <div>

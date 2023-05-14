@@ -1,5 +1,6 @@
 import { User } from './user'
 import { AccessToken, JwtPayload } from './jwt'
+import { UpdateRoleData } from './dates'
 
 export interface LoginPayload {
   content: Pick<User, 'id' | 'username' | 'email'> & Required<Pick<JwtPayload, 'iat' | 'exp'>>
@@ -20,6 +21,12 @@ export type APIResponse<T = unknown, E = Error> = {
   payload?: T
   error?: E
 }
-export type LoginResponse = APIResponse<LoginPayload>
+// export type LoginResponse = APIResponse<LoginPayload>
 
-export type SignupResponse = APIResponse<SignupPayload>
+// export type SignupResponse = APIResponse<SignupPayload>
+
+export interface APIResponses {
+  status: number
+  msg: string
+  data: UpdateRoleData
+}

@@ -6,9 +6,6 @@ export interface User {
   email: string
   password: string
   role: string
-  createdAt: string
-  updatedAt: string
-  loggedInAt: string
 }
 
 export interface ResponseUser {

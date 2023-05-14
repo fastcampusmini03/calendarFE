@@ -4,9 +4,7 @@ import { useState } from "react"
 import CalendarUI from "../../components/CalendarUI"
 import {  getCalendarDates } from "../../apis/axios"
 import PersistentDrawerRight from '../../components/Header'
-
-
-
+import Footer from '../../components/Footer'
 
 function MainPage() {
   /**calendar next/prev 버튼 기능 */
@@ -19,9 +17,12 @@ console.log(month)
   )
   
   return (
-    <PersistentDrawerRight>
-      <CalendarUI view="month" dates={calendarDates} setYear={setYear} setMonth={setMonth}/>
-    </PersistentDrawerRight>
+    <>
+      <PersistentDrawerRight>
+        <CalendarUI view="month" dates={calendarDates} setYear={setYear} setMonth={setMonth} />
+      </PersistentDrawerRight>
+      <Footer />
+    </>
   )
 }
 
