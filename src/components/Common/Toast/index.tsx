@@ -10,7 +10,7 @@ interface ToastProps {
 const Toast = ({ isOpened, handleClose, message }: ToastProps) => {
   return (
     <Snackbar open={isOpened} autoHideDuration={1500} onClose={handleClose}>
-      <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+      <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }} variant="filled">
         {message}
       </Alert>
     </Snackbar>
