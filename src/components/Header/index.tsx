@@ -175,8 +175,9 @@ export default function PersistentDrawerRight({ children }: any) {
               sx={{ flexGrow: 1 }}
               component="div"
               style={{ color: 'black' }}
-            >
-              Adu Calendar
+            ><Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
+             Adu Calendar
+          </Link>
             </Typography>
             {verifyPayload && status !== 'error' ? (
             <IconButton
