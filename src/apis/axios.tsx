@@ -54,18 +54,18 @@ export const getCalendar = async (year: any, month: any) => {
 //   return response.data.data
 // }
 
-export const getSaveDates = async () => {
-  const response = await instance.get<ResponseApproveData>('/s/admin/save?page=0')
+export const getSaveDates = async (page = 0) => {
+  const response = await instance.get<ResponseApproveData>(`/s/admin/save?page=${page}`)
   return response.data.data
 }
 
-export const getEditDates = async () => {
-  const response = await instance.get<ResponseEditData>('/s/admin/update?page=0')
+export const getEditDates = async (page = 0) => {
+  const response = await instance.get<ResponseEditData>(`/s/admin/update?page=${page}`)
   return response.data.data
 }
 
-export const getDeleteDates = async () => {
-  const response = await instance.get<ResponseDeleteData>('/s/admin/delete')
+export const getDeleteDates = async (page = 0) => {
+  const response = await instance.get<ResponseDeleteData>(`/s/admin/delete?page=${page}`)
   return response.data.data
 }
 

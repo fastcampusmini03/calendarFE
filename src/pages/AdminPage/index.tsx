@@ -1,8 +1,8 @@
 import AnnualDutyList from '../../components/AnnualDutyList'
 import { useQuery, useQueryClient } from 'react-query'
-import { getCalendarDates, getDeleteDates, getEditDates, getSaveDates } from '../../apis/axios'
+import { getCalendarDates } from '../../apis/axios'
 import CalendarUI from '../../components/CalendarUI'
-import { ApproveData, CalendarData, DeleteData, EditData } from '../../types/dates'
+import { CalendarData } from '../../types/dates'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -12,6 +12,12 @@ import { removeCookie } from '../../utils/cookies'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import {
+  useInfiniteDeleteDates,
+  useInfiniteEditDates,
+  useInfiniteSaveDates,
+} from '../../hooks/useInfiniteDates'
+
 // import { useState, useEffect } from 'react'
 
 function AdminPage() {
@@ -20,9 +26,9 @@ function AdminPage() {
   const { data: calendarDates, refetch } = useQuery<CalendarData[]>('dates', () =>
     getCalendarDates({ year, month }),
   )
-  const { data: saveDates, isLoading } = useQuery<ApproveData>('saveDates', getSaveDates)
-  const { data: editDates } = useQuery<EditData>('editDates', getEditDates)
-  const { data: deleteDates } = useQuery<DeleteData>('deleteDates', getDeleteDates)
+  const { data: saveDates, isLoading, fetchNextPage: fetchNextPageSave } = useInfiniteSaveDates()
+  const { data: editDates, fetchNextPage: fetchNextPageEdit } = useInfiniteEditDates()
+  const { data: deleteDates, fetchNextPage: fetchNextPageDelete } = useInfiniteDeleteDates()
 
   useEffect(() => {
     refetch()
@@ -72,7 +78,14 @@ function AdminPage() {
             />
           </Grid>
           <Grid item xs={4}>
-            <AnnualDutyList saveDates={saveDates} editDates={editDates} deleteDates={deleteDates} />
+            <AnnualDutyList
+              saveDates={saveDates}
+              editDates={editDates}
+              deleteDates={deleteDates}
+              fetchNextPageSave={fetchNextPageSave}
+              fetchNextPageEdit={fetchNextPageEdit}
+              fetchNextPageDelete={fetchNextPageDelete}
+            />
           </Grid>
         </Grid>
       </Box>
