@@ -49,6 +49,7 @@ body {
   padding: 0 16px;
   line-height: 30px;
   cursor: pointer;
+  background-color: #DBDFEA;
 }
 
 .move-day {
