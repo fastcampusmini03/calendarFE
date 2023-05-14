@@ -178,6 +178,7 @@ export default function PersistentDrawerRight({ children }: any) {
             >
               Adu Calendar
             </Typography>
+            {verifyPayload && status !== 'error' ? (
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -187,6 +188,7 @@ export default function PersistentDrawerRight({ children }: any) {
             >
               <MenuIcon />
             </IconButton>
+            ): null }
           </Toolbar>
         </WrapTypography>
       </AppBar>
@@ -204,9 +206,6 @@ export default function PersistentDrawerRight({ children }: any) {
                   <AccountCircleOutlinedIcon fontSize="large" />
                 </Avatar>
               </StyledBadge>
-              {/* <Button onClick={handleLogout}>
-                logout
-              </Button> */}
               <WrapUserName>
                 <UserName>{verifyPayload?.data.username}</UserName>
                 <UserName>{verifyPayload?.data.email}</UserName>
