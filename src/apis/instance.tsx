@@ -9,7 +9,7 @@ export const ACCESSTOKEN_KEY = 'accessToken'
 
 const getInstance = () => {
   const instance = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: 'http://43.201.194.212:8080/',
     withCredentials: true,
   })
 
