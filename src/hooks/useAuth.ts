@@ -14,17 +14,20 @@ export const useAuth = () => {
   const successLogin = (data: APIResponses) => {
     setUserName(data.data.username)
     setIsOpened((prev) => !prev)
+
+    if (data.data.role === 'ADMIN') {
+      navigate('/admin')
+    }
   }
 
-  const { mutate: loginUser, isError } = useMutation(login, {
+  const userLogin = useMutation(login, {
     onSuccess: (data) => {
       if (!data) return
-      console.log({ data })
       successLogin(data)
     },
   })
 
-  const { mutate: signupUser } = useMutation(signup, {
+  const userSignup = useMutation(signup, {
     onSuccess: (data) => {
       if (!data) return
       console.log(data)
@@ -37,5 +40,5 @@ export const useAuth = () => {
     navigate('/login')
   }
 
-  return { loginUser, signupUser, logoutUser, isOpened, isError, userName }
+  return { userLogin, userSignup, logoutUser, isOpened, userName }
 }

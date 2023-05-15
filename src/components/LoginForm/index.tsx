@@ -12,7 +12,7 @@ interface UserInput {
 }
 
 const LoginForm = () => {
-  const { loginUser, isOpened, isError, userName } = useAuth()
+  const { userSignup, isOpened, userName } = useAuth()
   const [userInput, setUserInput] = useState<UserInput>({ email: '', password: '' })
 
   const navigate = useNavigate()
@@ -20,7 +20,7 @@ const LoginForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    loginUser(userInput)
+    userSignup.mutate(userInput as any)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +68,9 @@ const LoginForm = () => {
               id="password"
             />
             <Box sx={{ height: '10px' }} mb={2}>
-              {isError && <div>아이디와 비밀번호를 확인해주세요</div>}
+              {userSignup.isError && (
+                <Box sx={{ fontSize: 14, color: '#B71C1C' }}>아이디와 비밀번호를 확인해주세요</Box>
+              )}
             </Box>
             <Button
               type="submit"
