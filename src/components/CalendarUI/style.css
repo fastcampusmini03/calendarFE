@@ -28,14 +28,10 @@ body {
   padding: 0;
 } */
 .btn:active {
-  /* background-color: #f9f9f9;
-  border: solid 1px #bbb; */
   outline: none;
 }
 
 .btn:disabled {
-  /* background-color: #f9f9f9;
-  border: solid 1px #ddd; */
   color: #bbb;
 }
 
@@ -114,14 +110,3 @@ button.toastui-calendar-popup-button.toastui-calendar-popup-confirm {
   background-color: #95B5FF;
 }
 
-/* .toastui-calendar-popup-button .toastui-calendar-popup-confirm {
-  float: right;
-  width: 96px;
-  height: 36px;
-  border-radius: 40px;
-  background-color: #95B5FF;
-  font-size: 12px;
-  font-weight: bold;
-  color: #fff;
-  border: none;
-} */

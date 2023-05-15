@@ -90,8 +90,12 @@ export const theme = createTheme({
 })
 
 export const LoginButton = styled(Button)`
-  background-color: #c8c8c8;
-  width: 200px;
+  background-color: #ACB1D6;
+  color: #fff;
+  &:hover{  
+    background-color : #a5abd6;
+    color : #fff;
+  }
 `
 
 export const MainLogoutButton = styled(Button)`
@@ -100,8 +104,12 @@ export const MainLogoutButton = styled(Button)`
 `
 
 export const MainSignButton = styled(Button)`
-  background-color: #fff;
-  color: #0f9bf7;
+  background-color: #DBDFEA;
+  color: #ACB1D6;
+  &:hover{  
+    background-color : #a5abd6;
+    color : #DBDFEA;
+  }
 `
 
 export const ListPaper = styled(Paper)`
