@@ -175,21 +175,22 @@ export default function PersistentDrawerRight({ children }: any) {
               sx={{ flexGrow: 1 }}
               component="div"
               style={{ color: 'black' }}
-            ><Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
-             Adu Calendar
-          </Link>
+            >
+              <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
+                Adu Calendar
+              </Link>
             </Typography>
             {verifyPayload && status !== 'error' ? (
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="end"
-              onClick={handleDrawerOpen}
-              sx={{ ...(open && { display: 'none' }) }}
-            >
-              <MenuIcon />
-            </IconButton>
-            ): null }
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="end"
+                onClick={handleDrawerOpen}
+                sx={{ ...(open && { display: 'none' }) }}
+              >
+                <MenuIcon />
+              </IconButton>
+            ) : null}
           </Toolbar>
         </WrapTypography>
       </AppBar>
@@ -208,8 +209,8 @@ export default function PersistentDrawerRight({ children }: any) {
                 </Avatar>
               </StyledBadge>
               <WrapUserName>
-                <UserName>{verifyPayload?.data.username}</UserName>
-                <UserName>{verifyPayload?.data.email}</UserName>
+                <UserName>{verifyPayload?.data?.username}</UserName>
+                <UserName>{verifyPayload?.data?.email}</UserName>
               </WrapUserName>
             </Wrap>
           </WrapButton>
