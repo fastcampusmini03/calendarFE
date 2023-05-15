@@ -196,7 +196,7 @@ export default function PersistentDrawerRight({ children }: any) {
       </AppBar>
       <Main open={open}>
         <DrawerHeader />
-        {verifyPayload && status !== 'error' ? ( // 로그인 상태인 경우에만 보이는 버튼들
+        {verifyPayload?.data && status !== 'error' ? ( // 로그인 상태인 경우에만 보이는 버튼들
           <WrapButton>
             <Wrap>
               <StyledBadge
@@ -208,9 +208,10 @@ export default function PersistentDrawerRight({ children }: any) {
                   <AccountCircleOutlinedIcon fontSize="large" />
                 </Avatar>
               </StyledBadge>
+
               <WrapUserName>
-                <UserName>{verifyPayload?.data?.username}</UserName>
-                <UserName>{verifyPayload?.data?.email}</UserName>
+                <UserName>{verifyPayload.data.username}</UserName>
+                <UserName>{verifyPayload.data.email}</UserName>
               </WrapUserName>
             </Wrap>
           </WrapButton>
