@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "tsc && vite build && aws s3 sync ./dist s3://aducalendar --profile=jyc-coder",
+    "invalidate": "aws cloudfront create-invalidation --profile=jyc-coder --distribution-id E3OU16DNI7AK2E --paths /*"
   },
   "dependencies": {
     "@emotion/react": "^11.10.8",
