@@ -9,7 +9,7 @@ export const ACCESSTOKEN_KEY = 'accessToken'
 
 const getInstance = () => {
   const instance = axios.create({
-    baseURL: 'http://localhost:8080/',
+    baseURL: import.meta.env.API_ADDRESS,
     withCredentials: true,
   })
 
