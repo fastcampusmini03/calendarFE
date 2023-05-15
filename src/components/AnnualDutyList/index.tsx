@@ -32,6 +32,9 @@ interface AdminPageProps {
   fetchNextPageSave: () => void
   fetchNextPageEdit: () => void
   fetchNextPageDelete: () => void
+  hasNextSavePage: boolean
+  hasNextEditPage: boolean
+  hasNextDeletePage: boolean
 }
 
 type FetchParams = {
@@ -46,6 +49,9 @@ function AnnualDutyList({
   fetchNextPageSave,
   fetchNextPageDelete,
   fetchNextPageEdit,
+  hasNextSavePage,
+  hasNextEditPage,
+  hasNextDeletePage,
 }: AdminPageProps) {
   console.log(saveDates)
   const [value, setValue] = useState('approve')
@@ -100,7 +106,7 @@ function AnnualDutyList({
   /** 데이터 수정 */
   const acceptDate = (id: number, value: string) => {
     return () => {
-      setDialogOpen((prev) => !prev)
+      setDialogOpen(false)
       setTimeout(() => {
         setAccToastOpen((prev) => !prev)
       }, 500) // 0.5초 후에 스낵바를 활성화
@@ -159,25 +165,23 @@ function AnnualDutyList({
     const sentinelRef = useRef(null)
 
     useEffect(() => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            fetchNextPage()
-          }
-        },
-        { rootMargin: '0px 0px 200px 0px' }, // 센티널 엘리먼트가 화면에 노출되기 이전에 fetchNextPage()를 호출하도록 rootMargin을 지정합니다.
-      )
-
       if (sentinelRef.current) {
-        observer.observe(sentinelRef.current)
-      }
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              fetchNextPage()
+            }
+          },
+          { root: null, rootMargin: '0px 0px 0px 0px', threshold: 0 }, // 센티널 엘리먼트가 화면에 노출되기 이전에 fetchNextPage()를 호출하도록 rootMargin을 지정합니다.
+        )
 
-      return () => {
-        if (sentinelRef.current) {
-          observer.unobserve(sentinelRef.current)
+        observer.observe(sentinelRef.current)
+
+        return () => {
+          observer.disconnect()
         }
       }
-    }, [value, fetchNextPage])
+    }, [value, sentinelRef, fetchNextPage])
 
     return sentinelRef
   }
@@ -383,11 +387,13 @@ function AnnualDutyList({
                         </div>
                       )),
                     )}
-                    <div ref={sentinelRefEdit}>
+                    {hasNextEditPage ? (
+                      <div ref={sentinelRefEdit}>감지중</div>
+                    ) : (
                       <Typography variant="h4" align="center">
-                        마지막 페이지입니다.
+                        마지막 페이지입니다
                       </Typography>
-                    </div>
+                    )}
                   </div>
                 </>
               )
@@ -517,11 +523,13 @@ function AnnualDutyList({
                         </>
                       )),
                     )}
-                    <div ref={sentinelRefDelete}>
+                    {hasNextDeletePage ? (
+                      <div ref={sentinelRefDelete}>감지중</div>
+                    ) : (
                       <Typography variant="h4" align="center">
-                        마지막 페이지입니다.
+                        마지막 페이지입니다
                       </Typography>
-                    </div>
+                    )}
                   </div>
                 </>
               )
@@ -657,11 +665,13 @@ function AnnualDutyList({
                         </div>
                       )
                     })}
-                    <div ref={sentinelRefSave}>
+                    {hasNextSavePage ? (
+                      <div ref={sentinelRefSave}>감지중</div>
+                    ) : (
                       <Typography variant="h4" align="center">
                         마지막 페이지입니다
                       </Typography>
-                    </div>
+                    )}
                   </div>
                 </>
               )
