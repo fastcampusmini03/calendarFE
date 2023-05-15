@@ -2,7 +2,8 @@ import { styled } from '@mui/system'
 import { Box } from '@mui/material'
 
 export const ErrorMessage = styled(Box)`
-  color: red;
-  font-size: 12px;
-  height: 12px;
+  color: #b71c1c;
+  font-size: 14px;
+  height: 6px;
+  margin-top: 6px;
 `

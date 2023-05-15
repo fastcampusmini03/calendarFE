@@ -67,7 +67,7 @@ const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
                     borderBottom: '1px solid #808080',
                   }}
                 >
-                  <Box mb={2}>이름</Box>
+                  <Box mb={4}>이름</Box>
                 </Grid>
                 <Grid
                   item
@@ -104,7 +104,7 @@ const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
                     borderBottom: '1px solid #808080',
                   }}
                 >
-                  <Box mb={2}>이메일</Box>
+                  <Box mb={4}>이메일</Box>
                 </Grid>
                 <Grid
                   item
@@ -126,7 +126,7 @@ const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
                     borderBottom: '1px solid #808080',
                   }}
                 >
-                  <Box mb={2}>권한</Box>
+                  <Box mb={4}>권한</Box>
                 </Grid>
                 <Grid
                   item
@@ -143,7 +143,7 @@ const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
               <Grid item xs={12}>
                 <Grid container spacing={2} justifyContent="flex-end">
                   <Grid item xs={4}>
-                    <Box mb={3}>새 비밀번호</Box>
+                    <Box mb={4}>새 비밀번호</Box>
                   </Grid>
                   <Grid item xs={6}>
                     <S.Input

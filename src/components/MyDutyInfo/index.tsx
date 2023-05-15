@@ -55,7 +55,7 @@ const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
     <>
       <Box display="flex" alignItems="center" borderBottom={1} pb={1}>
         <Box sx={{ fontWeight: 'bold' }} ml={1}>
-          신척내역
+          신청내역
         </Box>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="신청한 일정" value="applied" sx={{ fontSize: '16px' }} />

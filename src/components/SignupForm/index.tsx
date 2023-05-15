@@ -18,7 +18,7 @@ import Toast from '../Common/Toast'
 import { useNavigate } from 'react-router-dom'
 
 const SignupForm = () => {
-  const { signupUser, isOpened, userName } = useAuth()
+  const { userSignup, isOpened, userName } = useAuth()
 
   const navigate = useNavigate()
 
@@ -31,7 +31,7 @@ const SignupForm = () => {
 
   const handleSubmitRegister = (data: FieldValues) => {
     const { email, password, username } = data
-    signupUser({ email, password, username })
+    userSignup.mutate({ email, password, username })
   }
 
   return (
@@ -66,6 +66,10 @@ const SignupForm = () => {
                   autoFocus
                   {...register('username', {
                     required: '사용자명은 필수 입력 항목입니다.',
+                    pattern: {
+                      value: /^[가-힣a-zA-Z]{1,20}$/,
+                      message: '한글, 영문자만 20자 이내 입력해주세요.',
+                    },
                   })}
                 />
                 <S.ErrorMessage>{errors.username?.message as string}</S.ErrorMessage>
@@ -147,6 +151,12 @@ const SignupForm = () => {
         isOpened={isOpened}
         handleClose={() => navigate('/')}
         message={`${userName}님 환영합니다!`}
+      />
+
+      <Toast
+        isOpened={userSignup.isError}
+        handleClose={() => navigate('/signup')}
+        message="이미 존재하는 계정입니다."
       />
     </>
   )

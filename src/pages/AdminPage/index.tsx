@@ -26,9 +26,22 @@ function AdminPage() {
   const { data: calendarDates, refetch } = useQuery<CalendarData[]>('dates', () =>
     getCalendarDates({ year, month }),
   )
-  const { data: saveDates, isLoading, fetchNextPage: fetchNextPageSave } = useInfiniteSaveDates()
-  const { data: editDates, fetchNextPage: fetchNextPageEdit } = useInfiniteEditDates()
-  const { data: deleteDates, fetchNextPage: fetchNextPageDelete } = useInfiniteDeleteDates()
+  const {
+    data: saveDates,
+    isLoading,
+    fetchNextPage: fetchNextPageSave,
+    hasNextPage: hasNextSavePage,
+  } = useInfiniteSaveDates()
+  const {
+    data: editDates,
+    fetchNextPage: fetchNextPageEdit,
+    hasNextPage: hasNextEditPage,
+  } = useInfiniteEditDates()
+  const {
+    data: deleteDates,
+    fetchNextPage: fetchNextPageDelete,
+    hasNextPage: hasNextDeletePage,
+  } = useInfiniteDeleteDates()
 
   useEffect(() => {
     refetch()
@@ -47,7 +60,10 @@ function AdminPage() {
     calendarDates === undefined ||
     saveDates === undefined ||
     editDates === undefined ||
-    deleteDates === undefined
+    deleteDates === undefined ||
+    hasNextDeletePage === undefined ||
+    hasNextEditPage === undefined ||
+    hasNextSavePage === undefined
   ) {
     return <div>로딩중...</div>
   }
@@ -85,6 +101,9 @@ function AdminPage() {
               fetchNextPageSave={fetchNextPageSave}
               fetchNextPageEdit={fetchNextPageEdit}
               fetchNextPageDelete={fetchNextPageDelete}
+              hasNextSavePage={hasNextSavePage}
+              hasNextEditPage={hasNextEditPage}
+              hasNextDeletePage={hasNextDeletePage}
             />
           </Grid>
         </Grid>
