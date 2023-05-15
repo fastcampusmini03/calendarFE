@@ -11,7 +11,6 @@ export const useAuth = () => {
   const queryClient = useQueryClient()
   const [isOpened, setIsOpened] = useState(false)
   const [userName, setUserName] = useState('')
-  const { userInfo } = useVerify()
 
   const successLogin = (data: APIResponses) => {
     setUserName(data.data.username)
@@ -22,14 +21,14 @@ export const useAuth = () => {
     }
   }
 
-  const { mutate: loginUser, isError } = useMutation(login, {
+  const userLogin = useMutation(login, {
     onSuccess: (data) => {
       if (!data) return
       successLogin(data)
     },
   })
 
-  const { mutate: signupUser } = useMutation(signup, {
+  const userSignup = useMutation(signup, {
     onSuccess: (data) => {
       if (!data) return
       console.log(data)
@@ -42,5 +41,5 @@ export const useAuth = () => {
     navigate('/login')
   }
 
-  return { loginUser, signupUser, logoutUser, isOpened, isError, userName }
+  return { userLogin, userSignup, logoutUser, isOpened, userName }
 }
