@@ -18,8 +18,8 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
 import MailIcon from '@mui/icons-material/Mail'
-import { Avatar, Badge, Button } from '@mui/material'
-import { MainSignButton } from '../../style/style'
+import { Avatar, Badge } from '@mui/material'
+import { LoginButton, MainSignButton } from '../../style/style'
 import Styled from '@emotion/styled'
 import { getCookie, removeCookie } from '../../utils/cookies'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
@@ -216,11 +216,11 @@ export default function PersistentDrawerRight({ children }: any) {
         ) : (
           // 로그인 상태가 아닌 경우에만 보이는 버튼들
           <WrapButton>
-            <Button>
+            <LoginButton>
               <Link to="/login" style={{ textDecoration: 'none', color: 'white' }}>
                 login
               </Link>
-            </Button>
+            </LoginButton>
             <MainSignButton>
               <Link to="/signup" style={{ textDecoration: 'none' }}>
                 singup
