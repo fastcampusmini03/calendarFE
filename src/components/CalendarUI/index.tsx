@@ -68,6 +68,10 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
 
   const [deleteopen, setDeleteOpen] = useState(false)
   const [deletemessage, setDeleteMessage] = useState('')
+
+  const [onedayopen, setOnedayOpen] = useState(false)
+
+
   const [open, setOpen] = useState(false)
 
   const handleClick = () => {
@@ -81,6 +85,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     setEditOpen(false)
     setDeleteOpen(false)
     setOpen(false)
+    setOnedayOpen(false)
   }
 
   /**user 인증 */
@@ -322,11 +327,13 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     const offset = new Date().getTimezoneOffset() * 60000
     const newoffset: any = new Date(eventData.start as Date)
     const newdate = newoffset - offset
-    console.log(newdate.toString())
+   
 
     const newoffsetend: any = new Date(eventData.end as Date)
     const newdateend = newoffsetend - offset
-    console.log(newdateend.toString())
+    
+   
+
     const event = {
       calendarId: eventData.calendarId || '',
       title: eventData.title,
@@ -340,7 +347,13 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     console.log(eventData)
     console.log(event.start)
     console.log(event.end)
-    mutate(event)
+    if(new Date(newdate).toISOString() === new Date(newdateend).toISOString()) {
+      setOnedayOpen(true)
+      return
+    } else {
+
+      mutate(event)
+    }
     getCalInstance().createEvents([event])
   }
 
@@ -469,6 +482,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
             handleClose={handleClose}
           />
         )}
+       <Toast isOpened={onedayopen} message='동일한 날짜 입니다' handleClose={handleClose} />
       </div>
     </div>
   )
