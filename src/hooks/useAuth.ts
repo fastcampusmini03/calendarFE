@@ -4,7 +4,6 @@ import { login, signup } from '../apis/axios'
 import { APIResponses } from '../types/response'
 // import { setCookie } from '../utils/cookies'
 import { useNavigate } from 'react-router-dom'
-import useVerify from './useVerify'
 
 export const useAuth = () => {
   const navigate = useNavigate()
