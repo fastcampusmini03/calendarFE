@@ -11,9 +11,9 @@ import { useMutation, useQuery } from 'react-query'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { deleteDate, postDate, putDate, verify } from '../../apis/axios'
 import Toast from '../Common/Toast'
-import IconButton from '@mui/material/IconButton';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import IconButton from '@mui/material/IconButton'
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 type ViewType = 'month' | 'week' | 'day'
 
 // const today = new TZDate()
@@ -45,7 +45,6 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
   const { mutate } = useMutation(postDate, {
     onSuccess: (data) => {
       console.log(data)
-      console.log(data.data.id)
     },
   })
 
@@ -70,7 +69,6 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
   const [deletemessage, setDeleteMessage] = useState('')
 
   const [onedayopen, setOnedayOpen] = useState(false)
-
 
   const [open, setOpen] = useState(false)
 
@@ -229,30 +227,29 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     console.groupEnd()
   }
 
-  
   const onClicknext = (ev: MouseEvent<HTMLButtonElement>) => {
     console.log(ev)
-      // const button = ev.target as HTMLButtonElement
-      // const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
-      const actionName = 'next'
-      getCalInstance()[actionName]()
-      updateRenderRangeText()
+    // const button = ev.target as HTMLButtonElement
+    // const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
+    const actionName = 'next'
+    getCalInstance()[actionName]()
+    updateRenderRangeText()
   }
   const onClickprev = (ev: MouseEvent<HTMLButtonElement>) => {
     console.log(ev)
-      // const button = ev.target as HTMLButtonElement
-      // const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
-      const actionName = 'prev'
-      getCalInstance()[actionName]()
-      updateRenderRangeText()
+    // const button = ev.target as HTMLButtonElement
+    // const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
+    const actionName = 'prev'
+    getCalInstance()[actionName]()
+    updateRenderRangeText()
   }
   const onClicktoday = (ev: MouseEvent<HTMLButtonElement>) => {
     console.log(ev)
-      // const button = ev.target as HTMLButtonElement
-      // const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
-      const actionName = 'today'
-      getCalInstance()[actionName]()
-      updateRenderRangeText()
+    // const button = ev.target as HTMLButtonElement
+    // const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
+    const actionName = 'today'
+    getCalInstance()[actionName]()
+    updateRenderRangeText()
   }
   /**일정 클릭 했을 때 발생 이벤트 */
   const onClickEvent: ExternalEventTypes['clickEvent'] = (res) => {
@@ -327,12 +324,9 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     const offset = new Date().getTimezoneOffset() * 60000
     const newoffset: any = new Date(eventData.start as Date)
     const newdate = newoffset - offset
-   
 
     const newoffsetend: any = new Date(eventData.end as Date)
     const newdateend = newoffsetend - offset
-    
-   
 
     const event = {
       calendarId: eventData.calendarId || '',
@@ -347,11 +341,10 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
     console.log(eventData)
     console.log(event.start)
     console.log(event.end)
-    if(new Date(newdate).toISOString() === new Date(newdateend).toISOString()) {
+    if (new Date(newdate).toISOString() === new Date(newdateend).toISOString()) {
       setOnedayOpen(true)
       return
     } else {
-
       mutate(event)
     }
     getCalInstance().createEvents([event])
@@ -363,7 +356,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
         아듀 캘린더
       </Typography> */}
 
-      <div style={{textAlign: 'center'}}>
+      <div style={{ textAlign: 'center' }}>
         {/* <select onChange={onChangeSelect} value={selectedView}>
           {viewModeOptions.map((option, index) => (
             <option value={option.value} key={index}>
@@ -387,8 +380,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
             data-action="move-prev"
             onClick={onClickprev}
           >
-            <NavigateBeforeIcon/>
-           
+            <NavigateBeforeIcon />
           </IconButton>
           <span className="render-range">{selectedDateRangeText}</span>
           <IconButton
@@ -397,11 +389,9 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
             data-action="move-next"
             onClick={onClicknext}
           >
-            
-          <NavigateNextIcon/>
+            <NavigateNextIcon />
           </IconButton>
         </span>
-       
       </div>
       <div onClick={handleClick}>
         <Calendar
@@ -482,7 +472,7 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
             handleClose={handleClose}
           />
         )}
-       <Toast isOpened={onedayopen} message='동일한 날짜 입니다' handleClose={handleClose} />
+        <Toast isOpened={onedayopen} message="동일한 날짜 입니다" handleClose={handleClose} />
       </div>
     </div>
   )
