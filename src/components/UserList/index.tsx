@@ -37,6 +37,7 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
 
   /** toast 컴포넌트 팝업 토글 */
   const [toastToggle, setToastToggle] = useState(false)
+  const [roleToggle, setRoleToggle] = useState(false)
 
   /** input에 입력된 값에 따라  해당 유저의 이름과 일치하는 유저 리스트 데이터를 설정*/
   const handleInputChange = useCallback(
@@ -88,7 +89,9 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
   /** 사용자가 radioGroup 중 하나를 선택해서  selectedUser가 있을때만 토글하는 메소드*/
   const dialogToggle = () => {
     if (value === '') {
-      alert('please select role')
+      setTimeout(() => {
+        setRoleToggle((prev) => !prev)
+      }, 500) // 0.5초 후에 스낵바를 활성화
       return
     } else {
       setDialogOpen((prev) => !prev)
@@ -321,6 +324,11 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
           isOpened={toastToggle}
           handleClose={() => setToastToggle(false)}
           message={'권한변경 완료!'}
+        />
+        <Toast
+          isOpened={roleToggle}
+          message="권한을 선택해주세요!"
+          handleClose={() => setRoleToggle(false)}
         />
       </Container>
     </div>
