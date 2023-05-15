@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
+    "start": "node server.js",
     "deploy": "tsc && vite build && aws s3 sync ./dist s3://aducalendar --profile=jyc-coder",
     "invalidate": "aws cloudfront create-invalidation --profile=jyc-coder --distribution-id E3OU16DNI7AK2E --paths /*"
   },
@@ -23,7 +24,9 @@
     "axios": "^1.4.0",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "lodash.debounce": "^4.0.8",
+    "path": "^0.12.7",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
