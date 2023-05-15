@@ -1,8 +1,6 @@
-import { useQuery } from 'react-query'
-import { getUsers } from '../../apis/axios'
 import UserList from '../../components/UserList'
 // import { DatesPayload } from '../../types/dates'
-import { UserData } from '../../types/user'
+
 import { useInfiniteUsers } from '../../hooks/useInfiniteDates'
 
 function UserListPage() {
