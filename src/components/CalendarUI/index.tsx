@@ -11,9 +11,9 @@ import { useMutation, useQuery } from 'react-query'
 import { ACCESSTOKEN_KEY } from '../../apis/instance'
 import { deleteDate, postDate, putDate, verify } from '../../apis/axios'
 import Toast from '../Common/Toast'
-// import IconButton from '@mui/material/IconButton';
-// import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-// import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import IconButton from '@mui/material/IconButton';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 type ViewType = 'month' | 'week' | 'day'
 
 // const today = new TZDate()
@@ -225,14 +225,29 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
   }
 
   
-  const onClickNavi = (ev: MouseEvent<HTMLButtonElement>) => {
-    if ((ev.target as HTMLButtonElement).tagName === 'BUTTON') {
-      const button = ev.target as HTMLButtonElement
-      const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
-      console.log(ev)
+  const onClicknext = (ev: MouseEvent<HTMLButtonElement>) => {
+    console.log(ev)
+      // const button = ev.target as HTMLButtonElement
+      // const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
+      const actionName = 'next'
       getCalInstance()[actionName]()
       updateRenderRangeText()
-    }
+  }
+  const onClickprev = (ev: MouseEvent<HTMLButtonElement>) => {
+    console.log(ev)
+      // const button = ev.target as HTMLButtonElement
+      // const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
+      const actionName = 'prev'
+      getCalInstance()[actionName]()
+      updateRenderRangeText()
+  }
+  const onClicktoday = (ev: MouseEvent<HTMLButtonElement>) => {
+    console.log(ev)
+      // const button = ev.target as HTMLButtonElement
+      // const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
+      const actionName = 'today'
+      getCalInstance()[actionName]()
+      updateRenderRangeText()
   }
   /**일정 클릭 했을 때 발생 이벤트 */
   const onClickEvent: ExternalEventTypes['clickEvent'] = (res) => {
@@ -349,29 +364,29 @@ export default function CalendarUI({ view, dates, setYear, setMonth }: PropsType
             type="button"
             className="btn btn-default btn-sm move-today"
             data-action="move-today"
-            onClick={onClickNavi}
+            onClick={onClicktoday}
           >
             Today
           </button>
-          <button
+          <IconButton
             type="button"
             className="btn btn-default btn-sm move-day"
             data-action="move-prev"
-            onClick={onClickNavi}
+            onClick={onClickprev}
           >
-            prev
+            <NavigateBeforeIcon/>
            
-          </button>
+          </IconButton>
           <span className="render-range">{selectedDateRangeText}</span>
-          <button
+          <IconButton
             type="button"
             className="btn btn-default btn-sm move-day"
             data-action="move-next"
-            onClick={onClickNavi}
+            onClick={onClicknext}
           >
-            next
-          
-          </button>
+            
+          <NavigateNextIcon/>
+          </IconButton>
         </span>
        
       </div>
