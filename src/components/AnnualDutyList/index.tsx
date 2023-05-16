@@ -341,7 +341,7 @@ function AnnualDutyList({
                                     justifyContent: 'center',
                                   }}
                                 >
-                                  <Button onClick={() => toggleDialog(data.id)} sx={{ flex: '1' }}>
+                                  <Button onClick={toggleDialog(data.id)} sx={{ flex: '1' }}>
                                     승인
                                   </Button>
                                   <Button
@@ -354,35 +354,6 @@ function AnnualDutyList({
                                 </Box>
                               </Container>
                             </Grid>
-
-                            <Dialog open={dialogOpen}>
-                              <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
-                              <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                  승인하시겠습니까?
-                                </DialogContentText>
-                              </DialogContent>
-                              <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button onClick={acceptDate(dataValue, value)}>예</Button>
-                                <Button autoFocus onClick={toggleDialog(data.id)}>
-                                  아니오
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                            <Dialog open={refuseOpen}>
-                              <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
-                              <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                  거부하시겠습니까?
-                                </DialogContentText>
-                              </DialogContent>
-                              <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button onClick={rejectDate(dataValue, value)}>예</Button>
-                                <Button autoFocus onClick={toggleRefuseDialog}>
-                                  아니오
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
                           </ListItem>
                         </div>
                       )),
@@ -395,6 +366,34 @@ function AnnualDutyList({
                       </Typography>
                     )}
                   </div>
+                  <Dialog open={dialogOpen}>
+                    <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        승인하시겠습니까?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <Button onClick={acceptDate(dataValue, value)}>예</Button>
+                      <Button autoFocus onClick={() => setDialogOpen(false)}>
+                        아니오
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                  <Dialog open={refuseOpen}>
+                    <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        거부하시겠습니까?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <Button onClick={rejectDate(dataValue, value)}>예</Button>
+                      <Button autoFocus onClick={toggleRefuseDialog}>
+                        아니오
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </>
               )
 
@@ -490,35 +489,6 @@ function AnnualDutyList({
                                 </Box>
                               </Container>
                             </Grid>
-
-                            <Dialog open={dialogOpen}>
-                              <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
-                              <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                  승인하시겠습니까?
-                                </DialogContentText>
-                              </DialogContent>
-                              <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button onClick={acceptDate(dataValue, value)}>예</Button>
-                                <Button autoFocus onClick={toggleDialog(data.id)}>
-                                  아니오
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                            <Dialog open={refuseOpen}>
-                              <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
-                              <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                  거부하시겠습니까?
-                                </DialogContentText>
-                              </DialogContent>
-                              <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button onClick={rejectDate(dataValue, value)}>예</Button>
-                                <Button autoFocus onClick={toggleRefuseDialog}>
-                                  아니오
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
                           </ListItem>
                         </>
                       )),
@@ -531,6 +501,34 @@ function AnnualDutyList({
                       </Typography>
                     )}
                   </div>
+                  <Dialog open={dialogOpen}>
+                    <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        승인하시겠습니까?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <Button onClick={acceptDate(dataValue, value)}>예</Button>
+                      <Button autoFocus onClick={() => setDialogOpen(false)}>
+                        아니오
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                  <Dialog open={refuseOpen}>
+                    <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        거부하시겠습니까?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <Button onClick={rejectDate(dataValue, value)}>예</Button>
+                      <Button autoFocus onClick={toggleRefuseDialog}>
+                        아니오
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </>
               )
 
@@ -630,35 +628,6 @@ function AnnualDutyList({
                                     </Box>
                                   </Container>
                                 </Grid>
-
-                                <Dialog open={dialogOpen}>
-                                  <DialogTitle id="alert-dialog-title">{'승인 확인'}</DialogTitle>
-                                  <DialogContent>
-                                    <DialogContentText id="alert-dialog-description">
-                                      승인하시겠습니까?
-                                    </DialogContentText>
-                                  </DialogContent>
-                                  <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                                    <Button onClick={acceptDate(dataValue, value)}>예</Button>
-                                    <Button autoFocus onClick={toggleDialog(data.id)}>
-                                      아니오
-                                    </Button>
-                                  </DialogActions>
-                                </Dialog>
-                                <Dialog open={refuseOpen}>
-                                  <DialogTitle id="alert-dialog-title">{'거부 확인'}</DialogTitle>
-                                  <DialogContent>
-                                    <DialogContentText id="alert-dialog-description">
-                                      거부하시겠습니까?
-                                    </DialogContentText>
-                                  </DialogContent>
-                                  <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                                    <Button onClick={rejectDate(dataValue, value)}>예</Button>
-                                    <Button autoFocus onClick={toggleRefuseDialog}>
-                                      아니오
-                                    </Button>
-                                  </DialogActions>
-                                </Dialog>
                               </ListItem>
                             </div>
                           ))}
@@ -673,6 +642,35 @@ function AnnualDutyList({
                       </Typography>
                     )}
                   </div>
+
+                  <Dialog open={dialogOpen}>
+                    <DialogTitle id="alert-dialog-title">{'승인 확인'}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        승인하시겠습니까?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <Button onClick={acceptDate(dataValue, value)}>예</Button>
+                      <Button autoFocus onClick={() => setDialogOpen(false)}>
+                        아니오
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                  <Dialog open={refuseOpen}>
+                    <DialogTitle id="alert-dialog-title">{'거부 확인'}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        거부하시겠습니까?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <Button onClick={rejectDate(dataValue, value)}>예</Button>
+                      <Button autoFocus onClick={toggleRefuseDialog}>
+                        아니오
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </>
               )
           }
