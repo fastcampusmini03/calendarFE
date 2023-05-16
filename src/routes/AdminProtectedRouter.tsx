@@ -12,8 +12,8 @@ const AdminProtectedRouter = () => {
   const { userInfo, isAuthenticated } = useVerify()
 
   useEffect(() => {
-    console.log(userInfo?.role, isAuthenticated)
-    if (userInfo?.role !== 'ADMIN' && isAuthenticated === 'SUCCESS') {
+    console.log(userInfo?.data.role, isAuthenticated)
+    if (userInfo?.data.role !== 'ADMIN' && isAuthenticated === 'SUCCESS') {
       setIsOpened(true)
     }
   }, [userInfo, isAuthenticated])

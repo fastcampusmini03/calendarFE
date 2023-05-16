@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import PersistentDrawerRight from '../../components/Header'
 
-import useVerify from '../../hooks/useVerify'
 import MyprofileInfo from '../../components/MyProfileInfo'
 
 import { Box, Tabs, Tab } from '@mui/material'
