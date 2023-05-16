@@ -5,17 +5,10 @@ import { getCalendar, getSaveDates } from '../../apis/axios'
 import { useQuery } from 'react-query'
 import DateView from '../DateView'
 import UserDutyList from '../UserDutyList'
-import { User } from '../../types/user'
+import useVerify from '../../hooks/useVerify'
 
-interface MyDutyInfoProps {
-  userInfo: User
-}
-
-interface MyDutyInfoProps {
-  userInfo: User
-}
-
-const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
+const MyDutyInfo = () => {
+  const { userInfo } = useVerify()
   const [date, setDate] = useState({ year: 2023, month: 5 })
 
   const handleChangeDate = (year: number, month: number) => {
@@ -38,11 +31,11 @@ const MyDutyInfo = ({ userInfo }: MyDutyInfoProps) => {
   const { data: appliedData } = useQuery(['saveData'], () => getSaveDates())
 
   const appliedUserData: CalendarData[] | undefined = appliedData?.content.filter(
-    (item: CalendarData) => item.user.email === userInfo?.email,
+    (item: CalendarData) => item.user.email === userInfo?.data.email,
   )
 
   const userfilteredData: CalendarData[] = calendarDates?.filter(
-    (item: CalendarData) => item.user.email === userInfo?.email,
+    (item: CalendarData) => item.user.email === userInfo?.data.email,
   )
 
   const userApprovedData = userfilteredData?.filter((item) => item.status === '1')

@@ -30,3 +30,9 @@ export interface APIResponses {
   msg: string
   data: UpdateRoleData
 }
+
+export interface UserResponses {
+  status: number
+  msg: string
+  data: UpdateRoleData
+}

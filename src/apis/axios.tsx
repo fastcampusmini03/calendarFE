@@ -10,6 +10,7 @@ import {
 import { LoginRequest, SignupRequest } from '../types/request'
 import { instance } from './instance'
 import { ResponseUser } from '../types/user'
+import { UserResponses } from '../types/response'
 
 export const getUserDuty = async () => {
   const response = await instance.get('/s/user/annualDutyCheck')
@@ -17,7 +18,7 @@ export const getUserDuty = async () => {
 }
 
 export const getUser = async () => {
-  const response = await instance.get<DatesPayload[]>('/s/user')
+  const response = await instance.get<UserResponses>('/s/user')
   return response.data
 }
 
