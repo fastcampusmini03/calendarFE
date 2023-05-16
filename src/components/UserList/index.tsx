@@ -54,6 +54,7 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
 
   /** api수정 메소드 요청에 필요한 요청 데이터 state */
   const [value, setValue] = useState<string>('')
+  const [name, setName] = useState<string>('')
 
   /** dialog 팝업 토글 */
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -119,10 +120,12 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
         const observer = new IntersectionObserver(
           ([entry]) => {
             if (entry.isIntersecting) {
+              console.log(users)
               fetchNextPage()
+              console.log(users)
             }
           },
-          { root: null, rootMargin: '0px 0px 0px 0px', threshold: 0 }, // 센티널 엘리먼트가 화면에 노출되기 이전에 fetchNextPage()를 호출하도록 rootMargin을 지정합니다.
+          { root: null, rootMargin: '0px 0px 10px 0px', threshold: 1 }, // 센티널 엘리먼트가 화면에 노출되기 이전에 fetchNextPage()를 호출하도록 rootMargin을 지정합니다.
         )
 
         observer.observe(sentinelRef.current)
@@ -173,7 +176,7 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
           alignItems: 'center',
           flexDirection: 'column',
           border: '2px solid black',
-          height: '100vh',
+          height: '90%',
           paddingTop: '20px',
         }}
       >
@@ -250,7 +253,9 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
                 )}
 
                 {hasNextUserPage ? (
-                  <div ref={sentinelRefUser}>감지중</div>
+                  <div ref={sentinelRefUser} style={{ textAlign: 'center' }}>
+                    더 보시려먼 스크롤 해주세요!
+                  </div>
                 ) : (
                   <Typography variant="h4" align="center">
                     마지막 페이지입니다
