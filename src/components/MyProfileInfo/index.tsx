@@ -6,13 +6,20 @@ import { useForm } from 'react-hook-form'
 import { usePostUser } from '../../hooks/usePostUser'
 import { useNavigate } from 'react-router-dom'
 import Toast from '../Common/Toast'
-import { User } from 'src/types/user'
 
-interface MyProfileInfoProps {
-  userInfo: User
-}
+import useVerify from '../../hooks/useVerify'
+import { useQueryClient } from 'react-query'
 
-const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
+const MyprofileInfo = () => {
+  const { userInfo } = useVerify()
+
+  console.log({ userInfo })
+
+  const queryClient = useQueryClient()
+  const data = queryClient.getQueryData('user')
+
+  console.log({ data })
+
   const navigate = useNavigate()
 
   // const [userInput, setUserInput] = useState<UserInput>({ username: '', password: '' })
@@ -77,14 +84,14 @@ const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
                   }}
                 >
                   {!isClicked ? (
-                    <Box mb={2}>{userInfo?.username}</Box>
+                    <Box mb={2}>{userInfo?.data.username}</Box>
                   ) : (
                     <>
                       <S.Input
                         required
                         id="username"
                         autoFocus
-                        defaultValue={userInfo?.username}
+                        defaultValue={userInfo?.data.username}
                         {...register('username', {
                           required: '이름은 필수 입력 항목입니다.',
                         })}
@@ -113,7 +120,7 @@ const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
                     borderBottom: '1px solid #808080',
                   }}
                 >
-                  <Box mb={2}>{userInfo?.email}</Box>
+                  <Box mb={2}>{userInfo?.data.email}</Box>
                 </Grid>
               </Grid>
             </Grid>
@@ -135,7 +142,7 @@ const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
                     borderBottom: '1px solid #808080',
                   }}
                 >
-                  <Box mb={2}>{userInfo?.role}</Box>
+                  <Box mb={2}>{userInfo?.data.role}</Box>
                 </Grid>
               </Grid>
             </Grid>
@@ -187,6 +194,7 @@ const MyprofileInfo = ({ userInfo }: MyProfileInfoProps) => {
           </Grid>
         </Grid>
       </Grid>
+
       <Box sx={{ textAlign: 'right' }}>
         <Button sx={{ fontSize: '18px' }} onClick={() => setIsClicked((prev) => !prev)}>
           {!isClicked ? '수정' : '취소'}

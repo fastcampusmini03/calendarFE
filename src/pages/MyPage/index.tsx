@@ -8,7 +8,12 @@ import { Box, Tabs, Tab } from '@mui/material'
 import MyDutyInfo from '../../components/MyDutyInfo'
 
 const MyPage = () => {
-  const { userInfo } = useVerify()
+  // console.log({ userInfo })
+
+  // if (!userInfo) {
+  //   return <div>Loading...</div>
+  // }
+
   const [value, setValue] = useState('personalInfo')
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -27,11 +32,7 @@ const MyPage = () => {
             </Tabs>
           </Box>
           <Box ml={10} mt={3} sx={{ width: '60%' }}>
-            {value === 'personalInfo' ? (
-              <MyprofileInfo userInfo={userInfo!} />
-            ) : (
-              <MyDutyInfo userInfo={userInfo!} />
-            )}
+            {value === 'personalInfo' ? <MyprofileInfo /> : <MyDutyInfo />}
           </Box>
         </Box>
       </PersistentDrawerRight>
