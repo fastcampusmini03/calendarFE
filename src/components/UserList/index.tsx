@@ -32,6 +32,7 @@ type FetchParmas = {
 }
 
 export default function UserList({ users, fetchNextUser, hasNextUserPage }: UserPageProps) {
+  console.log(users)
   /** 검색 결과 state */
   const [searchResult, setSearchResult] = useState('')
 
@@ -189,8 +190,9 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
 
         <Box sx={{ width: '80%', justifyItems: 'center' }}>
           <Stack spacing={2}>
-            {searchResult === ''
-              ? users.pages.map((page) =>
+            {searchResult === '' ? (
+              <>
+                {users.pages.map((page) =>
                   page.content.map((data) => (
                     <div key={data.id}>
                       <ListPaper onClick={(event) => popupToggle(event)}>
@@ -245,77 +247,75 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
                       </Popover>
                     </div>
                   )),
-                )
-              : users.pages.map((page) =>
-                  page.content
-                    .filter((data) => data.username.includes(searchResult))
-                    .map((data) => (
-                      <div key={data.id}>
-                        <ListPaper onClick={(event) => popupToggle(event)}>
-                          <Typography variant="h5">
-                            {data.username} ({data.email}){' '}
-                            {data.role === 'USER' ? '일반' : '관리자'}
-                          </Typography>
-                        </ListPaper>
-                        <Popover
-                          open={open}
-                          anchorEl={anchorEl}
-                          onClose={handleClose}
-                          anchorOrigin={{
-                            vertical: 'center',
-                            horizontal: 'right',
-                          }}
-                          transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                          }}
-                        >
-                          <Box sx={{ padding: '10px' }}>
-                            <Typography variant="h6">권한을 선택하세요</Typography>
-                            <Box
-                              sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                              }}
-                            >
-                              <RadioGroup value={value} onChange={editUserRole}>
-                                <FormControlLabel value="USER" control={<Radio />} label="일반" />
-                                <FormControlLabel
-                                  value="ADMIN"
-                                  control={<Radio />}
-                                  label="관리자"
-                                />
-                              </RadioGroup>
-                              <Button onClick={dialogToggle}>변경</Button>
-                              <Dialog open={dialogOpen}>
-                                <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
-                                <DialogContent>
-                                  <DialogContentText id="alert-dialog-description">
-                                    '{data.username}'의 권한을{' '}
-                                    {value === 'USER' ? '일반' : '관리자'}
-                                    (으)로 변경하시겠습니까?
-                                  </DialogContentText>
-                                </DialogContent>
-                                <DialogActions>
-                                  <Button onClick={editRole(data.email, value)}>예</Button>
-                                  <Button onClick={dialogToggle} autoFocus>
-                                    아니오
-                                  </Button>
-                                </DialogActions>
-                              </Dialog>
-                            </Box>
-                          </Box>
-                        </Popover>
-                      </div>
-                    )),
                 )}
-            {hasNextUserPage ? (
-              <div ref={sentinelRefUser}>감지중</div>
+
+                {hasNextUserPage ? (
+                  <div ref={sentinelRefUser}>감지중</div>
+                ) : (
+                  <Typography variant="h4" align="center">
+                    마지막 페이지입니다
+                  </Typography>
+                )}
+              </>
             ) : (
-              <Typography variant="h4" align="center">
-                마지막 페이지입니다
-              </Typography>
+              users.pages.map((page) =>
+                page.content
+                  .filter((data) => data.username.includes(searchResult))
+                  .map((data) => (
+                    <div key={data.id}>
+                      <ListPaper onClick={(event) => popupToggle(event)}>
+                        <Typography variant="h5">
+                          {data.username} ({data.email}) {data.role === 'USER' ? '일반' : '관리자'}
+                        </Typography>
+                      </ListPaper>
+                      <Popover
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: 'center',
+                          horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'left',
+                        }}
+                      >
+                        <Box sx={{ padding: '10px' }}>
+                          <Typography variant="h6">권한을 선택하세요</Typography>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            }}
+                          >
+                            <RadioGroup value={value} onChange={editUserRole}>
+                              <FormControlLabel value="USER" control={<Radio />} label="일반" />
+                              <FormControlLabel value="ADMIN" control={<Radio />} label="관리자" />
+                            </RadioGroup>
+                            <Button onClick={dialogToggle}>변경</Button>
+                            <Dialog open={dialogOpen}>
+                              <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
+                              <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                  '{data.username}'의 권한을 {value === 'USER' ? '일반' : '관리자'}
+                                  (으)로 변경하시겠습니까?
+                                </DialogContentText>
+                              </DialogContent>
+                              <DialogActions>
+                                <Button onClick={editRole(data.email, value)}>예</Button>
+                                <Button onClick={dialogToggle} autoFocus>
+                                  아니오
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
+                          </Box>
+                        </Box>
+                      </Popover>
+                    </div>
+                  )),
+              )
             )}
           </Stack>
         </Box>

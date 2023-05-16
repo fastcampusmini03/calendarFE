@@ -12,7 +12,12 @@ export const useInfiniteSaveDates = () =>
     },
     {
       getNextPageParam: (lastPage) => {
-        if (lastPage.content.length < 8) return undefined // 마지막 페이지인 경우
+        if (
+          lastPage.content.length < 8 ||
+          lastPage.pageable.pageNumber + 1 >= lastPage.totalPages - 1
+        )
+          return null // 마지막 페이지인 경우
+
         return lastPage.pageable.pageNumber + 1 // 마지막 아이템의 id를 반환
       },
     },
@@ -27,7 +32,12 @@ export const useInfiniteEditDates = () =>
     },
     {
       getNextPageParam: (lastPage) => {
-        if (lastPage.content.length < 8) return undefined // 마지막 페이지인 경우
+        if (
+          lastPage.content.length < 8 ||
+          lastPage.pageable.pageNumber + 1 >= lastPage.totalPages - 1
+        )
+          return null // 마지막 페이지인 경우
+
         return lastPage.pageable.pageNumber + 1 // 마지막 아이템의 id를 반환
       },
     },
@@ -42,7 +52,12 @@ export const useInfiniteDeleteDates = () =>
     },
     {
       getNextPageParam: (lastPage) => {
-        if (lastPage.content.length < 8) return undefined // 마지막 페이지인 경우
+        if (
+          lastPage.content.length < 8 ||
+          lastPage.pageable.pageNumber + 1 >= lastPage.totalPages - 1
+        )
+          return null // 마지막 페이지인 경우
+
         return lastPage.pageable.pageNumber + 1 // 마지막 아이템의 id를 반환
       },
     },
@@ -57,7 +72,12 @@ export const useInfiniteUsers = () =>
     },
     {
       getNextPageParam: (lastPage) => {
-        if (lastPage.content.length < 8) return undefined // 마지막 페이지인 경우
+        if (
+          lastPage.content.length < 8 ||
+          lastPage.pageable.pageNumber + 1 >= lastPage.totalPages - 1
+        )
+          return null // 마지막 페이지인 경우
+
         return lastPage.pageable.pageNumber + 1 // 마지막 아이템의 id를 반환
       },
     },
