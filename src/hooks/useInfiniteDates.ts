@@ -76,8 +76,7 @@ export const useInfiniteUsers = () =>
           lastPage.content.length < 8 ||
           lastPage.pageable.pageNumber + 1 >= lastPage.totalPages - 1
         )
-          return null // 마지막 페이지인 경우
-
+          return null
         return lastPage.pageable.pageNumber + 1 // 마지막 아이템의 id를 반환
       },
     },
