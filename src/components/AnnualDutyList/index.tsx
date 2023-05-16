@@ -99,8 +99,9 @@ function AnnualDutyList({
     setDataValue(id)
   }
   /** Dialog  거절 토글 기능 */
-  const toggleRefuseDialog = () => {
+  const toggleRefuseDialog = (id: number) => () => {
     setRefuseOpen((prev) => !prev)
+    setDataValue(id)
   }
 
   /** 데이터 수정 */
@@ -346,7 +347,7 @@ function AnnualDutyList({
                                   </Button>
                                   <Button
                                     variant="outlined"
-                                    onClick={toggleRefuseDialog}
+                                    onClick={toggleRefuseDialog(data.id)}
                                     sx={{ flex: '1' }}
                                   >
                                     거부
@@ -389,7 +390,7 @@ function AnnualDutyList({
                     </DialogContent>
                     <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
                       <Button onClick={rejectDate(dataValue, value)}>예</Button>
-                      <Button autoFocus onClick={toggleRefuseDialog}>
+                      <Button autoFocus onClick={() => setRefuseOpen(false)}>
                         아니오
                       </Button>
                     </DialogActions>
@@ -481,7 +482,7 @@ function AnnualDutyList({
                                   </Button>
                                   <Button
                                     variant="outlined"
-                                    onClick={toggleRefuseDialog}
+                                    onClick={toggleRefuseDialog(data.id)}
                                     sx={{ flex: '1' }}
                                   >
                                     거부
@@ -524,7 +525,7 @@ function AnnualDutyList({
                     </DialogContent>
                     <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
                       <Button onClick={rejectDate(dataValue, value)}>예</Button>
-                      <Button autoFocus onClick={toggleRefuseDialog}>
+                      <Button autoFocus onClick={() => setRefuseOpen(false)}>
                         아니오
                       </Button>
                     </DialogActions>
@@ -620,7 +621,7 @@ function AnnualDutyList({
                                       </Button>
                                       <Button
                                         variant="outlined"
-                                        onClick={toggleRefuseDialog}
+                                        onClick={toggleRefuseDialog(data.id)}
                                         sx={{ flex: '1' }}
                                       >
                                         거부
@@ -666,7 +667,7 @@ function AnnualDutyList({
                     </DialogContent>
                     <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
                       <Button onClick={rejectDate(dataValue, value)}>예</Button>
-                      <Button autoFocus onClick={toggleRefuseDialog}>
+                      <Button autoFocus onClick={() => setRefuseOpen(false)}>
                         아니오
                       </Button>
                     </DialogActions>
