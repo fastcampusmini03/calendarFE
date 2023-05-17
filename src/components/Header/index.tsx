@@ -225,7 +225,7 @@ export default function PersistentDrawerRight({ children }: any) {
             </LoginButton>
             <MainSignButton>
               <Link to="/signup" style={{ textDecoration: 'none' }}>
-                singup
+                signup
               </Link>
             </MainSignButton>
           </WrapButton>
