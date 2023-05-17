@@ -14,7 +14,11 @@ function UserListPage() {
   if (isLoading || users === undefined || hasNextUserPage === undefined) {
     return <div>로딩중...</div>
   }
-  return <UserList users={users} fetchNextUser={fetchNextUser} hasNextUserPage={hasNextUserPage} />
+  return (
+    <>
+      <UserList users={users} fetchNextUser={fetchNextUser} hasNextUserPage={hasNextUserPage} />
+    </>
+  )
 }
 
 export default UserListPage
