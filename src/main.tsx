@@ -11,6 +11,9 @@ import { ThemeProvider } from '@mui/material/styles'
 import { theme } from './style/style'
 import './App.css'
 
+import Layout from './components/Layout/index.tsx'
+import { BrowserRouter } from 'react-router-dom'
+
 // if (process.env.NODE_ENV === 'development') {
 //   worker.start()
 // }
@@ -24,7 +27,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <QueryClientProvider client={queryClient}>
     <ThemeProvider theme={theme}>
       <React.StrictMode>
-        <App />
+        <BrowserRouter>
+          <Layout>
+            <App />
+          </Layout>
+        </BrowserRouter>
       </React.StrictMode>
     </ThemeProvider>
     <ReactQueryDevtools />

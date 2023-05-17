@@ -84,17 +84,23 @@ export const theme = createTheme({
         root: {
           fontFamily: ['Gmarket Sans', 'Comfortaa'].join(','),
         },
+        h6: {
+          fontSize: '15px',
+        },
+        h5: {
+          fontSize: '20px',
+        },
       },
     },
   },
 })
 
 export const LoginButton = styled(Button)`
-  background-color: #ACB1D6;
+  background-color: #acb1d6;
   color: #fff;
-  &:hover{  
-    background-color : #a5abd6;
-    color : #fff;
+  &:hover {
+    background-color: #a5abd6;
+    color: #fff;
   }
 `
 
@@ -104,11 +110,11 @@ export const MainLogoutButton = styled(Button)`
 `
 
 export const MainSignButton = styled(Button)`
-  background-color: #DBDFEA;
-  color: #ACB1D6;
-  &:hover{  
-    background-color : #a5abd6;
-    color : #DBDFEA;
+  background-color: #dbdfea;
+  color: #acb1d6;
+  &:hover {
+    background-color: #a5abd6;
+    color: #dbdfea;
   }
 `
 

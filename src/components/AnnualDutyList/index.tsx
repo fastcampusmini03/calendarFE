@@ -203,20 +203,25 @@ function AnnualDutyList({
           color="initial"
           style={{ whiteSpace: 'nowrap', textAlign: 'center' }}
         >
-          <span>
+          <span
+            style={{
+              fontSize: '25px',
+              fontWeight: 700,
+            }}
+          >
             일정 관리
-            <a
-              style={{
-                fontSize: '20px',
-                textDecoration: 'none',
-                color: '#000',
-                marginLeft: '20px',
-              }}
-              href="/admin/user"
-            >
-              사용자 관리로 이동
-            </a>
           </span>
+          <a
+            style={{
+              fontSize: '15px',
+              textDecoration: 'none',
+              color: '#000',
+              marginLeft: '20px',
+            }}
+            href="/admin/user"
+          >
+            사용자 관리로 이동
+          </a>
         </Typography>
 
         <Tabs value={value} onChange={handleChange} variant="fullWidth">
@@ -638,7 +643,7 @@ function AnnualDutyList({
                     {hasNextSavePage ? (
                       <div ref={sentinelRefSave}>감지중</div>
                     ) : (
-                      <Typography variant="h4" align="center">
+                      <Typography variant="h6" align="center">
                         마지막 페이지입니다
                       </Typography>
                     )}
