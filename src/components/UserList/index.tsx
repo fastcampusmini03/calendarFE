@@ -15,7 +15,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogActions from '@mui/material/DialogActions'
 import Toast from '../Common/Toast'
-import { UserData } from '../../types/user'
+import { User, UserData } from '../../types/user'
 import { updateRole } from '../../apis/axios'
 import { InfiniteData, useMutation, useQueryClient } from 'react-query'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -32,7 +32,6 @@ type FetchParmas = {
 }
 
 export default function UserList({ users, fetchNextUser, hasNextUserPage }: UserPageProps) {
-  console.log(users)
   /** 검색 결과 state */
   const [searchResult, setSearchResult] = useState('')
 
@@ -54,7 +53,7 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
 
   /** api수정 메소드 요청에 필요한 요청 데이터 state */
   const [value, setValue] = useState<string>('')
-  const [name, setName] = useState<string>('')
+  const [userdata, setUserData] = useState<User | null>(null)
 
   /** dialog 팝업 토글 */
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -85,8 +84,9 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
     mutateUR({ email, role })
   }
   /**클릭시 팝업위치를 변경해서 popper를 나타나게 하는 메소드*/
-  const popupToggle = (event: React.MouseEvent<HTMLDivElement>) => {
+  const popupToggle = (event: React.MouseEvent<HTMLDivElement>, data: User) => {
     setAnchorEl(event.currentTarget)
+    setUserData(data)
   }
   /** 사용자가 radioGroup 중 하나를 선택해서  selectedUser가 있을때만 토글하는 메소드*/
   const dialogToggle = () => {
@@ -198,56 +198,11 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
                 {users.pages.map((page) =>
                   page.content.map((data) => (
                     <div key={data.id}>
-                      <ListPaper onClick={(event) => popupToggle(event)}>
+                      <ListPaper onClick={(event) => popupToggle(event, data)}>
                         <Typography variant="h5">
                           {data.username} ({data.email}) {data.role === 'USER' ? '일반' : '관리자'}
                         </Typography>
                       </ListPaper>
-                      <Popover
-                        open={open}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                          vertical: 'center',
-                          horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'left',
-                        }}
-                      >
-                        <Box sx={{ padding: '10px' }}>
-                          <Typography variant="h6">권한을 선택하세요</Typography>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <RadioGroup value={value} onChange={editUserRole}>
-                              <FormControlLabel value="USER" control={<Radio />} label="일반" />
-                              <FormControlLabel value="ADMIN" control={<Radio />} label="관리자" />
-                            </RadioGroup>
-                            <Button onClick={dialogToggle}>변경</Button>
-                            <Dialog open={dialogOpen}>
-                              <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
-                              <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                  '{data.username}'의 권한을 {value === 'USER' ? '일반' : '관리자'}
-                                  (으)로 변경하시겠습니까?
-                                </DialogContentText>
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={editRole(data.email, value)}>예</Button>
-                                <Button onClick={dialogToggle} autoFocus>
-                                  아니오
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                          </Box>
-                        </Box>
-                      </Popover>
                     </div>
                   )),
                 )}
@@ -268,60 +223,60 @@ export default function UserList({ users, fetchNextUser, hasNextUserPage }: User
                   .filter((data) => data.username.includes(searchResult))
                   .map((data) => (
                     <div key={data.id}>
-                      <ListPaper onClick={(event) => popupToggle(event)}>
+                      <ListPaper onClick={(event) => popupToggle(event, data)}>
                         <Typography variant="h5">
                           {data.username} ({data.email}) {data.role === 'USER' ? '일반' : '관리자'}
                         </Typography>
                       </ListPaper>
-                      <Popover
-                        open={open}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                          vertical: 'center',
-                          horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'left',
-                        }}
-                      >
-                        <Box sx={{ padding: '10px' }}>
-                          <Typography variant="h6">권한을 선택하세요</Typography>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <RadioGroup value={value} onChange={editUserRole}>
-                              <FormControlLabel value="USER" control={<Radio />} label="일반" />
-                              <FormControlLabel value="ADMIN" control={<Radio />} label="관리자" />
-                            </RadioGroup>
-                            <Button onClick={dialogToggle}>변경</Button>
-                            <Dialog open={dialogOpen}>
-                              <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
-                              <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                  '{data.username}'의 권한을 {value === 'USER' ? '일반' : '관리자'}
-                                  (으)로 변경하시겠습니까?
-                                </DialogContentText>
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={editRole(data.email, value)}>예</Button>
-                                <Button onClick={dialogToggle} autoFocus>
-                                  아니오
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                          </Box>
-                        </Box>
-                      </Popover>
                     </div>
                   )),
               )
             )}
+            <Popover
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'center',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <Box sx={{ padding: '10px' }}>
+                <Typography variant="h6">권한을 선택하세요</Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <RadioGroup value={value} onChange={editUserRole}>
+                    <FormControlLabel value="USER" control={<Radio />} label="일반" />
+                    <FormControlLabel value="ADMIN" control={<Radio />} label="관리자" />
+                  </RadioGroup>
+                  <Button onClick={dialogToggle}>변경</Button>
+                </Box>
+              </Box>
+            </Popover>
+            <Dialog open={dialogOpen}>
+              <DialogTitle id="alert-dialog-title">{'권한 변경'}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  '{userdata?.username}'의 권한을 {value === 'USER' ? '일반' : '관리자'}
+                  (으)로 변경하시겠습니까?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={editRole(userdata?.email || '', value)}>예</Button>
+                <Button onClick={() => setDialogOpen(false)} autoFocus>
+                  아니오
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Stack>
         </Box>
         {/*권한 변경 confirm시 나타나는 Toast*/}
